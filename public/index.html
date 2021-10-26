@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
+  <title>爱走星球</title>
+  <style>
+    body {
+      margin: 0 auto;
+      /* 设置 transform 主要为了防止元素设置fixed偏移出body */
+      transform: translate(0, 0);
+    }
+  </style>
+</head>
+<script>
+  const docEl = window.document.documentElement
+  const baseLongSide = 750 // 基础高度
+  const rootValue = 75 // px2rem rootValue
+
+  // 适配不同尺寸
+  function screenFit() {
+    const [width, height] = [window.innerWidth, window.innerHeight]
+    if (width === height || width === 0 || height === 0) {
+      return
+    }
+    if (width > height) {
+      // 横屏
+      rootFontSize = (height / baseLongSide) * rootValue
+      console.log(`${window.innerWidth}*${window.innerHeight} ${rootFontSize}px`)
+      docEl.style.fontSize = `${rootFontSize}px`
+      if (window.innerWidth / window.innerHeight <= 1.67) {
+        docEl.classList.add('pad')
+      } else {
+        docEl.classList.remove('pad')
+      }
+    } else {
+      // 竖屏
+      rootFontSize = (width / baseLongSide) * rootValue
+      console.log(`${window.innerWidth}*${window.innerHeight} ${rootFontSize}px`)
+      docEl.style.fontSize = `${rootFontSize}px`
+      if (window.innerHeight / window.innerWidth <= 1.67) {
+        docEl.classList.add('pad')
+      } else {
+        docEl.classList.remove('pad')
+      }
+    }
+  }
+
+  window.addEventListener('load', screenFit, false)
+  window.addEventListener('resize', screenFit, false)
+  window.addEventListener('pageshow', screenFit, false)
+
+  screenFit()
+  setTimeout(() => {
+    screenFit()
+  }, 1000)
+</script>
+
+<body>
+  <div id="root"></div>
+</body>
+
+</html>
