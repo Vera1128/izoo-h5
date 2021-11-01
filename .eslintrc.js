@@ -19,7 +19,7 @@ module.exports = {
     APP_NAME: true,
     APP_BASENAME: true,
     XMREP_BID: true,
-    SENTRY_DSN: true
+    SENTRY_DSN: true,
   },
   parser: '@typescript-eslint/parser',
   parserOptions: {
@@ -34,10 +34,9 @@ module.exports = {
   },
   settings: {
     'import/resolver': {
-      node: {
-        extensions: ['.tsx', '.ts', '.js', '.json'],
+      webpack: {
+        config: 'scripts/webpack/webpack.common.js',
       },
-      typescript: {},
     },
   },
   plugins: ['react', '@typescript-eslint', 'promise', 'sonarjs'],
@@ -93,6 +92,8 @@ module.exports = {
     'react/destructuring-assignment': 'off',
     'jsx-a11y/alt-text': 'warn',
     'react/display-name': 'off',
+    'react/no-children-prop': 'off',
+    'react/jsx-boolean-value': 'off',
 
     // typescript
     '@typescript-eslint/no-explicit-any': 'off',

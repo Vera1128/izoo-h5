@@ -6,8 +6,15 @@
   <meta name="viewport"
     content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no, shrink-to-fit=no, viewport-fit=cover" />
   <title>爱走星球</title>
+  <link rel="stylesheet" href="<%= htmlWebpackPlugin.options.publicPath %>font-awesome.min.css">
   <style>
+    html {
+      width: 100vw;
+    }
+
     body {
+      width: 100vw;
+      max-width: 750px;
       margin: 0 auto;
       /* 设置 transform 主要为了防止元素设置fixed偏移出body */
       transform: translate(0, 0);

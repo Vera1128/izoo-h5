@@ -2,16 +2,18 @@ const dev = {
   publicPath: '/',
 }
 
+// hard code
+
 const test = {
-  publicPath: `./`,
+  publicPath: `http://127.0.0.1:8082/`,
 }
 
 const uat = {
-  publicPath: `./`,
+  publicPath: `http://127.0.0.1:8082/`,
 }
 
 const prod = {
-  publicPath: `./`,
+  publicPath: `http://127.0.0.1:8082/`,
 }
 
 const config = {

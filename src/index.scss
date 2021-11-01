@@ -1,7 +1,69 @@
 // 公共样式配置
+html,
+body,
+div,
+span,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+a,
+img,
+canvas,
+audio,
+video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font: inherit;
+  font-size: 100%;
+  vertical-align: baseline;
+  box-sizing: border-box;
+  outline: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+}
 
-// 字体
+div {
+  box-sizing: border-box;
+}
+
+a,
+a:link,
+a:visited,
+a:hover,
+a:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+body {
+  font-family: 'NSC-Regular', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, sans-serif;
+  overscroll-behavior: none;
+  font-size: 24px;
+  height: 100vh;
+  overflow: auto;
+  &::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+  }
+  line-height: 1;
+}
+
+.no-touch {
+  touch-action: none;
+}
+
+.no-scroll {
+  overflow: hidden;
+}
+
 @font-face {
-  font-family: 'Nunito-ExtraBold';
-  src: url('./assets/fonts/Nunito-ExtraBold.ttf');
+  font-family: 'NSC-Regular';
+  src: url('assets/fonts/NotoSansSC-Regular.ttf');
 }

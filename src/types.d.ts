@@ -8,6 +8,8 @@ declare module '*.gif'
 
 declare module '*.json'
 
+declare module 'swiper/react'
+
 declare const APP_ENV: string
 declare const APP_NAME: string
 declare const APP_BASENAME: string
