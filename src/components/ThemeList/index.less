@@ -1,0 +1,35 @@
+.themeListContainer {
+  width: 100%;
+  background: #fff9f3;
+  .listHeader {
+    background: #f5d06a;
+  }
+  .themeList {
+    width: 100%;
+    padding: 0 48px 40px;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    .themeItem {
+      width: 292px;
+      margin-top: 48px;
+      img {
+        width: 100%;
+        height: 216px;
+        object-fit: contain;
+      }
+      .desc {
+        width: 100%;
+        text-align: center;
+        font-size: 32px;
+        color: #666699;
+        line-height: 46px;
+        font-weight: bold;
+      }
+    }
+    .themeItem:nth-of-type(2n) {
+      margin-left: 70px;
+    }
+  }
+}

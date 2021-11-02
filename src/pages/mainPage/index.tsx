@@ -3,6 +3,11 @@ import React from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination } from 'swiper'
 import FocusOnCom from 'components/FocusOn'
+import NearbyList from 'src/components/NearbyList'
+import ThemeList from 'src/components/ThemeList'
+import CityList from 'src/components/CityList'
+import RecommendList from 'src/components/RecommendList'
+
 import SwiperTestImg from 'assets/images/swiper-test.png'
 
 import 'swiper/css'
@@ -33,6 +38,11 @@ const Index = () => {
         </SwiperSlide>
       </Swiper>
       <FocusOnCom />
+      <NearbyList />
+      <ThemeList />
+      <CityList />
+      <RecommendList />
+      <div className="emptyDiv" />
     </div>
   )
 }
