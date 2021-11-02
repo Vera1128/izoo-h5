@@ -6,7 +6,71 @@
     overflow-y: scroll;
     .recommendItem {
       width: 100%;
-      padding: 36px 18px 36px 32px;
+      padding: 36px 18px 0px 32px;
+      .recommendItemContent {
+        width: 100%;
+        padding-bottom: 36px;
+        border-bottom: 1px dotted #66cccc;
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+      }
+      img {
+        width: 192px;
+        height: 192px;
+        object-fit: cover;
+        border-radius: 48px;
+      }
+      .contentContainer {
+        margin-left: 16px;
+        height: 100%;
+        width: calc(100% - 192px);
+        .name {
+          height: 40px;
+          font-size: 28px;
+          line-height: 33px;
+          color: white;
+        }
+        .desc {
+          width: 100%;
+          height: 44px;
+          font-size: 30px;
+          line-height: 35px;
+          color: #f5d06a;
+          white-space: nowrap;
+          overflow: hidden;
+        }
+        .tagList {
+          display: flex;
+          flex-direction: row;
+          justify-content: flex-start;
+          margin-top: 16px;
+          .tag {
+            margin-right: 20px;
+          }
+        }
+        .num {
+          height: 34px;
+          font-size: 24px;
+          font-weight: 400;
+          color: #c4c4c4;
+          line-height: 28px;
+          margin-top: 30px;
+        }
+      }
+      .listenBtn {
+        width: fit-content;
+        height: 56px;
+        position: absolute;
+        right: 0;
+        bottom: 32px;
+        line-height: 56px;
+        border-radius: 56px;
+        border: 1px solid #66cccc;
+        padding: 0 20px;
+        font-size: 32px;
+        color: #66cccc;
+      }
     }
   }
   .listHeader {
