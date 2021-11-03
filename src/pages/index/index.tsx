@@ -40,7 +40,6 @@ const Index: FC<any> = (props) => {
   const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === props.location.pathname)
   const [selectedId, setSelectedId] = useState(matchPathArr[0]?.id || 'mainPage')
   const menuSwitchHandle = (menuItem) => () => {
-    props.setNumAsync(10)
     setSelectedId(menuItem.id)
   }
   return (

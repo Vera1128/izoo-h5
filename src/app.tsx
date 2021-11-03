@@ -24,7 +24,6 @@ const createFixRoute = (route, index) => {
         key={index}
         path={path}
         children={(props) => {
-          console.log('props.match', props.match)
           let redirectPath = null
           return (
             <RouteComponent {...props}>
