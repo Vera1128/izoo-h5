@@ -1,6 +1,5 @@
 import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
 
 import MenuBar from 'src/components/Menu'
 
@@ -38,7 +37,6 @@ const menuConfig = [
 ]
 
 const Index: FC<any> = (props) => {
-  console.log('props.num', props.num)
   const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === props.location.pathname)
   const [selectedId, setSelectedId] = useState(matchPathArr[0]?.id || 'mainPage')
   const menuSwitchHandle = (menuItem) => () => {
@@ -66,12 +64,4 @@ const Index: FC<any> = (props) => {
   )
 }
 
-const mapState = ({ main: { num } }) => ({
-  num,
-})
-const mapDispatch = ({ main: { setNum, setNumAsync } }) => ({
-  setNum,
-  setNumAsync,
-})
-
-export default connect(mapState, mapDispatch)(Index)
+export default Index

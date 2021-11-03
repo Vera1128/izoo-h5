@@ -7,10 +7,10 @@ import { connect } from 'react-redux'
 import { debounce } from 'src/utils'
 
 import FocusOnCom from 'components/FocusOn'
-import NearbyList from 'src/components/NearbyList'
-import ThemeList from 'src/components/ThemeList'
-import CityList from 'src/components/CityList'
-import RecommendList from 'src/components/RecommendList'
+import NearbyList from 'components/NearbyList'
+import ThemeList from 'components/ThemeList'
+import CityList from 'components/CityList'
+import RecommendList from 'components/RecommendList'
 
 import SwiperTestImg from 'assets/images/swiper-test.png'
 
@@ -42,10 +42,10 @@ const Index = ({ offsetX, setOffsetX }) => {
         initialSlide={0}
       >
         <SwiperSlide>
-          <img src={SwiperTestImg} className="swiperContent" />
+          <img src={SwiperTestImg} className="swiperContent" alt="轮播图" />
         </SwiperSlide>
         <SwiperSlide>
-          <img src={SwiperTestImg} className="swiperContent" />
+          <img src={SwiperTestImg} className="swiperContent" alt="轮播图" />
         </SwiperSlide>
       </Swiper>
       <FocusOnCom />
