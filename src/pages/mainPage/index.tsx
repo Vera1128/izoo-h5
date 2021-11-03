@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useRef, useEffect } from 'react'
 /* eslint-disable import/no-unresolved */
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination } from 'swiper'
+import { connect } from 'react-redux'
+
+import { debounce } from 'src/utils'
+
 import FocusOnCom from 'components/FocusOn'
 import NearbyList from 'src/components/NearbyList'
 import ThemeList from 'src/components/ThemeList'
@@ -16,10 +20,17 @@ import './index.less'
 
 SwiperCore.use([Pagination])
 
-const Index = () => {
-  console.log('mainPage')
+const Index = ({ offsetX, setOffsetX }) => {
+  const pageRef = useRef(null)
+  useEffect(() => {
+    pageRef.current.scrollTop = offsetX
+  }, [pageRef.current])
+
+  const scrollHandle = (e) => {
+    setOffsetX(e.target.scrollTop)
+  }
   return (
-    <div className="mainPageContainer">
+    <div className="mainPageContainer" ref={pageRef} onScroll={debounce(scrollHandle, 500)}>
       <Swiper
         slidesPerView="auto"
         className="mySwiper"
@@ -47,4 +58,12 @@ const Index = () => {
   )
 }
 
-export default Index
+const mapState = ({ main: { offsetX } }) => ({
+  offsetX,
+})
+
+const mapDispatch = ({ main: { setOffsetX } }) => ({
+  setOffsetX,
+})
+
+export default connect(mapState, mapDispatch)(Index)

@@ -1,6 +1,9 @@
 import React, { FC, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
+
 import MenuBar from 'src/components/Menu'
+
 import mainIcon from 'src/assets/images/main.png'
 import mainSelectedIcon from 'src/assets/images/main-selected.png'
 import tripIcon from 'src/assets/images/trip.png'
@@ -35,8 +38,13 @@ const menuConfig = [
 ]
 
 const Index: FC<any> = (props) => {
+  console.log('props.num', props.num)
   const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === props.location.pathname)
   const [selectedId, setSelectedId] = useState(matchPathArr[0]?.id || 'mainPage')
+  const menuSwitchHandle = (menuItem) => () => {
+    props.setNumAsync(10)
+    setSelectedId(menuItem.id)
+  }
   return (
     <div className="wrap">
       <div className="content">{props.children}</div>
@@ -47,7 +55,7 @@ const Index: FC<any> = (props) => {
             replace
             className={`menuItem ${menuItem.id === selectedId ? 'menuItemSelected' : ''}`}
             key={menuItem.id}
-            onClick={() => setSelectedId(menuItem.id)}
+            onClick={menuSwitchHandle(menuItem)}
           >
             <img className="menuIcon" src={menuItem.id === selectedId ? menuItem.iconSelected : menuItem.icon} />
             <p>{menuItem.title}</p>
@@ -58,4 +66,12 @@ const Index: FC<any> = (props) => {
   )
 }
 
-export default Index
+const mapState = ({ main: { num } }) => ({
+  num,
+})
+const mapDispatch = ({ main: { setNum, setNumAsync } }) => ({
+  setNum,
+  setNumAsync,
+})
+
+export default connect(mapState, mapDispatch)(Index)

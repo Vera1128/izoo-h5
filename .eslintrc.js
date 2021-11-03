@@ -74,10 +74,12 @@ module.exports = {
     'no-useless-escape': 'off',
     'no-prototype-builtins': 'off',
     'guard-for-in': 'warn',
+    'import/prefer-default-export': 'off',
 
     // sonarjs
     'sonarjs/cognitive-complexity': 'error',
     'sonarjs/no-identical-expressions': 'error',
+    'sonarjs/no-identical-functions': 'off',
 
     // react
     'react/jsx-props-no-spreading': 'off',
