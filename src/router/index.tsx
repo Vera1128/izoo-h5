@@ -8,7 +8,7 @@ export default [
     exact: true,
     children: [
       { path: '/mainPage', component: asyncImport('mainPage'), exact: true, redirect: true },
-      { path: '/demo2', component: asyncImport('demo2'), exact: true },
+      { path: '/allRoutes', component: asyncImport('allRoutes'), exact: true },
       { path: '/demo3', component: asyncImport('demo3'), exact: true },
     ],
   },

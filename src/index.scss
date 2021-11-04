@@ -50,9 +50,9 @@ a:active {
 body {
   font-family: 'NSC-Regular', -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, sans-serif;
   overscroll-behavior: none;
-  font-size: 24px;
   height: 100vh;
   overflow: auto;
+  font-size: 24px;
   &::-webkit-scrollbar {
     width: 0 !important;
     height: 0 !important;

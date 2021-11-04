@@ -17,13 +17,15 @@ const menuConfig = [
     id: 'mainPage',
     to: '/index/mainPage',
     title: '文化行走',
+    pageTitle: '爱走星球',
     icon: mainIcon,
     iconSelected: mainSelectedIcon,
   },
   {
-    id: 'menu2',
-    to: '/index/demo2',
+    id: 'allRoutes',
+    to: '/index/allRoutes',
     title: '全部路线',
+    pageTitle: '全部路线',
     icon: tripIcon,
     iconSelected: tripSelectedIcon,
   },
@@ -31,6 +33,7 @@ const menuConfig = [
     id: 'menu3',
     to: '/index/demo3',
     title: '个人中心',
+    pageTitle: '个人中心',
     icon: userIcon,
     iconSelected: userSelectedIcon,
   },
@@ -40,6 +43,7 @@ const Index: FC<any> = (props) => {
   const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === props.location.pathname)
   const [selectedId, setSelectedId] = useState(matchPathArr[0]?.id || 'mainPage')
   const menuSwitchHandle = (menuItem) => () => {
+    document.title = menuItem.pageTitle
     setSelectedId(menuItem.id)
   }
   return (
@@ -54,7 +58,7 @@ const Index: FC<any> = (props) => {
             key={menuItem.id}
             onClick={menuSwitchHandle(menuItem)}
           >
-            <img className="menuIcon" src={menuItem.id === selectedId ? menuItem.iconSelected : menuItem.icon} />
+            <img className="menuIcon" alt="" src={menuItem.id === selectedId ? menuItem.iconSelected : menuItem.icon} />
             <p>{menuItem.title}</p>
           </Link>
         ))}
