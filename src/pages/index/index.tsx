@@ -31,7 +31,7 @@ const menuConfig = [
   },
   {
     id: 'menu3',
-    to: '/index/demo3',
+    to: '/index/personalCenter',
     title: '个人中心',
     pageTitle: '个人中心',
     icon: userIcon,

@@ -15,9 +15,5 @@ module.exports = {
       chunkFilename: 'css/[name].[contenthash:8].css',
       ignoreOrder: false,
     }),
-    new PurgeCSSPlugin({
-      paths: glob.sync(`${resolve(PROJECT_PATH, './src')}/**/*.{tsx,scss,less,css}`, { nodir: true }),
-      whitelist: ['html', 'body']
-    })
-  ]
+  ],
 }

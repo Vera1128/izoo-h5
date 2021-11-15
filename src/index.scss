@@ -25,7 +25,6 @@ video {
   box-sizing: border-box;
   outline: none;
   user-select: none;
-  -webkit-user-drag: none;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
 }
 
@@ -58,10 +57,6 @@ body {
     height: 0 !important;
   }
   line-height: 1;
-}
-
-.no-touch {
-  touch-action: none;
 }
 
 .no-scroll {

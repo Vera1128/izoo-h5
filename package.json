@@ -21,6 +21,7 @@
     "@tgu/useunmount": "^1.0.4",
     "@tgu/useupdateeffect": "^1.0.4",
     "axios": "^0.21.1",
+    "clipboard-polyfill": "^3.0.3",
     "eslint-import-resolver-webpack": "^0.13.2",
     "history": "4.10.1",
     "lodash": "^4.17.21",
@@ -30,6 +31,8 @@
     "react-router": "^5.2.0",
     "react-router-cache-route": "^1.11.1",
     "react-router-dom": "^5.2.0",
+    "react-spring": "9.0.0-beta.8",
+    "react-use-gesture": "5.0.2",
     "swiper": "^7.0.8",
     "vconsole": "^3.8.1"
   },

@@ -215,3 +215,9 @@ export const throttle = (fn, threshold = 250) => {
     }
   }
 }
+
+// 计算实际的px值
+export const getPxCurr = (pxNum) => {
+  const width = window.innerWidth
+  return 1.0 * pxNum * (width / 750)
+}

@@ -9,7 +9,7 @@ export default [
     children: [
       { path: '/mainPage', component: asyncImport('mainPage'), exact: true, redirect: true },
       { path: '/allRoutes', component: asyncImport('allRoutes'), exact: true },
-      { path: '/demo3', component: asyncImport('demo3'), exact: true },
+      { path: '/personalCenter', component: asyncImport('personalCenter'), exact: true },
     ],
   },
   { component: asyncImport('404') },
