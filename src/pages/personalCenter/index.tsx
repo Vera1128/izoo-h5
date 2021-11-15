@@ -23,7 +23,7 @@ const data = [
 
 const Index = () => {
   const [currIndex, setCurrIndex] = useState(0)
-  const [menuIndex, setMenuIndex] = useState(0)
+  const [menuIndex, setMenuIndex] = useState(1)
 
   const showDeleteIcon = (index) => {
     console.log('出现delete icon')
@@ -60,7 +60,7 @@ const Index = () => {
         onSwiper={(swiper) => {
           mySwiper = swiper
         }}
-        initialSlide={0}
+        initialSlide={menuIndex}
       >
         {/* 订单列表 */}
         <SwiperSlide>
@@ -125,6 +125,7 @@ const Index = () => {
         {/* 收藏列表 */}
         <SwiperSlide>
           <div className="collectContainer">
+            <div className="tips">根据收藏时间&nbsp;从最近到最早</div>
             {data.map((item, index) => (
               <div key={item.id} className="collectItem">
                 <SlideDelete
