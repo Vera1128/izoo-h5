@@ -14,7 +14,7 @@ const getCssLoaders = (importLoaders) => [
         exportGlobals: false,
         localIdentName: '[path][name]__[local]--[hash:base64:5]',
         localIdentContext: path.resolve(__dirname, 'src'),
-        localIdentHashPrefix: "custom-hash",
+        localIdentHashPrefix: 'custom-hash',
         namedExport: true,
         exportLocalsConvention: 'camelCase',
         exportOnlyLocals: false,

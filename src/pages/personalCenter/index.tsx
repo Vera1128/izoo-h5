@@ -8,8 +8,9 @@ import Toast from 'components/Toast'
 
 import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
+import heart from 'assets/images/heart.png'
 
-import './index.less'
+import './index.scss'
 import 'swiper/css'
 
 const distance = getPxCurr(196)
@@ -137,7 +138,14 @@ const Index = () => {
                   criticalWidth={distance / 2}
                   className="collectContent"
                 >
-                  <div className="content">内容</div>
+                  <div className="content">
+                    <img src={SwiperTestImg} />
+                    <div className="textContainer">1</div>
+                    <div className="placeContainer">
+                      <img src={heart} />
+                      <p>哈尔冰北京</p>
+                    </div>
+                  </div>
                 </SlideDelete>
                 <div className="deleteIcon">删除</div>
               </div>
