@@ -5,6 +5,7 @@ import * as clipboard from 'clipboard-polyfill/text'
 import SlideDelete from 'components/SlideDelete'
 import PersonalMenu from 'components/PersonalMenu'
 import Toast from 'components/Toast'
+import Tag from 'components/Tag'
 
 import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
@@ -62,6 +63,7 @@ const Index = () => {
           mySwiper = swiper
         }}
         initialSlide={menuIndex}
+        allowTouchMove={false}
       >
         {/* 订单列表 */}
         <SwiperSlide>
@@ -140,10 +142,17 @@ const Index = () => {
                 >
                   <div className="content">
                     <img src={SwiperTestImg} />
-                    <div className="textContainer">1</div>
+                    <div className="centerContainer">
+                      <div className="textContainer">
+                        这里是佳绩这里是游戏这里是小茜这里是什么这里是哈哈哈这里是阿露
+                      </div>
+                      <Tag text="文化艺术" className="tag" />
+                      <Tag text="名胜古迹" />
+                    </div>
+
                     <div className="placeContainer">
                       <img src={heart} />
-                      <p>哈尔冰北京</p>
+                      <p>哈尔滨北京</p>
                     </div>
                   </div>
                 </SlideDelete>
