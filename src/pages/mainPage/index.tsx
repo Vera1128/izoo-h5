@@ -20,8 +20,11 @@ import './index.less'
 
 SwiperCore.use([Pagination])
 
-const Index = ({ offsetX, setOffsetX }) => {
+const Index = ({ offsetX, setOffsetX, getUserInfo }) => {
   const pageRef = useRef(null)
+  useEffect(() => {
+    getUserInfo()
+  }, [])
   useEffect(() => {
     pageRef.current.scrollTop = offsetX
   }, [pageRef.current])
@@ -62,8 +65,9 @@ const mapState = ({ main: { offsetX } }) => ({
   offsetX,
 })
 
-const mapDispatch = ({ main: { setOffsetX } }) => ({
+const mapDispatch = ({ main: { setOffsetX, getUserInfo } }) => ({
   setOffsetX,
+  getUserInfo,
 })
 
 export default connect(mapState, mapDispatch)(Index)
