@@ -12,5 +12,10 @@ export default [
       { path: '/personalCenter', component: asyncImport('personalCenter'), exact: true },
     ],
   },
+  {
+    path: '/detailInfoPage/:id',
+    component: asyncImport('detailInfoPage'),
+    exact: true,
+  },
   { component: asyncImport('404') },
 ]
