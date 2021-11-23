@@ -13,14 +13,7 @@
   .collectContainer {
     width: 100%;
     padding: 42px 0;
-    .tips {
-      width: 100%;
-      padding-right: 32px;
-      text-align: right;
-      font-size: 24px;
-      color: #999;
-      margin-bottom: 14px;
-    }
+
     .collectItem {
       width: 100%;
       height: 264px;
@@ -233,6 +226,65 @@
       }
     }
   }
+  .historyContainer {
+    width: 100%;
+    padding: 40px 0;
+    .historyList {
+      width: 100%;
+      padding: 16px 50px;
+      .historyListRow {
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        .historyItem {
+          padding: 16px 0;
+          width: calc(50% - 12px);
+          .itemImg {
+            @include imgStyle;
+            width: 312px;
+            height: 218px;
+          }
+          .placeContainer {
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            margin-top: 8px;
+            font-size: 30px;
+            color: #666699;
+            font-size: bold;
+            overflow: hidden;
+          }
+          .desc {
+            width: 100%;
+            height: 34px;
+            line-height: 34px;
+            margin-top: 8px;
+            font-size: 24px;
+            color: #525662;
+          }
+        }
+      }
+    }
+  }
+  .contactContainer {
+    width: 100%;
+    padding: 44px 0;
+    .contactNumber {
+      padding: 0 64px 0 86px;
+      line-height: 50px;
+      font-size: 36px;
+      color: #525662;
+      font-weight: lighter;
+      a {
+        text-decoration: #628ba8 underline;
+        color: #628ba8;
+      }
+    }
+    .recommendContainer {
+      background: #faebc3;
+    }
+  }
   .userInfo {
     width: 100%;
     height: 84px;
@@ -255,5 +307,14 @@
       font-weight: bold;
       margin-left: 32px;
     }
+  }
+
+  .tips {
+    width: 100%;
+    padding-right: 32px;
+    text-align: right;
+    font-size: 24px;
+    color: #999;
+    margin-bottom: 14px;
   }
 }

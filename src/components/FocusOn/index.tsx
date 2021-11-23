@@ -5,6 +5,7 @@ import './index.less'
 
 interface Props {
   className?: string
+  showCloseIcon?: boolean
 }
 
 function FocusOn(props: Props) {
@@ -18,14 +19,16 @@ function FocusOn(props: Props) {
             <p className="focusTitle">爱走星球</p>
             <p className="focusSubTitle">关注服务号，更容易找到我们</p>
           </div>
-          <div className="focusBtn">立即关注</div>
-          <img
-            src={closeIcon}
-            className="closeIcon"
-            alt="关闭图标"
-            role="presentation"
-            onClick={() => setCloseFocusPanel(true)}
-          />
+          <div className={`focusBtn ${!props.showCloseIcon ? 'focusBtnCenter' : ''}`}>立即关注</div>
+          {props.showCloseIcon && (
+            <img
+              src={closeIcon}
+              className="closeIcon"
+              alt="关闭图标"
+              role="presentation"
+              onClick={() => setCloseFocusPanel(true)}
+            />
+          )}
         </div>
       )}
     </>
@@ -34,6 +37,7 @@ function FocusOn(props: Props) {
 
 FocusOn.defaultProps = {
   className: '',
+  showCloseIcon: true,
 } as Partial<Props>
 
 export default FocusOn

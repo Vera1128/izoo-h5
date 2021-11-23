@@ -6,6 +6,7 @@ import SlideDelete from 'components/SlideDelete'
 import PersonalMenu from 'components/PersonalMenu'
 import Toast from 'components/Toast'
 import Tag from 'components/Tag'
+import FocusOn from 'components/FocusOn'
 
 import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
@@ -25,7 +26,7 @@ const data = [
 
 const Index = () => {
   const [currIndex, setCurrIndex] = useState(0)
-  const [menuIndex, setMenuIndex] = useState(1)
+  const [menuIndex, setMenuIndex] = useState(0)
 
   const showDeleteIcon = (index) => {
     console.log('出现delete icon')
@@ -37,6 +38,7 @@ const Index = () => {
 
   const clickMenuHandle = (index) => () => {
     setMenuIndex(index)
+    mySwiper.slideTo(index)
   }
 
   const clipboardHandle = (text) => () => {
@@ -159,6 +161,61 @@ const Index = () => {
                 <div className="deleteIcon">删除</div>
               </div>
             ))}
+          </div>
+        </SwiperSlide>
+
+        {/* 收听列表 */}
+        <SwiperSlide>
+          <div className="historyContainer">
+            <div className="tips">根据收听时间&nbsp;从最近到最早</div>
+            <div className="historyList">
+              <div className="historyListRow">
+                <div className="historyItem">
+                  <img src={SwiperTestImg} className="itemImg" />
+                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
+                  <div className="desc">上海租界历史的缩影</div>
+                </div>
+                <div className="historyItem">
+                  <img src={SwiperTestImg} className="itemImg" />
+                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
+                  <div className="desc">上海租界历史的缩影</div>
+                </div>
+              </div>
+              <div className="historyListRow">
+                <div className="historyItem">
+                  <img src={SwiperTestImg} className="itemImg" />
+                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
+                  <div className="desc">上海租界历史的缩影</div>
+                </div>
+                <div className="historyItem">
+                  <img src={SwiperTestImg} className="itemImg" />
+                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
+                  <div className="desc">上海租界历史的缩影</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SwiperSlide>
+
+        <SwiperSlide>
+          <div className="contactContainer">
+            <p className="contactNumber">
+              订单售后&nbsp;&nbsp;<a href="tel:177 4820 6510">177 4820 6510 </a>
+              <br />
+              <br />
+              商务合作&nbsp;&nbsp;<a href="tel:400 8886666">400 8886666 </a>
+              <br />
+              <br />
+            </p>
+            <p className="contactNumber recommendContainer">
+              <br />
+              意见反馈 <br />
+              <br />
+              请在“爱走星球”公众号的对话框中以文字或语音输入您的意见和反馈。 您的意见对我们非常重要！
+              <br />
+              <br />
+            </p>
+            <FocusOn showCloseIcon={false} />
           </div>
         </SwiperSlide>
       </Swiper>
