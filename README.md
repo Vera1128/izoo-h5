@@ -1,14 +1,18 @@
-# 爱走星球H5
+# 爱走星球 H5
+
+## clone
+
+包含子 git 目录，要增加--recurse-submodules 参数
+git clone --recurse-submodules https://github.com/Vera1128/izoo-h5.git
 
 ## 启动/打包
 
 1. 安装依赖 yarn | npm install
 2. 启动项目 yarn start | npm start
-3. [开发环境](http://dev.test.ximalaya.com/gatekeeper/xmkp-h5-template/index) 根据constants的配置
+3. [开发环境](http://dev.test.ximalaya.com/gatekeeper/xmkp-h5-template/index) 根据 constants 的配置
 4. 打包 yarn build | npm run build
 
 ## 必读
-
 
 #### commit 提交约定
 
@@ -27,7 +31,6 @@
 - style : 代码格式改变
 - test : 增加测试
 - anno: 增加注释
-
 
 ## 目录结构
 
@@ -54,7 +57,8 @@
 │  ├─ utils                               通用工具模块
 │  ├─ app.tsx                             项目入口组件
 │  ├─ index.tsx                           项目入口文件
-│  └─ routeGuards.ts                      路由守卫
+│  ├─ routeGuards.ts                      路由守卫
+│  └─ walkidz-shared                      tsrpc 协议文档
 ├─ .babelrc                             babel 配置
 ├─ .eslintrc.js                         eslint 配置
 ├─ .gitignore                           忽略提交到git目录文件
