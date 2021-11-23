@@ -1,0 +1,3 @@
+[submodule "src/walkidz-shared"]
+	path = src/walkidz-shared
+	url = https://gitee.com/ds-home/walkidz-shared.git
