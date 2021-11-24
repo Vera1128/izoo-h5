@@ -3,9 +3,10 @@ import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
 import AllRouteItem from 'components/AllRouteItem'
+import SearchIcon from 'assets/images/search-icon.png'
 
 import 'swiper/css'
-import './index.less'
+import './index.scss'
 
 let mySwiper = null
 
@@ -18,7 +19,14 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
   }
   return (
     <div className="allRoutesContainer">
-      <div className="topArea" />
+      <div className="topArea">
+        <div className="searchContainer">
+          <div className="inputContent">
+            <img src={SearchIcon} className="searchIcon" />
+            <input placeholder="搜索导览/景点/线路" className="input" />
+          </div>
+        </div>
+      </div>
       <div className="cityContainer">
         {citiesArr.map((city, index) => (
           <div className="cityItem" key={city.id} onClick={cityClickHandle(city.id, index)} id={`cityItem${city.id}`}>
