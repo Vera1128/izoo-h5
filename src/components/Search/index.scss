@@ -6,6 +6,10 @@
 .search {
     width: 100%;
     z-index: 1000;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background: white;
     .topArea {
         width: 100%;
         height: 85px;
@@ -129,8 +133,8 @@
         align-items: center;
         border-bottom: 4px solid #c4c4c4;
         .searchIcon {
-            width: 48px;
-            height: 48px;
+            width: 36px;
+            // height: 36px;
             margin-right: 32px;
         }
         .input {

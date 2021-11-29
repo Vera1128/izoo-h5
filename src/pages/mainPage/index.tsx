@@ -11,6 +11,7 @@ import NearbyList from 'components/NearbyList'
 import ThemeList from 'components/ThemeList'
 import CityList from 'components/CityList'
 import RecommendList from 'components/RecommendList'
+import TopSearch from 'components/Search'
 
 import SwiperTestImg from 'assets/images/swiper-test.png'
 
@@ -34,6 +35,7 @@ const Index = ({ offsetX, setOffsetX, getUserInfo }) => {
   }
   return (
     <div className="mainPageContainer" ref={pageRef} onScroll={debounce(scrollHandle, 500)}>
+      <TopSearch />
       <Swiper
         slidesPerView="auto"
         className="mySwiper"

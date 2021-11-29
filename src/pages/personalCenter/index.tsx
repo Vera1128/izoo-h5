@@ -148,8 +148,10 @@ const Index = () => {
                       <div className="textContainer">
                         这里是佳绩这里是游戏这里是小茜这里是什么这里是哈哈哈这里是阿露
                       </div>
-                      <Tag text="文化艺术" className="tag" />
-                      <Tag text="名胜古迹" />
+                      <div className="tagList">
+                        <Tag text="文化艺术" className="tag" />
+                        <Tag text="名胜古迹" className="tag" />
+                      </div>
                     </div>
 
                     <div className="placeContainer">
