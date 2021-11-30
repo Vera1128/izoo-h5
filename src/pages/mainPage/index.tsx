@@ -21,17 +21,39 @@ import './index.less'
 
 SwiperCore.use([Pagination])
 
-const Index = ({ offsetX, setOffsetX, getUserInfo }) => {
+const Index = ({
+  offsetY,
+  cityList,
+  setOffsetY,
+  getUserInfo,
+  getCityData,
+  populerList,
+  scrollList,
+  themeList,
+  nearbyList,
+  getPopulerData,
+  getScrollData,
+  getTagsData,
+  getNearbyData,
+}) => {
   const pageRef = useRef(null)
   useEffect(() => {
     getUserInfo()
+    getCityData()
+    getPopulerData()
+    getScrollData()
+    getTagsData()
+    getNearbyData({
+      longitude: '31.219',
+      latitude: '121.62',
+    })
   }, [])
   useEffect(() => {
-    pageRef.current.scrollTop = offsetX
+    pageRef.current.scrollTop = offsetY
   }, [pageRef.current])
 
   const scrollHandle = (e) => {
-    setOffsetX(e.target.scrollTop)
+    setOffsetY(e.target.scrollTop)
   }
   return (
     <div className="mainPageContainer" ref={pageRef} onScroll={debounce(scrollHandle, 500)}>
@@ -56,20 +78,32 @@ const Index = ({ offsetX, setOffsetX, getUserInfo }) => {
       <FocusOnCom />
       <NearbyList />
       <ThemeList />
-      <CityList />
+      <CityList list={cityList} />
       <RecommendList />
       <div className="emptyDiv" />
     </div>
   )
 }
 
-const mapState = ({ main: { offsetX } }) => ({
-  offsetX,
+const mapState = ({ main: { offsetY, cityList, populerList, scrollList, themeList, nearbyList } }) => ({
+  offsetY,
+  cityList,
+  populerList,
+  scrollList,
+  themeList,
+  nearbyList,
 })
 
-const mapDispatch = ({ main: { setOffsetX, getUserInfo } }) => ({
-  setOffsetX,
+const mapDispatch = ({
+  main: { setOffsetY, getUserInfo, getCityData, getPopulerData, getScrollData, getTagsData, getNearbyData },
+}) => ({
+  setOffsetY,
   getUserInfo,
+  getCityData,
+  getPopulerData,
+  getScrollData,
+  getTagsData,
+  getNearbyData,
 })
 
 export default connect(mapState, mapDispatch)(Index)

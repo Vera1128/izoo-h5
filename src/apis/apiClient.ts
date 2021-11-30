@@ -9,15 +9,22 @@ const apiClient = new HttpClient(serviceProto, {
   logger: console,
 })
 
-apiClient.flows.postApiReturnFlow.push((v) => {
-  const {
-    isSucc,
-    err: { message },
-  } = v.return
-  if (!isSucc && message) {
-    Toast(message, 2000)
+apiClient.flows.preApiReturnFlow.push((v) => {
+  const { isSucc, err } = v.return
+
+  if (!isSucc && err?.message) {
+    Toast(err?.message, 2000)
     return
   }
+  return v
+})
+
+apiClient.flows.preCallApiFlow.push((v) => {
+  // 如果不存在userId，则加上
+  const {
+    req: { userId },
+  } = v
+  if (!userId) v.req.userId = 'oDfcY69wA2QERN9mBhuMOvCFsPxQ'
   return v
 })
 
