@@ -5,11 +5,13 @@ import './index.less'
 
 interface Props {
   className?: string
+  list: Array<any>
 }
 
 function NearbyList(props: Props) {
+  const { list } = props
   const clickMoreHandle = () => {
-    console.log('更多')
+    console.log('更多', list)
   }
   return (
     <div className={`nearbyListContainer ${props.className}`}>

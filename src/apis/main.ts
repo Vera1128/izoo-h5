@@ -1,5 +1,5 @@
-import rpcClient from './apiClient'
 import * as scheme from 'src/schemes'
+import rpcClient from './apiClient'
 
 // 获取城市路线数据
 export async function getCityData() {

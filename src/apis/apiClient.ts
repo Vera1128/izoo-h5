@@ -11,7 +11,7 @@ const apiClient = new HttpClient(serviceProto, {
 
 apiClient.flows.preApiReturnFlow.push((v) => {
   const { isSucc, err } = v.return
-
+  console.log('这里用来调试', v.return)
   if (!isSucc && err?.message) {
     Toast(err?.message, 2000)
     return

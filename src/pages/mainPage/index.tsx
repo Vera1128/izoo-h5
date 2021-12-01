@@ -12,8 +12,7 @@ import ThemeList from 'components/ThemeList'
 import CityList from 'components/CityList'
 import RecommendList from 'components/RecommendList'
 import TopSearch from 'components/Search'
-
-import SwiperTestImg from 'assets/images/swiper-test.png'
+import EmptyBottom from 'components/EmptyBottom'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -68,19 +67,18 @@ const Index = ({
         onSwiper={() => {}}
         initialSlide={0}
       >
-        <SwiperSlide>
-          <img src={SwiperTestImg} className="swiperContent" alt="轮播图" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={SwiperTestImg} className="swiperContent" alt="轮播图" />
-        </SwiperSlide>
+        {scrollList.map((item) => (
+          <SwiperSlide key={item.mainClassId}>
+            <img src={item.scrollImg} className="swiperContent" alt="轮播图" />
+          </SwiperSlide>
+        ))}
       </Swiper>
       <FocusOnCom />
-      <NearbyList />
-      <ThemeList />
+      <NearbyList list={nearbyList} />
+      <ThemeList list={themeList} />
       <CityList list={cityList} />
-      <RecommendList />
-      <div className="emptyDiv" />
+      <RecommendList list={populerList} />
+      <EmptyBottom color="#666699" />
     </div>
   )
 }

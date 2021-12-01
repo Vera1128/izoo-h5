@@ -1,10 +1,11 @@
 import React, { useState } from 'react'
+import * as schemes from 'src/schemes'
 import themeIcon from 'assets/images/theme-icon.png'
 import ListHeader from '../ListHeader'
 import './index.less'
 
 interface Props {
-  list: Array<any>
+  list: Array<schemes.ThemeListItem | null>
 }
 
 function ThemeList(props: Props) {
@@ -16,22 +17,12 @@ function ThemeList(props: Props) {
     <div className="themeListContainer">
       <ListHeader title="行走主题" clickHandle={clickMoreHandle} hasBtn={false} className="listHeader" />
       <div className="themeList">
-        <div className="themeItem">
-          <img src={themeIcon} />
-          <p className="desc">历史哲思</p>
-        </div>
-        <div className="themeItem">
-          <img src={themeIcon} />
-          <p className="desc">历史哲思</p>
-        </div>
-        <div className="themeItem">
-          <img src={themeIcon} />
-          <p className="desc">历史哲思</p>
-        </div>
-        <div className="themeItem">
-          <img src={themeIcon} />
-          <p className="desc">历史哲思</p>
-        </div>
+        {list.map((item) => (
+          <div className="themeItem" key={item._id}>
+            <img src={item.icon} alt="主题图片" />
+            <p className="desc">{item.tag}</p>
+          </div>
+        ))}
       </div>
     </div>
   )
