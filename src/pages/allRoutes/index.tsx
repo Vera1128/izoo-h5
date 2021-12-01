@@ -4,6 +4,8 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 
 import AllRouteItem from 'components/AllRouteItem'
 import TopSearch from 'components/Search'
+import EmptyBottom from 'components/EmptyBottom'
+import EmptyList from 'components/EmptyList'
 import SwitchThemeIcon from 'assets/images/switch-theme.png'
 
 import 'swiper/css'
@@ -28,7 +30,6 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
           </div>
         }
       />
-      {/* <TopSearch /> */}
       <div className="cityContainer">
         {citiesArr.map((city, index) => (
           <div className="cityItem" key={city.id} onClick={cityClickHandle(city.id, index)} id={`cityItem${city.id}`}>
@@ -51,9 +52,14 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
             <SwiperSlide key={city.id}>
               <div className="allRoutesList">
                 {city.list.length > 0 ? (
-                  city.list.map((item) => <AllRouteItem data={item} key={item.id} />)
+                  <>
+                    {city.list.map((item) => (
+                      <AllRouteItem data={item} key={item.id} />
+                    ))}
+                    <EmptyBottom />
+                  </>
                 ) : (
-                  <p>空列表</p>
+                  <EmptyList />
                 )}
               </div>
             </SwiperSlide>

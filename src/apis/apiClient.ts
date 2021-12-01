@@ -1,5 +1,5 @@
 import { HttpClient } from 'tsrpc-browser'
-import Toast from 'components/Toast'
+import { notify } from '@tgu/toast'
 import { serviceProto } from '../walkidz-shared/shared/protocols/serviceProto'
 
 // 创建全局唯一的 apiClient，需要时从该文件引入
@@ -13,7 +13,7 @@ apiClient.flows.preApiReturnFlow.push((v) => {
   const { isSucc, err } = v.return
   console.log('这里用来调试', v.return)
   if (!isSucc && err?.message) {
-    Toast(err?.message, 2000)
+    notify(err?.message, 2000)
     return
   }
   return v

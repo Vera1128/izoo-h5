@@ -4,7 +4,7 @@ import * as clipboard from 'clipboard-polyfill/text'
 
 import SlideDelete from 'components/SlideDelete'
 import PersonalMenu from 'components/PersonalMenu'
-import Toast from 'components/Toast'
+import { notify } from '@tgu/toast'
 import Tag from 'components/Tag'
 import FocusOn from 'components/FocusOn'
 
@@ -44,10 +44,10 @@ const Index = () => {
   const clipboardHandle = (text) => () => {
     clipboard.writeText(text).then(
       () => {
-        Toast('复制成功!')
+        notify('复制成功!')
       },
       () => {
-        Toast('复制失败!')
+        notify('复制失败!')
       },
     )
   }
