@@ -17,5 +17,10 @@ export default [
     component: asyncImport('detailInfoPage'),
     exact: true,
   },
+  {
+    path: '/order/:id',
+    component: asyncImport('orderPage'),
+    exact: true,
+  },
   { component: asyncImport('404') },
 ]

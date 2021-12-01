@@ -1,0 +1,20 @@
+.pricePintuan {
+  display: flex;
+  align-items: center;
+  font-size: 36px;
+  font-weight: bold;
+  color: #00cab1;
+  .btnPintuan {
+    height: 34px;
+    line-height: 28px;
+    background: #00cab1;
+    border-radius: 6px;
+    font-size: 24px;
+    color: white;
+    margin-right: 6px;
+    padding: 5px;
+  }
+  span {
+    font-size: 24px;
+  }
+}
