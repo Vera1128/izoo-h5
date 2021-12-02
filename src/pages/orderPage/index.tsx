@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import BackIcon from 'src/components/BackIcon'
 import OrderPageItem from 'components/OrderPageItem'
+import PinTuanPrice from 'components/PinTuanPrice'
 import SwiperTestImg from 'assets/images/swiper-test.png'
 
 import './index.scss'
@@ -25,6 +26,28 @@ const OrderPage = () => {
     <div className="orderPageContainer">
       <BackIcon clickHandle={backClickHandle} />
       <OrderPageItem data={testData} />
+      <div className="orderContainer">
+        <div className="orderContainerItem">
+          <div className="itemLabel">单价</div>
+          <div className="itemContent">
+            <PinTuanPrice price={200} />
+            <div className="originPrice">
+              <span>￥</span>
+              199
+            </div>
+          </div>
+        </div>
+        <div className="orderContainerItem">
+          <div className="itemLabel">购买数量</div>
+          <div className="itemContent">1</div>
+        </div>
+        <div className="orderContainerItem">
+          <div className="itemLabel">手机号码</div>
+          <div className="itemContent">
+            <input className="input" placeholder="请输入手机号" />
+          </div>
+        </div>
+      </div>
     </div>
   )
 }
