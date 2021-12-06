@@ -20,3 +20,11 @@ export interface ThemeListItem {
   tag: string
   icon: string
 }
+
+export type TypeListParams = 'city' | 'tag'
+
+export type TypeDataParams = {
+  type: 'city' | 'tag'
+} & {
+  value: string
+}

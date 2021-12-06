@@ -1,54 +1,55 @@
-import SwiperTestImg from 'assets/images/swiper-test.png'
+import { getTypeList, getTypeData } from 'apis/allRoutes'
+import * as scheme from 'src/schemes'
 
 export default {
   name: 'allRoutes',
   state: {
-    citiesArr: [
-      {
-        id: 0,
-        name: '上海',
-        list: new Array(10).fill({
-          id: new Date().getTime(),
-          imgSrc: SwiperTestImg,
-          desc: '聚焦中国经济发展聚焦中国经济发展聚焦中国经济发展',
-          tagList: ['科学发展', '文学艺术'],
-          name: '沪港银行历史展览馆',
-          location: '上海',
-        }),
-      },
-      {
-        id: 1,
-        name: '北京',
-        list: new Array(3).fill({
-          id: new Date().getTime(),
-          imgSrc: SwiperTestImg,
-          desc: '聚焦中国经济发展',
-          tagList: ['科学发展', '文学艺术'],
-          name: '沪港银行历史展览馆',
-          location: '上海',
-        }),
-      },
-      {
-        id: 2,
-        name: '杭州',
-        list: [],
-      },
-      {
-        id: 3,
-        name: '苏州',
-        list: [],
-      },
-    ],
+    typesArr: [],
+    listArr: [],
     citySelectedId: 0,
   },
 
-  effects: (dispatch) => ({}),
+  effects: (dispatch) => ({
+    async getTypeList(type: scheme.TypeListParams) {
+      const res = await getTypeList(type)
+      if (res) {
+        const {
+          res: { list },
+        } = res
+        dispatch.allRoutes.setTypesArr(list)
+        dispatch.allRoutes.setCitySelectedId(0)
+        if (list.length > 0) {
+          dispatch.allRoutes.getTypeData({
+            type,
+            value: list[0],
+          })
+        }
+      }
+      console.log(res)
+    },
+    async getTypeData(data: scheme.TypeDataParams) {
+      const res = await getTypeData(data)
+      console.log(res)
+    },
+  }),
 
   reducers: {
     setCitySelectedId(state, payload) {
       return {
         ...state,
         citySelectedId: payload,
+      }
+    },
+    setTypesArr(state, payload) {
+      return {
+        ...state,
+        typesArr: payload,
+      }
+    },
+    setListArr(state, payload) {
+      return {
+        ...state,
+        listArr: payload,
       }
     },
   },

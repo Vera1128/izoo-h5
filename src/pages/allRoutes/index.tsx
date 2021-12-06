@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -13,11 +13,14 @@ import './index.scss'
 
 let mySwiper = null
 
-const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
+const Index = ({ typesArr, listArr, citySelectedId, setCitySelectedId, getTypeList, getTypeData }) => {
+  useEffect(() => {
+    getTypeList('city')
+  }, [])
   const cityClickHandle = (id, index) => () => {
     setCitySelectedId(index)
     mySwiper.slideTo(index)
-    const cityDom = document.getElementById(`cityItem${id}`)
+    const cityDom = document.getElementById(`cityItem-${id}`)
     cityDom.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
   }
   return (
@@ -31,9 +34,9 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
         }
       />
       <div className="cityContainer">
-        {citiesArr.map((city, index) => (
-          <div className="cityItem" key={city.id} onClick={cityClickHandle(city.id, index)} id={`cityItem${city.id}`}>
-            <div className="cityName">{city.name}</div>
+        {typesArr.map((type, index) => (
+          <div className="cityItem" key={type} onClick={cityClickHandle(type, index)} id={`cityItem-${type}`}>
+            <div className="cityName">{type}</div>
             <div className={`cityNormal ${citySelectedId === index ? 'citySelected' : ''}`} />
           </div>
         ))}
@@ -48,9 +51,9 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
           }}
           initialSlide={citySelectedId}
         >
-          {citiesArr.map((city) => (
+          {typesArr.map((city) => (
             <SwiperSlide key={city.id}>
-              <div className="allRoutesList">
+              {/* <div className="allRoutesList">
                 {city.list.length > 0 ? (
                   <>
                     {city.list.map((item) => (
@@ -61,7 +64,7 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
                 ) : (
                   <EmptyList />
                 )}
-              </div>
+              </div> */}
             </SwiperSlide>
           ))}
         </Swiper>
@@ -70,13 +73,16 @@ const Index = ({ citiesArr, citySelectedId, setCitySelectedId }) => {
   )
 }
 
-const mapState = ({ allRoutes: { citiesArr, citySelectedId } }) => ({
-  citiesArr,
+const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr } }) => ({
+  typesArr,
+  listArr,
   citySelectedId,
 })
 
-const mapDispatch = ({ allRoutes: { setCitySelectedId } }) => ({
+const mapDispatch = ({ allRoutes: { setCitySelectedId, getTypeList, getTypeData } }) => ({
   setCitySelectedId,
+  getTypeList,
+  getTypeData,
 })
 
 export default connect(mapState, mapDispatch)(Index)
