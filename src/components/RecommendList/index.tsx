@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React from 'react'
 import * as scheme from 'src/schemes'
-import SwiperTestImg from 'assets/images/swiper-test.png'
 import ListHeader from '../ListHeader'
 import Tag from '../Tag'
 import './index.less'
@@ -22,18 +21,16 @@ function RecommendList(props: Props) {
               <img src={item.scrollImage} />
               <div className="contentContainer">
                 <p className="name">{item.title}</p>
-                <p className="desc">{item.desc}</p>
+                <p className="desc">{item.desc || '简介TODO'}</p>
 
                 <div className="tagList">
                   {item.tags.map((tag) => (
-                    <div className="tag" key={tag}>
-                      {tag}
-                    </div>
+                    <Tag className="tag" key={tag} text={tag} />
                   ))}
                 </div>
 
                 <p className="num">
-                  时长{item.duration}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{item.totals}条
+                  时长{(item.duration / 60).toFixed(2)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{item.totals}条
                 </p>
               </div>
               <div className="listenBtn">进入收听</div>

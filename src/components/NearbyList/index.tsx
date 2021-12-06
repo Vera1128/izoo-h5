@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import SwiperTestImg from 'assets/images/swiper-test.png'
+import React from 'react'
+import EmptyList from '../EmptyList'
 import ListHeader from '../ListHeader'
 import './index.less'
 
@@ -17,46 +17,22 @@ function NearbyList(props: Props) {
     <div className={`nearbyListContainer ${props.className}`}>
       <ListHeader title="离你不远" clickHandle={clickMoreHandle} />
       <div className="nearbyList">
-        <div className="nearbyItem">
-          <img src={SwiperTestImg} />
-          <div className="placeInfo">
-            <div className="place">
-              <span>武康路</span>
+        {list.length > 0 ? (
+          list.map(({ mainClassId, title, distance, scrollImage, desc }) => (
+            <div className="nearbyItem" key={mainClassId}>
+              <img src={scrollImage} />
+              <div className="placeInfo">
+                <div className="place">
+                  <span>{title}</span>
+                </div>
+                <span className="distance">{`${distance.toFixed(2)}km`}</span>
+              </div>
+              <div className="desc">{desc || '简介TODO'} </div>
             </div>
-            <span className="distance">13.2km</span>
-          </div>
-          <div className="desc">老洋房背后的历史变迁</div>
-        </div>
-        <div className="nearbyItem">
-          <img src={SwiperTestImg} />
-          <div className="placeInfo">
-            <div className="place">
-              <span>武康路</span>
-            </div>
-            <span className="distance">13.2km</span>
-          </div>
-          <div className="desc">老洋房背后的历史变迁</div>
-        </div>
-        <div className="nearbyItem">
-          <img src={SwiperTestImg} />
-          <div className="placeInfo">
-            <div className="place">
-              <span>武康路</span>
-            </div>
-            <span className="distance">13.2km</span>
-          </div>
-          <div className="desc">老洋房背后的历史变迁</div>
-        </div>
-        <div className="nearbyItem">
-          <img src={SwiperTestImg} />
-          <div className="placeInfo">
-            <div className="place">
-              <span>武康路</span>
-            </div>
-            <span className="distance">13.2km</span>
-          </div>
-          <div className="desc">老洋房背后的历史变迁</div>
-        </div>
+          ))
+        ) : (
+          <EmptyList text="附近还没有景点哦~" classname="nearbyEmpty" />
+        )}
       </div>
     </div>
   )

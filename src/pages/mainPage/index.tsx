@@ -1,7 +1,7 @@
 import React, { useRef, useEffect } from 'react'
 /* eslint-disable import/no-unresolved */
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Pagination } from 'swiper'
+import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import { connect } from 'react-redux'
 
 import { debounce } from 'src/utils'
@@ -18,7 +18,7 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import './index.less'
 
-SwiperCore.use([Pagination])
+SwiperCore.use([Pagination, Autoplay])
 
 const Index = ({
   offsetY,
@@ -43,8 +43,8 @@ const Index = ({
     getScrollData()
     getTagsData()
     getNearbyData({
-      longitude: '31.219',
-      latitude: '121.62',
+      longitude: '121.62',
+      latitude: '31.219',
     })
   }, [])
   useEffect(() => {
@@ -66,6 +66,10 @@ const Index = ({
         }}
         onSwiper={() => {}}
         initialSlide={0}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
       >
         {scrollList.map((item) => (
           <SwiperSlide key={item.mainClassId}>
