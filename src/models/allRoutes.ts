@@ -1,3 +1,4 @@
+import _ from 'lodash'
 import { getTypeList, getTypeData } from 'apis/allRoutes'
 import * as scheme from 'src/schemes'
 
@@ -5,7 +6,7 @@ export default {
   name: 'allRoutes',
   state: {
     typesArr: [],
-    listArr: [],
+    listArr: {},
     citySelectedId: 0,
   },
 
@@ -19,6 +20,11 @@ export default {
         dispatch.allRoutes.setTypesArr(list)
         dispatch.allRoutes.setCitySelectedId(0)
         if (list.length > 0) {
+          const listNew = {}
+          list.forEach((item) => {
+            listNew[item] = []
+          })
+          dispatch.allRoutes.setListArr(listNew)
           dispatch.allRoutes.getTypeData({
             type,
             value: list[0],
@@ -27,9 +33,13 @@ export default {
       }
       console.log(res)
     },
-    async getTypeData(data: scheme.TypeDataParams) {
+    async getTypeData(data: scheme.TypeDataParams, { allRoutes }) {
       const res = await getTypeData(data)
-      console.log(res)
+      if (res) {
+        const listArrNew = _.cloneDeep(allRoutes.listArr)
+        listArrNew[data.value] = res.res.list
+        dispatch.allRoutes.setListArr(listArrNew)
+      }
     },
   }),
 
@@ -51,6 +61,11 @@ export default {
         ...state,
         listArr: payload,
       }
+    },
+  },
+  subscriptions: {
+    setup({ dispatch, history }) {
+      history.listen((pathname) => console.log('subscriptions', pathname))
     },
   },
 }

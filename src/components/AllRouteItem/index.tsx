@@ -4,31 +4,27 @@ import './index.less'
 
 interface Props {
   data: {
-    imgSrc: string
-    desc: string
-    tagList: Array<string>
-    name: string
-    location: string
+    scrollImage: string
+    street: string
+    tags: Array<string>
+    title: string
+    city: string
   }
 }
 
 function AllRouteItem(props: Props) {
   const {
-    data: { imgSrc, desc, tagList, name, location },
+    data: { scrollImage, street, tags, title, city },
   } = props
   return (
     <div className="allRouteItem">
-      <img src={imgSrc} alt="" className="allRouteItemImg" />
+      <img src={scrollImage} alt="" className="allRouteItemImg" />
       <div className="allRouteContent">
-        <p className="desc">{desc}</p>
-        <div className="tagList">
-          {tagList.map((item) => (
-            <Tag key={item} text={item} className="tag" />
-          ))}
-        </div>
-        <p className="name">{name}</p>
+        <p className="desc">{street}</p>
+        <div className="tagList">{tags.map((item) => item && <Tag key={item} text={item} className="tag" />)}</div>
+        <p className="name">{title}</p>
       </div>
-      <div className="location">{location}</div>
+      <div className="location">{city}</div>
     </div>
   )
 }

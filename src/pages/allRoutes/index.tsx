@@ -14,20 +14,32 @@ import './index.scss'
 let mySwiper = null
 
 const Index = ({ typesArr, listArr, citySelectedId, setCitySelectedId, getTypeList, getTypeData }) => {
+  const [theme, setTheme] = useState('city')
   useEffect(() => {
-    getTypeList('city')
+    getTypeList(theme)
   }, [])
   const cityClickHandle = (id, index) => () => {
     setCitySelectedId(index)
     mySwiper.slideTo(index)
     const cityDom = document.getElementById(`cityItem-${id}`)
     cityDom.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+    if (!listArr[id] || listArr[id].length < 1) {
+      getTypeData({
+        type: theme,
+        value: id,
+      })
+    }
+  }
+  const switchThemeClickHandle = () => {
+    const themeNew = theme === 'city' ? 'tag' : 'city'
+    setTheme(themeNew)
+    getTypeList(themeNew)
   }
   return (
     <div className="allRoutesContainer">
       <TopSearch
         rightButton={
-          <div className="swicthIcon">
+          <div className="swicthIcon" onClick={switchThemeClickHandle}>
             <p>切换主题</p>
             <img src={SwitchThemeIcon} />
           </div>
@@ -53,18 +65,18 @@ const Index = ({ typesArr, listArr, citySelectedId, setCitySelectedId, getTypeLi
         >
           {typesArr.map((city) => (
             <SwiperSlide key={city.id}>
-              {/* <div className="allRoutesList">
-                {city.list.length > 0 ? (
+              <div className="allRoutesList">
+                {listArr[city]?.length > 0 ? (
                   <>
-                    {city.list.map((item) => (
-                      <AllRouteItem data={item} key={item.id} />
+                    {listArr[city].map((item) => (
+                      <AllRouteItem data={item} key={item.mainClassId} />
                     ))}
                     <EmptyBottom />
                   </>
                 ) : (
                   <EmptyList />
                 )}
-              </div> */}
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>

@@ -1,10 +1,11 @@
 import { init } from '@rematch/core'
-// import createLoadingPlugin from '@rematch/loading';
+import subscriptionsPlugin from '@rematch/subscriptions'
+
 import * as models from './models'
 
 const store = init({
   models,
-  // plugins: [createLoadingPlugin({})],
+  plugins: [subscriptionsPlugin()],
 })
 
 export default store
