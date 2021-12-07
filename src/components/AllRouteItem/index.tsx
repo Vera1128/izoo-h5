@@ -10,14 +10,16 @@ interface Props {
     title: string
     city: string
   }
+  onClick?: () => void
 }
 
 function AllRouteItem(props: Props) {
   const {
     data: { scrollImage, street, tags, title, city },
+    onClick,
   } = props
   return (
-    <div className="allRouteItem">
+    <div className="allRouteItem" onClick={onClick}>
       <img src={scrollImage} alt="" className="allRouteItemImg" />
       <div className="allRouteContent">
         <p className="desc">{street}</p>
@@ -28,5 +30,9 @@ function AllRouteItem(props: Props) {
     </div>
   )
 }
+
+AllRouteItem.defaultProps = {
+  onClick: () => {},
+} as Partial<Props>
 
 export default AllRouteItem

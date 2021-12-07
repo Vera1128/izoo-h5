@@ -13,7 +13,7 @@ import './index.scss'
 
 let mySwiper = null
 
-const Index = ({ typesArr, listArr, citySelectedId, setCitySelectedId, getTypeList, getTypeData }) => {
+const Index = ({ history, typesArr, listArr, citySelectedId, setCitySelectedId, getTypeList, getTypeData }) => {
   const [theme, setTheme] = useState('city')
   useEffect(() => {
     getTypeList(theme)
@@ -30,9 +30,12 @@ const Index = ({ typesArr, listArr, citySelectedId, setCitySelectedId, getTypeLi
       })
     }
   }
+
   const switchThemeClickHandle = () => {
     const themeNew = theme === 'city' ? 'tag' : 'city'
     setTheme(themeNew)
+    setCitySelectedId(0)
+    mySwiper.slideTo(0)
     getTypeList(themeNew)
   }
   return (
@@ -69,7 +72,13 @@ const Index = ({ typesArr, listArr, citySelectedId, setCitySelectedId, getTypeLi
                 {listArr[city]?.length > 0 ? (
                   <>
                     {listArr[city].map((item) => (
-                      <AllRouteItem data={item} key={item.mainClassId} />
+                      <AllRouteItem
+                        data={item}
+                        key={item.mainClassId}
+                        onClick={() => {
+                          history.push(`/detailInfoPage/${item.mainClassId}`)
+                        }}
+                      />
                     ))}
                     <EmptyBottom />
                   </>
