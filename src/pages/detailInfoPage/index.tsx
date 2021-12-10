@@ -1,12 +1,11 @@
-import React, { useRef, useEffect } from 'react'
-/* eslint-disable import/no-unresolved */
+import React, { useEffect } from 'react'
+import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import SwiperCore, { Pagination } from 'swiper'
+import SwiperCore, { Pagination, Autoplay } from 'swiper'
 
 import FocusOnCom from 'components/FocusOn'
 import { AudioGlobal } from 'src/modules/audio'
 
-import SwiperTestImg from 'assets/images/swiper-test.png'
 import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
 import HeartNormalImg from 'assets/images/heart-normal.png'
@@ -15,11 +14,12 @@ import 'swiper/css'
 import 'swiper/css/pagination'
 import './index.scss'
 
-SwiperCore.use([Pagination])
+SwiperCore.use([Pagination, Autoplay])
 
-const Index = () => {
-  console.log('1')
+const Index = ({ match, detailInfo, getDetailInfo }) => {
   useEffect(() => {
+    console.log(match.params.id)
+    getDetailInfo(match.params.id)
     const audioList = [
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/2a8e81b6b53b3783f6248633ee96634f.m4a',
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/8d76354e48e275caf3e59630fa57993e.m4a',
@@ -31,6 +31,7 @@ const Index = () => {
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/2a8e81b6b53b3783f6248633ee96634f.m4a',
     )
   }
+  const { catalogList, info, isCollect, isPayment } = detailInfo
   return (
     <div className="detailInfoPage">
       <Swiper
@@ -42,16 +43,21 @@ const Index = () => {
         }}
         onSwiper={() => {}}
         initialSlide={0}
+        autoplay={{
+          delay: 2500,
+          disableOnInteraction: false,
+        }}
       >
-        <SwiperSlide>
-          <img src={SwiperTestImg} className="swiperContent" alt="轮播图" />
-        </SwiperSlide>
-        <SwiperSlide>
-          <img src={SwiperTestImg} className="swiperContent" alt="轮播图" />
-        </SwiperSlide>
+        {info?.scrollImages.length > 0 &&
+          info?.scrollImages.map((item) => (
+            <SwiperSlide key={item}>
+              <img src={item} className="swiperContent" alt="轮播图" />
+            </SwiperSlide>
+          ))}
       </Swiper>
       <FocusOnCom />
       <div onClick={clickPlayAudio}>点击</div>
+      <p dangerouslySetInnerHTML={{ __html: info?.content }} />
       <div className="emptyDiv" />
       <div className="detailPageMenu">
         <div className="menuContainer">
@@ -81,4 +87,12 @@ const Index = () => {
   )
 }
 
-export default Index
+const mapState = ({ detailInfoPage: { detailInfo } }) => ({
+  detailInfo,
+})
+
+const mapDispatch = ({ detailInfoPage: { getDetailInfo } }) => ({
+  getDetailInfo,
+})
+
+export default connect(mapState, mapDispatch)(Index)
