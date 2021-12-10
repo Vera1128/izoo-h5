@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination } from 'swiper'
 
 import FocusOnCom from 'components/FocusOn'
+import { AudioGlobal } from 'src/modules/audio'
 
 import SwiperTestImg from 'assets/images/swiper-test.png'
 import HomeImg from 'assets/images/home.png'
@@ -18,6 +19,18 @@ SwiperCore.use([Pagination])
 
 const Index = () => {
   console.log('1')
+  useEffect(() => {
+    const audioList = [
+      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/2a8e81b6b53b3783f6248633ee96634f.m4a',
+      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/8d76354e48e275caf3e59630fa57993e.m4a',
+    ]
+    AudioGlobal.getInstance().audiosInit(audioList)
+  }, [])
+  const clickPlayAudio = () => {
+    AudioGlobal.getInstance().audioPlay(
+      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/2a8e81b6b53b3783f6248633ee96634f.m4a',
+    )
+  }
   return (
     <div className="detailInfoPage">
       <Swiper
@@ -38,6 +51,7 @@ const Index = () => {
         </SwiperSlide>
       </Swiper>
       <FocusOnCom />
+      <div onClick={clickPlayAudio}>点击</div>
       <div className="emptyDiv" />
       <div className="detailPageMenu">
         <div className="menuContainer">
