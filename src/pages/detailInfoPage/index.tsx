@@ -16,22 +16,23 @@ import './index.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
-const Index = ({ match, detailInfo, getDetailInfo }) => {
+const Index = ({ history, match, detailInfo, getDetailInfo }) => {
   useEffect(() => {
     console.log(match.params.id)
     getDetailInfo(match.params.id)
     const audioList = [
-      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/2a8e81b6b53b3783f6248633ee96634f.m4a',
+      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3',
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/8d76354e48e275caf3e59630fa57993e.m4a',
     ]
     AudioGlobal.getInstance().audiosInit(audioList)
   }, [])
   const clickPlayAudio = () => {
-    AudioGlobal.getInstance().audioPlay(
-      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/2a8e81b6b53b3783f6248633ee96634f.m4a',
-    )
+    AudioGlobal.getInstance().audioPlay('https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3')
   }
   const { catalogList, info, isCollect, isPayment } = detailInfo
+  const backToMainPage = () => {
+    history.go(-1)
+  }
   return (
     <div className="detailInfoPage">
       <Swiper
@@ -60,7 +61,7 @@ const Index = ({ match, detailInfo, getDetailInfo }) => {
       <p dangerouslySetInnerHTML={{ __html: info?.content }} />
       <div className="emptyDiv" />
       <div className="detailPageMenu">
-        <div className="menuContainer">
+        <div className="menuContainer" onClick={backToMainPage}>
           <img src={HomeImg} className="homeIcon" />
           <p className="menuText">首页</p>
         </div>
