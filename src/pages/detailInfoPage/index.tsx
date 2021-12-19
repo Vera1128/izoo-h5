@@ -4,6 +4,7 @@ import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
 
 import FocusOnCom from 'components/FocusOn'
+import EmptyBottom from 'src/components/EmptyBottom'
 
 import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
@@ -45,8 +46,9 @@ const Index = ({ match, detailInfo, getDetailInfo }) => {
           ))}
       </Swiper>
       <FocusOnCom />
+      <div className="detailContent"></div>
       <p dangerouslySetInnerHTML={{ __html: info?.content }} />
-      <div className="emptyDiv" />
+      <EmptyBottom color="white" />
       <div className="detailPageMenu">
         <div className="menuContainer">
           <img src={HomeImg} className="homeIcon" />
