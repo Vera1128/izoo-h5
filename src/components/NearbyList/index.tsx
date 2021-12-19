@@ -6,10 +6,11 @@ import './index.less'
 interface Props {
   className?: string
   list: Array<any>
+  itemClick?: (item: any) => () => void
 }
 
 function NearbyList(props: Props) {
-  const { list } = props
+  const { list, itemClick } = props
   const clickMoreHandle = () => {
     console.log('更多', list)
   }
@@ -19,7 +20,7 @@ function NearbyList(props: Props) {
       <div className="nearbyList">
         {list.length > 0 ? (
           list.map(({ mainClassId, title, distance, scrollImage, desc }) => (
-            <div className="nearbyItem" key={mainClassId}>
+            <div className="nearbyItem" key={mainClassId} onClick={itemClick(mainClassId)}>
               <img src={scrollImage} />
               <div className="placeInfo">
                 <div className="place">
@@ -40,6 +41,7 @@ function NearbyList(props: Props) {
 
 NearbyList.defaultProps = {
   className: '',
+  itemClick: () => () => {},
 } as Partial<Props>
 
 export default NearbyList

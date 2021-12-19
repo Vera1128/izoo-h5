@@ -21,6 +21,7 @@ import './index.less'
 SwiperCore.use([Pagination, Autoplay])
 
 const Index = ({
+  history,
   offsetY,
   cityList,
   setOffsetY,
@@ -54,6 +55,10 @@ const Index = ({
   const scrollHandle = (e) => {
     setOffsetY(e.target.scrollTop)
   }
+
+  const goToDetailInfoPage = (mainClassId) => () => {
+    history.push(`/detailInfoPage/${mainClassId}`)
+  }
   return (
     <div className="mainPageContainer" ref={pageRef} onScroll={debounce(scrollHandle, 500)}>
       <TopSearch />
@@ -78,7 +83,7 @@ const Index = ({
         ))}
       </Swiper>
       <FocusOnCom />
-      <NearbyList list={nearbyList} />
+      <NearbyList list={nearbyList} itemClick={goToDetailInfoPage} />
       <ThemeList list={themeList} />
       <CityList list={cityList} />
       <RecommendList list={populerList} />

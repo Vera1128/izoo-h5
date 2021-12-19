@@ -5,6 +5,7 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 
 import FocusOnCom from 'components/FocusOn'
 import EmptyBottom from 'src/components/EmptyBottom'
+import { AudioGlobal } from 'src/modules/audio'
 
 import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
@@ -16,12 +17,23 @@ import './index.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
-const Index = ({ match, detailInfo, getDetailInfo }) => {
+const Index = ({ history, match, detailInfo, getDetailInfo }) => {
   useEffect(() => {
     console.log(match.params.id)
     getDetailInfo(match.params.id)
+    const audioList = [
+      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3',
+      'https://izoo-h5.oss-cn-beijing.aliyuncs.com/8d76354e48e275caf3e59630fa57993e.m4a',
+    ]
+    AudioGlobal.getInstance().audiosInit(audioList)
   }, [])
+  const clickPlayAudio = () => {
+    AudioGlobal.getInstance().audioPlay('https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3')
+  }
   const { catalogList, info, isCollect, isPayment } = detailInfo
+  const backToMainPage = () => {
+    history.go(-1)
+  }
   return (
     <div className="detailInfoPage">
       <Swiper
@@ -46,11 +58,11 @@ const Index = ({ match, detailInfo, getDetailInfo }) => {
           ))}
       </Swiper>
       <FocusOnCom />
-      <div className="detailContent"></div>
+      <div onClick={clickPlayAudio}>点击</div>
       <p dangerouslySetInnerHTML={{ __html: info?.content }} />
       <EmptyBottom color="white" />
       <div className="detailPageMenu">
-        <div className="menuContainer">
+        <div className="menuContainer" onClick={backToMainPage}>
           <img src={HomeImg} className="homeIcon" />
           <p className="menuText">首页</p>
         </div>
