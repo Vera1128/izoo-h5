@@ -8,6 +8,13 @@ export async function getDetailInfo(mainClassId: string) {
   return res
 }
 
+// 更改收藏状态
+export async function changeCollectStatus(id: string) {
+  const res = await rpcClient.callApi('Detail/CollectEvent', { mainClassId: id })
+  return res
+}
+
 export default {
   getDetailInfo,
+  changeCollectStatus,
 }

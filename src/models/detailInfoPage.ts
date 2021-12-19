@@ -1,5 +1,5 @@
 import _ from 'lodash'
-import { getDetailInfo } from 'apis/detailPageInfo'
+import { getDetailInfo, changeCollectStatus } from 'apis/detailPageInfo'
 
 export default {
   name: 'detailInfoPage',
@@ -21,6 +21,15 @@ export default {
       return {
         ...state,
         detailInfo: payload,
+      }
+    },
+    setCollectStatus(state, payload) {
+      return {
+        ...state,
+        detailInfo: {
+          ...state.detailInfo,
+          isCollect: payload,
+        },
       }
     },
   },

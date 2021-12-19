@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import { connect } from 'react-redux'
 import * as clipboard from 'clipboard-polyfill/text'
 
 import SlideDelete from 'components/SlideDelete'
@@ -7,6 +8,7 @@ import PersonalMenu from 'components/PersonalMenu'
 import { notify } from '@tgu/toast'
 import Tag from 'components/Tag'
 import FocusOn from 'components/FocusOn'
+import EmptyList from 'components/EmptyList'
 
 import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
@@ -24,9 +26,14 @@ const data = [
   { id: 3, text: 'Good morning to 9M of you?!?! ❤️🙏🏻Feeling very grateful and giddy.', date: '12.01.2019' },
 ]
 
-const Index = () => {
+const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
   const [currIndex, setCurrIndex] = useState(0)
   const [menuIndex, setMenuIndex] = useState(0)
+
+  useEffect(() => {
+    getFavoritesList()
+    // getListenList()
+  }, [])
 
   const showDeleteIcon = (index) => {
     console.log('出现delete icon')
@@ -50,6 +57,9 @@ const Index = () => {
         notify('复制失败!')
       },
     )
+  }
+  const goToDetailInfoPage = (id) => {
+    history.push(`/detailInfoPage/${id}`)
   }
 
   return (
@@ -130,39 +140,45 @@ const Index = () => {
         {/* 收藏列表 */}
         <SwiperSlide>
           <div className="collectContainer">
-            <div className="tips">根据收藏时间&nbsp;从最近到最早</div>
-            {data.map((item, index) => (
-              <div key={item.id} className="collectItem">
-                <SlideDelete
-                  onEnd={() => showDeleteIcon(index)}
-                  reset={currIndex !== index}
-                  index={index}
-                  onMyDragStar={dragStartHandle}
-                  offsetWidth={distance}
-                  criticalWidth={distance / 2}
-                  className="collectContent"
-                >
-                  <div className="content">
-                    <img src={SwiperTestImg} />
-                    <div className="centerContainer">
-                      <div className="textContainer">
-                        这里是佳绩这里是游戏这里是小茜这里是什么这里是哈哈哈这里是阿露
-                      </div>
-                      <div className="tagList">
-                        <Tag text="文化艺术" className="tag" />
-                        <Tag text="名胜古迹" className="tag" />
-                      </div>
-                    </div>
+            {favoritesList.length > 0 ? (
+              <>
+                <div className="tips">根据收藏时间&nbsp;从最近到最早</div>
+                {favoritesList.map((item, index) => (
+                  <div key={item.mainClassId} className="collectItem">
+                    <SlideDelete
+                      onEnd={() => showDeleteIcon(index)}
+                      reset={currIndex !== index}
+                      index={index}
+                      onMyDragStar={dragStartHandle}
+                      offsetWidth={distance}
+                      criticalWidth={distance / 2}
+                      className="collectContent"
+                    >
+                      <div className="content" onClick={() => goToDetailInfoPage(item.mainClassId)}>
+                        <img src={item.scrollImage} />
+                        <div className="centerContainer">
+                          <div className="textContainer">{item.desc}</div>
+                          <div className="tagList">
+                            {item.tags.map((tag) => (
+                              <Tag text={tag} className="tag" key={tag} />
+                            ))}
+                          </div>
+                          <p className="title">{item.title}</p>
+                        </div>
 
-                    <div className="placeContainer">
-                      <img src={heart} />
-                      <p>哈尔滨北京</p>
-                    </div>
+                        <div className="placeContainer">
+                          <img src={heart} />
+                          <p>{item.city}</p>
+                        </div>
+                      </div>
+                    </SlideDelete>
+                    <div className="deleteIcon">删除</div>
                   </div>
-                </SlideDelete>
-                <div className="deleteIcon">删除</div>
-              </div>
-            ))}
+                ))}
+              </>
+            ) : (
+              <EmptyList text="你暂时还没有收藏" />
+            )}
           </div>
         </SwiperSlide>
 
@@ -225,4 +241,14 @@ const Index = () => {
   )
 }
 
-export default Index
+const mapState = ({ personalCenter: { favoritesList, listenList } }) => ({
+  favoritesList,
+  listenList,
+})
+
+const mapDispatch = ({ personalCenter: { getFavoritesList, getListenList } }) => ({
+  getFavoritesList,
+  getListenList,
+})
+
+export default connect(mapState, mapDispatch)(Index)
