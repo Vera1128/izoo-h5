@@ -1,0 +1,41 @@
+.interceptPopup {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.8);
+  .interceptPopupContent {
+    width: 582px;
+    height: 960px;
+    border-radius: 40px;
+    padding-top: 84px;
+    background: url('assets/images/intercept-popup-bg.png') center / cover no-repeat, white;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+  }
+  .qrcode {
+    width: 208px;
+  }
+  .popupTitle {
+    margin-top: 48px;
+    margin-bottom: 48px;
+    font-size: 28px;
+    line-height: 33px;
+    color: #666699;
+    font-weight: bold;
+    span {
+      font-size: 32px;
+      line-height: 38px;
+    }
+  }
+}

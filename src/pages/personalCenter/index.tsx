@@ -32,7 +32,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
 
   useEffect(() => {
     getFavoritesList()
-    // getListenList()
+    getListenList()
   }, [])
 
   const showDeleteIcon = (index) => {

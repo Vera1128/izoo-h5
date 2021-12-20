@@ -1,11 +1,14 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import { notify } from '@tgu/toast'
 
 import FocusOnCom from 'components/FocusOn'
-import EmptyBottom from 'src/components/EmptyBottom'
+import EmptyBottom from 'components/EmptyBottom'
+import Mask from 'components/Mask'
+import Tag from 'components/Tag'
+import BackIcon from 'components/BackIcon'
 import { AudioGlobal } from 'src/modules/audio'
 import { changeCollectStatus } from 'apis/detailPageInfo'
 
@@ -13,6 +16,11 @@ import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
 import HeartNormalImg from 'assets/images/heart-normal.png'
 import HeartCollectImg from 'assets/images/heart.png'
+import DetailPageShareImg from 'assets/images/detail-page-share.png'
+import LocationIcon from 'assets/images/location-icon.png'
+import PriceIcon from 'assets/images/price-icon.png'
+import TimeIcon from 'assets/images/time-icon.png'
+import TagIcon from 'assets/images/tag-icon.png'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -21,6 +29,8 @@ import './index.scss'
 SwiperCore.use([Pagination, Autoplay])
 
 const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) => {
+  const [showShareMask, setShowShareMask] = useState(false)
+  const [selectMenu, setSelectMenu] = useState(1)
   const {
     params: { id },
   } = match
@@ -36,8 +46,6 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
     AudioGlobal.getInstance().audioPlay('https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3')
   }
   const { catalogList, info, isCollect, isPayment } = detailInfo
-  console.log('******')
-  console.log(isCollect)
   const backToMainPage = () => {
     history.go(-1)
   }
@@ -49,6 +57,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
   }
   return (
     <div className="detailInfoPage">
+      <BackIcon clickHandle={backToMainPage} />
       <Swiper
         slidesPerView="auto"
         className="mySwiper"
@@ -71,15 +80,50 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
           ))}
       </Swiper>
       <FocusOnCom />
-      <div onClick={clickPlayAudio}>点击</div>
-      <p dangerouslySetInnerHTML={{ __html: info?.content }} />
-      <EmptyBottom color="white" />
+      <div className="detailInfoContent">
+        <div className="detailInfoMenu">
+          <div className={`menuItem ${selectMenu === 1 ? 'menuItemSelected' : ''}`} onClick={() => setSelectMenu(1)}>
+            景点攻略
+            {selectMenu === 1 && <div className="line" />}
+          </div>
+          <div className={`menuItem ${selectMenu === 2 ? 'menuItemSelected' : ''}`} onClick={() => setSelectMenu(2)}>
+            导览简介
+            {selectMenu === 2 && <div className="line" />}
+          </div>
+        </div>
+        <div className="routeInfoContainer">
+          <div className="routeInfoItem">
+            <img src={LocationIcon} className="locationIcon" />
+            <p>{info?.address}</p>
+          </div>
+          <div className="routeInfoItem">
+            <img src={TimeIcon} className="timeIcon" />
+            <p>{info?.time}</p>
+          </div>
+          <div className="routeInfoItem">
+            <img src={PriceIcon} className="priceIcon" />
+            <p>{info?.tickets}</p>
+          </div>
+          <div className="routeInfoItem">
+            <img src={TagIcon} className="tagIcon" />
+            <div className="tagList">
+              {info?.tags.map((tag) => (
+                <Tag text={tag} className="tag" key={tag} />
+              ))}
+            </div>
+          </div>
+        </div>
+        <div onClick={clickPlayAudio}>点击</div>
+        <p dangerouslySetInnerHTML={{ __html: info?.content }} />
+        <EmptyBottom color="white" />
+      </div>
+
       <div className="detailPageMenu">
         <div className="menuContainer1" onClick={backToMainPage}>
           <img src={HomeImg} className="homeIcon" />
           <p className="menuText">首页</p>
         </div>
-        <div className="menuContainer1 menuContainerMargin">
+        <div className="menuContainer1 menuContainerMargin" onClick={() => setShowShareMask(true)}>
           <img src={ShareImg} className="shareIcon" />
           <p className="menuText">分享</p>
         </div>
@@ -98,6 +142,11 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
           </div>
         </div>
       </div>
+      {showShareMask && (
+        <Mask onClickHandle={() => setShowShareMask(false)}>
+          <img src={DetailPageShareImg} className="shareImg" />
+        </Mask>
+      )}
     </div>
   )
 }

@@ -1,115 +1,189 @@
 .detailInfoPage {
+  width: 100%;
+  height: 100vh;
+  overflow-y: scroll;
+  .swiper {
     width: 100%;
-    height: 100vh;
-    overflow-y: scroll;
-    .swiper {
-        width: 100%;
-        height: 374px;
-        position: relative;
+    height: 374px;
+    position: relative;
+  }
+  .swiper-slide {
+    width: 100%;
+    height: fit-content;
+    box-sizing: border-box;
+    .swiperContent {
+      display: block;
+      width: 100%;
+      height: 374px;
+      object-fit: cover;
     }
-    .swiper-slide {
-        width: 100%;
-        height: fit-content;
-        box-sizing: border-box;
-        .swiperContent {
-            display: block;
-            width: 100%;
-            height: 374px;
-            object-fit: cover;
+  }
+  .swiper-pagination {
+    bottom: 6px;
+  }
+  .swiper-pagination-bullet {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff8f3;
+    opacity: 1;
+  }
+  .swiper-pagination-bullet-active {
+    width: 32px;
+    border-radius: 9px;
+    background: #e2b330;
+    transition: all 0.2s ease-in;
+  }
+  .detailInfoContent {
+    width: 100%;
+    padding: 0 48px;
+    .detailInfoMenu {
+      width: 100%;
+      height: 80px;
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-start;
+      .menuItem {
+        width: fit-content;
+        height: 80px;
+        line-height: 80px;
+        font-size: 36px;
+        margin-right: 48px;
+        color: #525662;
+        font-weight: bold;
+        .line {
+          width: 100%;
+          height: 6px;
+          border-radius: 6px 6px 0 0;
+          background: #00cab1;
+          position: absolute;
+          bottom: 0;
         }
+      }
+      .menuItemSelected {
+        color: #00cab1;
+      }
     }
-    .swiper-pagination {
-        bottom: 6px;
-    }
-    .swiper-pagination-bullet {
-        width: 12px;
-        height: 12px;
-        border-radius: 50%;
-        background: #fff8f3;
-        opacity: 1;
-    }
-    .swiper-pagination-bullet-active {
-        width: 32px;
-        border-radius: 9px;
-        background: #e2b330;
-        transition: all 0.2s ease-in;
-    }
-    .detailPageMenu {
-        width: 100%;
-        height: 120px;
-        position: fixed;
-        bottom: 0;
-        z-index: 999;
-        box-sizing: border-box;
-        border-radius: 90px 0 0;
-        background: #eeeeee;
-        box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25) inset;
-        border: 4px solid #ffffff;
+    .routeInfoContainer {
+      width: 100%;
+      padding-top: 48px;
+      padding-bottom: 36px;
+      .routeInfoItem {
         display: flex;
-        flex-direction: row;
-        align-items: center;
-        padding-left: 78px;
-        .menuContainer1 {
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
-            .homeIcon {
-                width: 42px;
-                margin-top: 16px;
-            }
-            .shareIcon {
-                width: 50px;
-                margin-top: 20px;
-            }
-            .heartIcon {
-                width: 48px;
-                margin-top: 18px;
-            }
-            .menuText {
-                height: 40px;
-                font-size: 28px;
-                line-height: 40px;
-                color: #525662;
-                margin-top: 4px;
-            }
+        height: 44px;
+        margin-bottom: 16px;
+        .locationIcon {
+          width: 34px;
+          margin-right: 32px;
         }
-        .menuContainerMargin {
-            margin-left: 44px;
+        .timeIcon {
+          width: 38px;
+          margin-right: 32px;
         }
-        .buyContainer {
-            height: 96px;
-            display: flex;
-            flex-direction: row;
-            position: absolute;
-            right: 0;
-            margin-top: 16px;
-            margin-bottom: 10px;
-            .buyItem {
-                width: 194px;
-                background: white;
-                border-radius: 120px 0 0 120px;
-                border: 1px solid #00cab1;
-                padding-left: 42px;
-                p {
-                    font-size: 32px;
-                    line-height: 46px;
-                    height: 46px;
-                    color: #00cab1;
-                }
-            }
-            .buyItem:nth-of-type(2) {
-                border-radius: 0;
-                width: 166px;
-                background: #66cccc;
-                padding-left: 24px;
-                p {
-                    color: white;
-                }
-            }
+        .priceIcon {
+          width: 34px;
+          margin-right: 32px;
         }
+        .tagIcon {
+          width: 35px;
+          margin-right: 32px;
+        }
+        p {
+          height: 44px;
+          line-height: 44px;
+          font-size: 28px;
+          color: #525662;
+        }
+        .tagList {
+          display: flex;
+          .tag {
+            margin-right: 16px;
+          }
+        }
+      }
     }
-    .detailContent {
-        width: 100%;
+  }
+  .detailPageMenu {
+    width: 100%;
+    height: 120px;
+    position: fixed;
+    bottom: 0;
+    z-index: 999;
+    box-sizing: border-box;
+    border-radius: 90px 0 0;
+    background: #eeeeee;
+    box-shadow: 0px 4px 4px 2px rgba(0, 0, 0, 0.25) inset;
+    border: 4px solid #ffffff;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding-left: 78px;
+    .menuContainer1 {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      align-items: center;
+      .homeIcon {
+        width: 42px;
+        margin-top: 16px;
+      }
+      .shareIcon {
+        width: 50px;
+        margin-top: 20px;
+      }
+      .heartIcon {
+        width: 48px;
+        margin-top: 18px;
+      }
+      .menuText {
+        height: 40px;
+        font-size: 28px;
+        line-height: 40px;
+        color: #525662;
+        margin-top: 4px;
+      }
     }
+    .menuContainerMargin {
+      margin-left: 44px;
+    }
+    .buyContainer {
+      height: 96px;
+      display: flex;
+      flex-direction: row;
+      position: absolute;
+      right: 0;
+      margin-top: 16px;
+      margin-bottom: 10px;
+      .buyItem {
+        width: 194px;
+        background: white;
+        border-radius: 120px 0 0 120px;
+        border: 1px solid #00cab1;
+        padding-left: 42px;
+        p {
+          font-size: 32px;
+          line-height: 46px;
+          height: 46px;
+          color: #00cab1;
+        }
+      }
+      .buyItem:nth-of-type(2) {
+        border-radius: 0;
+        width: 166px;
+        background: #66cccc;
+        padding-left: 24px;
+        p {
+          color: white;
+        }
+      }
+    }
+  }
+  .detailContent {
+    width: 100%;
+  }
+  .shareImg {
+    width: 632px;
+    display: block;
+    margin: 0 auto;
+  }
 }
