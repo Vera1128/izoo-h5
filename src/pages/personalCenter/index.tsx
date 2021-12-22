@@ -13,6 +13,7 @@ import EmptyList from 'components/EmptyList'
 import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
 import heart from 'assets/images/heart.png'
+import earphone from 'assets/images/earphone-icon.png'
 
 import './index.scss'
 import 'swiper/css'
@@ -20,19 +21,11 @@ import 'swiper/css'
 const distance = getPxCurr(196)
 let mySwiper = null
 
-const data = [
-  { id: 1, text: 'End of summer reading list', date: '1.03.2016' },
-  { id: 2, text: 'Somewhere in the middle 📸', date: '23.01.2017' },
-  { id: 3, text: 'Good morning to 9M of you?!?! ❤️🙏🏻Feeling very grateful and giddy.', date: '12.01.2019' },
-]
-
-const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
+const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, history, menuIndex, setMenuIndex }) => {
   const [currIndex, setCurrIndex] = useState(0)
-  const [menuIndex, setMenuIndex] = useState(0)
 
   useEffect(() => {
-    getFavoritesList()
-    getListenList()
+    fetchData(menuIndex)
   }, [])
 
   const showDeleteIcon = (index) => {
@@ -46,6 +39,24 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
   const clickMenuHandle = (index) => () => {
     setMenuIndex(index)
     mySwiper.slideTo(index)
+    fetchData(index)
+  }
+
+  function fetchData(index) {
+    switch (index) {
+      case 0:
+        break
+      case 1:
+        getFavoritesList()
+        break
+      case 2:
+        getListenList()
+        break
+      case 3:
+        break
+      default:
+        console.log('menu default')
+    }
   }
 
   const clipboardHandle = (text) => () => {
@@ -87,11 +98,6 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
                   <img src={SwiperTestImg} alt="订单图片" />
                 </div>
                 <div className="desc">沪港银行历史展览馆丨认识货币与近代中国认识货币与近代中国</div>
-                {/* <div className="priceContainer">
-                  <div className="price">
-                    <span>￥</span>120
-                  </div>
-                </div> */}
                 <div className="priceContainer">
                   <div className="pricePintuan">
                     <div className="btnPintuan">拼团价</div>
@@ -187,30 +193,35 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
           <div className="historyContainer">
             <div className="tips">根据收听时间&nbsp;从最近到最早</div>
             <div className="historyList">
-              <div className="historyListRow">
-                <div className="historyItem">
-                  <img src={SwiperTestImg} className="itemImg" />
-                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
-                  <div className="desc">上海租界历史的缩影</div>
-                </div>
-                <div className="historyItem">
-                  <img src={SwiperTestImg} className="itemImg" />
-                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
-                  <div className="desc">上海租界历史的缩影</div>
-                </div>
-              </div>
-              <div className="historyListRow">
-                <div className="historyItem">
-                  <img src={SwiperTestImg} className="itemImg" />
-                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
-                  <div className="desc">上海租界历史的缩影</div>
-                </div>
-                <div className="historyItem">
-                  <img src={SwiperTestImg} className="itemImg" />
-                  <div className="placeContainer">武康路武康路武康路武康路武康路</div>
-                  <div className="desc">上海租界历史的缩影</div>
-                </div>
-              </div>
+              {listenList.map((item, index) => {
+                if (index > listenList.length / 2) return
+                return (
+                  <div className="historyListRow" key={item.mainClassId}>
+                    <div className="historyItem" onClick={() => goToDetailInfoPage(item.mainClassId)}>
+                      <img src={item.scrollImage} className="itemImg" />
+                      <div className="placeContainer">
+                        <img src={earphone} />
+                        {item.title}
+                        {index === 0 && <div className="recentListen">最近听过</div>}
+                      </div>
+                      <div className="desc">{item.desc}</div>
+                    </div>
+                    {listenList[index + 1] && (
+                      <div
+                        className="historyItem"
+                        onClick={() => goToDetailInfoPage(listenList[index + 1].mainClassId)}
+                      >
+                        <img src={item.scrollImage} className="itemImg" />
+                        <div className="placeContainer">
+                          <img src={earphone} />
+                          {item.title}
+                        </div>
+                        <div className="desc">{item.desc}</div>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
             </div>
           </div>
         </SwiperSlide>
@@ -241,14 +252,16 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, history }) => {
   )
 }
 
-const mapState = ({ personalCenter: { favoritesList, listenList } }) => ({
+const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex } }) => ({
   favoritesList,
   listenList,
+  menuIndex,
 })
 
-const mapDispatch = ({ personalCenter: { getFavoritesList, getListenList } }) => ({
+const mapDispatch = ({ personalCenter: { getFavoritesList, getListenList, setMenuIndex } }) => ({
   getFavoritesList,
   getListenList,
+  setMenuIndex,
 })
 
 export default connect(mapState, mapDispatch)(Index)

@@ -2,6 +2,8 @@ import React, { useState } from 'react'
 import BackIcon from 'src/components/BackIcon'
 import OrderPageItem from 'components/OrderPageItem'
 import PinTuanPrice from 'components/PinTuanPrice'
+import Menu from 'components/MenuOrder'
+import Button from 'components/Button'
 import SwiperTestImg from 'assets/images/swiper-test.png'
 
 import './index.scss'
@@ -47,7 +49,15 @@ const OrderPage = () => {
             <input className="input" placeholder="请输入手机号" />
           </div>
         </div>
+        <div className="orderContainerItem">
+          <div className="orderSum">
+            合计&nbsp;&nbsp;<span>￥</span>120
+          </div>
+        </div>
       </div>
+      <Menu>
+        <Button>提交订单</Button>
+      </Menu>
     </div>
   )
 }

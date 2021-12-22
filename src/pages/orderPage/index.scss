@@ -41,6 +41,19 @@
         }
       }
     }
+    .orderSum {
+      width: 100%;
+      height: 96px;
+      line-height: 96px;
+      position: relative;
+      font-size: 36px;
+      color: #00cab1;
+      font-weight: bold;
+      text-align: right;
+      span {
+        font-size: 24px;
+      }
+    }
   }
 }
 .input {

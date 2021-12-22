@@ -4,8 +4,10 @@ import { getFavoritesList, getListenList } from 'apis/personalCenter'
 export default {
   name: 'personalCenter',
   state: {
+    orderList: [],
     favoritesList: [],
     listenList: [],
+    menuIndex: 0,
   },
 
   effects: (dispatch) => ({
@@ -21,12 +23,7 @@ export default {
     async getListenList() {
       const res = await getListenList()
       if (res) {
-        console.log('++++')
-        console.log(res)
-        // const {
-        //     res: { list },
-        //   } = res
-        // dispatch.personalCenter.setListenList(list)
+        dispatch.personalCenter.setListenList(res.res.list)
       }
     },
   }),
@@ -34,14 +31,20 @@ export default {
   reducers: {
     setFavoritesList(state, payload) {
       return {
-        state,
+        ...state,
         favoritesList: payload,
       }
     },
     setListenList(state, payload) {
       return {
-        state,
+        ...state,
         listenList: payload,
+      }
+    },
+    setMenuIndex(state, payload) {
+      return {
+        ...state,
+        menuIndex: payload,
       }
     },
   },
