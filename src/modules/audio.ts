@@ -1,6 +1,9 @@
 interface AudiosType {
   [propName: string]: any
 }
+interface ProgressType {
+  [propName: string]: any
+}
 
 export class AudioGlobal {
   private static _this: AudioGlobal = null
@@ -8,6 +11,8 @@ export class AudioGlobal {
   public audios: AudiosType = null
 
   public audioCurr: any = null
+
+  public progressMap: ProgressType = {}
 
   static getInstance(): AudioGlobal {
     if (!this._this) {
@@ -22,18 +27,28 @@ export class AudioGlobal {
   }
 
   // audio列表更新
-  audiosInit(audioList: Array<string>) {
+  audiosInit(audioList: Array<string>, playProgressChangeCb: (progress: ProgressType) => void) {
     this.audios = {}
     this.audioCurr = null
     audioList.forEach((audio) => {
       this.audios[audio] = new Audio()
-      this.audios[audio].onload = () => {
+      const audioTemp = this.audios[audio]
+      audioTemp.onload = () => {
         console.log('音频加载成功')
       }
-      this.audios[audio].onerror = () => {
+      audioTemp.onerror = () => {
         console.log('音频加载失败')
       }
-      this.audios[audio].src = audio
+
+      this.progressMap[audio] = 0
+      audioTemp.ontimeupdate = () => {
+        const { currentTime, duration } = audioTemp
+        const playProgress = `${(currentTime / duration) * 100}%`
+        audioTemp.playProgress = playProgress
+        this.progressMap[audio] = playProgress
+        playProgressChangeCb({ ...this.progressMap })
+      }
+      audioTemp.src = audio
     })
   }
 

@@ -22,5 +22,20 @@ export default [
     component: asyncImport('orderPage'),
     exact: true,
   },
+  {
+    path: '/group/:id',
+    component: asyncImport('groupPage'),
+    exact: true,
+  },
+  {
+    path: '/routeDetailPage',
+    component: asyncImport('routeDetailPage'),
+    exact: true,
+  },
+  {
+    path: '/routeListPage',
+    component: asyncImport('routeListPage'),
+    exact: true,
+  },
   { component: asyncImport('404') },
 ]

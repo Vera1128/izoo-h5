@@ -11,6 +11,7 @@ import Tag from 'components/Tag'
 import BackIcon from 'components/BackIcon'
 import { AudioGlobal } from 'src/modules/audio'
 import { changeCollectStatus } from 'apis/detailPageInfo'
+import Button from 'components/Button'
 
 import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
@@ -40,7 +41,9 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3',
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/8d76354e48e275caf3e59630fa57993e.m4a',
     ]
-    AudioGlobal.getInstance().audiosInit(audioList)
+    AudioGlobal.getInstance().audiosInit(audioList, (progress) => {
+      console.log(progress)
+    })
   }, [])
   const clickPlayAudio = () => {
     AudioGlobal.getInstance().audioPlay('https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3')
@@ -54,6 +57,38 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
     setCollectStatus(res.res.state)
     if (res.res.state) notify('收藏成功', 1000)
     else notify('已取消收藏', 1000)
+  }
+  const showBottomBtn = () => {
+    // 是否已经支付
+    if (isPayment)
+      return (
+        <Button className="freeBtn">
+          <p className="largeText">进入收听</p>
+          <p className="smallText">已购买</p>
+        </Button>
+      )
+
+    // 是否只单独购买
+    if (!info?.avgAmount)
+      return (
+        <Button className="freeBtn">
+          <p className="largeText">立即购买</p>
+          <p className="smallText">￥ {info?.amount}</p>
+        </Button>
+      )
+    // 拼团+单独购买
+    return (
+      <div className="buyContainer">
+        <div className="buyItem">
+          <p>直接购买</p>
+          <p>￥ {info?.amount}</p>
+        </div>
+        <div className="buyItem">
+          <p>2人拼团</p>
+          <p>￥ {info?.avgAmount}</p>
+        </div>
+      </div>
+    )
   }
   return (
     <div className="detailInfoPage">
@@ -131,16 +166,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
           <img src={isCollect ? HeartCollectImg : HeartNormalImg} className="heartIcon" />
           <p className="menuText">收藏</p>
         </div>
-        <div className="buyContainer">
-          <div className="buyItem">
-            <p>直接购买</p>
-            <p>￥ 108</p>
-          </div>
-          <div className="buyItem">
-            <p>2人拼团</p>
-            <p>￥ 88</p>
-          </div>
-        </div>
+        {showBottomBtn()}
       </div>
       {showShareMask && (
         <Mask onClickHandle={() => setShowShareMask(false)}>

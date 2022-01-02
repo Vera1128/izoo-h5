@@ -76,6 +76,7 @@ module.exports = {
     'guard-for-in': 'warn',
     'import/prefer-default-export': 'off',
     'no-param-reassign': 'off',
+    'no-multi-assign': 'off',
 
     // sonarjs
     'sonarjs/cognitive-complexity': 'error',

@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import BackIcon from 'src/components/BackIcon'
 import OrderPageItem from 'components/OrderPageItem'
-import Menu from 'components/MenuOrder'
-import Button from 'components/Button'
-import Order from 'components/OrderContainer'
+import GroupOrder from 'components/GroupContainer'
 import SwiperTestImg from 'assets/images/swiper-test.png'
+import StepImg from 'assets/images/step.png'
 
 import './index.scss'
 
@@ -19,7 +18,7 @@ const testData = {
   pinTuanPrice: 200,
 }
 
-const OrderPage = () => {
+const GroupPage = () => {
   console.log('orderPage')
   const backClickHandle = () => {
     console.log('backClickHandle')
@@ -28,16 +27,10 @@ const OrderPage = () => {
     <div className="orderPageContainer">
       <BackIcon clickHandle={backClickHandle} />
       <OrderPageItem data={testData} />
-      <Order data={1} />
-      <Menu className="orderMenu">
-        <div className="priceContainer">
-          支付 <span className="smallIcon">￥</span>
-          <span className="price">88</span>
-        </div>
-        <Button className="orderButton">提交订单</Button>
-      </Menu>
+      <GroupOrder data={1} />
+      <img src={StepImg} className="stepIcon" />
     </div>
   )
 }
 
-export default OrderPage
+export default GroupPage

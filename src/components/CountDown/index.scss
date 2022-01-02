@@ -1,0 +1,15 @@
+.countDownContainer {
+  display: flex;
+  flex-direction: row;
+  color: #9b88c7;
+  margin: 0 24px;
+  .countDown {
+    height: 36px;
+    line-height: 36px;
+    padding: 0 4px;
+    background: #9b88c7;
+    border-radius: 6px;
+    font-size: 24px;
+    color: white;
+  }
+}
