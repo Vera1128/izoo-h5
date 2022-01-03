@@ -9,15 +9,21 @@ import './index.less'
 
 interface Props {
   className?: string
+  onClick?: () => void
   children: JSX.Element | JSX.Element[] | string
 }
 
 function Button(props: Props) {
-  return <div className={`button ${props.className}`}>{props.children}</div>
+  return (
+    <div className={`button ${props.className}`} onClick={props.onClick}>
+      {props.children}
+    </div>
+  )
 }
 
 Button.defaultProps = {
   className: '',
+  onClick: () => {},
 } as Partial<Props>
 
 export default Button

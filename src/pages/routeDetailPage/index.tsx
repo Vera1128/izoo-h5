@@ -6,7 +6,7 @@ import test2 from 'assets/test-image/2.png'
 import placeIcon from 'assets/images/place-icon.png'
 import './index.scss'
 
-const RouteDetailPage = () => {
+const RouteDetailPage = ({ history }) => {
   console.log('routeDetailPage')
   const [targetImg, setTargetImg] = useState(test1)
   const [showPreviewImg, setShowPreviewImg] = useState(false)
@@ -69,9 +69,13 @@ const RouteDetailPage = () => {
     if (Array.from(e.target.classList).includes('largeImgPanel')) setShowPreviewImg(false)
   }
 
+  const backToDetailListPage = () => {
+    history.go(-1)
+  }
+
   return (
     <div className="routeDetailPage">
-      <BackIcon />
+      <BackIcon clickHandle={backToDetailListPage} />
       <img src={test1} className="mainImg" />
       <div className="locationContainer">
         <img src={placeIcon} className="placeIcon" />
@@ -92,7 +96,9 @@ const RouteDetailPage = () => {
       )}
       <div className="menu">
         <div className="menuItem">上一处</div>
-        <div className="menuItem">返回目录</div>
+        <div className="menuItem" onClick={backToDetailListPage}>
+          返回目录
+        </div>
         <div className="menuItem">下一处</div>
       </div>
     </div>

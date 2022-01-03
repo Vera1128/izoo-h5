@@ -5,15 +5,20 @@ import playIcon from 'assets/images/play-icon.png'
 import izooIcon from 'assets/images/izoo-icon.png'
 import './index.scss'
 
-const RouteListPage = () => {
+const RouteListPage = ({ history }) => {
   console.log('RouteListPage')
-
+  const backToDetailInfoPage = () => {
+    history.go(-1)
+  }
+  const goToRouteDetail = () => {
+    history.push(`/routeDetailPage`)
+  }
   return (
     <div className="routeListPage">
-      <BackIcon />
+      <BackIcon clickHandle={backToDetailInfoPage} />
       <div className="head">讲解目录</div>
       <div className="routeList">
-        <div className="routeListItem">
+        <div className="routeListItem" onClick={goToRouteDetail}>
           <img src={testImg} className="routeCover" />
           <div className="num">01</div>
           <div className="text">为什么说“埃及是尼罗河的赠礼”</div>

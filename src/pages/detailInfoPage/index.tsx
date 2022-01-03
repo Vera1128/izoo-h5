@@ -62,7 +62,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
     // 是否已经支付
     if (isPayment)
       return (
-        <Button className="freeBtn">
+        <Button className="freeBtn" onClick={() => history.push(`/routeListPage`)}>
           <p className="largeText">进入收听</p>
           <p className="smallText">已购买</p>
         </Button>
