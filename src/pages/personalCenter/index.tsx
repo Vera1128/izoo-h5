@@ -161,7 +161,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                       className="collectContent"
                     >
                       <div className="content" onClick={() => goToDetailInfoPage(item.mainClassId)}>
-                        <img src={item.scrollImage} />
+                        <img src={item.scrollImage} className="coverImg" />
                         <div className="centerContainer">
                           <div className="textContainer">{item.desc}</div>
                           <div className="tagList">

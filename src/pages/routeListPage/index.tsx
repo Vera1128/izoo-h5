@@ -5,8 +5,13 @@ import playIcon from 'assets/images/play-icon.png'
 import izooIcon from 'assets/images/izoo-icon.png'
 import './index.scss'
 
-const RouteListPage = ({ history }) => {
-  console.log('RouteListPage')
+const RouteListPage = ({
+  history,
+  location: {
+    query: { catalogList },
+  },
+}) => {
+  console.log('RouteListPage', catalogList)
   const backToDetailInfoPage = () => {
     history.go(-1)
   }
@@ -18,24 +23,14 @@ const RouteListPage = ({ history }) => {
       <BackIcon clickHandle={backToDetailInfoPage} />
       <div className="head">讲解目录</div>
       <div className="routeList">
-        <div className="routeListItem" onClick={goToRouteDetail}>
-          <img src={testImg} className="routeCover" />
-          <div className="num">01</div>
-          <div className="text">为什么说“埃及是尼罗河的赠礼”</div>
-          <img src={playIcon} className="playIcon" />
-        </div>
-        <div className="routeListItem">
-          <img src={testImg} className="routeCover" />
-          <div className="num">01</div>
-          <div className="text">为什么说“埃及是尼罗河的赠礼”</div>
-          <img src={playIcon} className="playIcon" />
-        </div>
-        <div className="routeListItem">
-          <img src={testImg} className="routeCover" />
-          <div className="num">01</div>
-          <div className="text">为什么说“埃及是尼罗河的赠礼”</div>
-          <img src={playIcon} className="playIcon" />
-        </div>
+        {(catalogList || []).map((catalog, index) => (
+          <div className="routeListItem" onClick={goToRouteDetail} key={catalog.subId}>
+            <img src={testImg} className="routeCover" />
+            <div className="num">{`0${index + 1}`.slice(-2)}</div>
+            <div className="text">{catalog.title}</div>
+            <img src={playIcon} className="playIcon" />
+          </div>
+        ))}
         <img src={izooIcon} className="bottom-icon" />
       </div>
     </div>

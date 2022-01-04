@@ -29,7 +29,7 @@ import './index.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
-const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) => {
+const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, setDetailInfo }) => {
   const [showShareMask, setShowShareMask] = useState(false)
   const [selectMenu, setSelectMenu] = useState(1)
   const {
@@ -51,6 +51,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
   const { catalogList, info, isCollect, isPayment } = detailInfo
   const backToMainPage = () => {
     history.go(-1)
+    setDetailInfo({})
   }
   const changeCollectStatusHandle = async () => {
     const res = await changeCollectStatus(id)
@@ -62,12 +63,25 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
     // 是否已经支付
     if (isPayment)
       return (
-        <Button className="freeBtn" onClick={() => history.push(`/routeListPage`)}>
+        <Button
+          className="freeBtn"
+          onClick={() => history.push({ pathname: '/routeListPage', query: { catalogList } })}
+        >
           <p className="largeText">进入收听</p>
           <p className="smallText">已购买</p>
         </Button>
       )
-
+    // 是否免费
+    if (!info?.isCharge) {
+      return (
+        <Button
+          className="freeBtn"
+          onClick={() => history.push({ pathname: '/routeListPage', query: { catalogList } })}
+        >
+          <p className="largeText">免费收听</p>
+        </Button>
+      )
+    }
     // 是否只单独购买
     if (!info?.avgAmount)
       return (
@@ -79,11 +93,11 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus }) 
     // 拼团+单独购买
     return (
       <div className="buyContainer">
-        <div className="buyItem">
+        <div className="buyItem" onClick={() => history.push(`/order/single?routeId=${id}`)}>
           <p>直接购买</p>
           <p>￥ {info?.amount}</p>
         </div>
-        <div className="buyItem">
+        <div className="buyItem" onClick={() => history.push(`/order/group?routeId=${id}`)}>
           <p>2人拼团</p>
           <p>￥ {info?.avgAmount}</p>
         </div>
@@ -181,9 +195,10 @@ const mapState = ({ detailInfoPage: { detailInfo } }) => ({
   detailInfo,
 })
 
-const mapDispatch = ({ detailInfoPage: { getDetailInfo, setCollectStatus } }) => ({
+const mapDispatch = ({ detailInfoPage: { getDetailInfo, setCollectStatus, setDetailInfo } }) => ({
   getDetailInfo,
   setCollectStatus,
+  setDetailInfo,
 })
 
 export default connect(mapState, mapDispatch)(Index)

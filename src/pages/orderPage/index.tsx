@@ -19,10 +19,11 @@ const testData = {
   pinTuanPrice: 200,
 }
 
-const OrderPage = () => {
-  console.log('orderPage')
+const OrderPage = ({ history, location }) => {
+  console.log('orderPage', location)
   const backClickHandle = () => {
     console.log('backClickHandle')
+    history.go(-1)
   }
   return (
     <div className="orderPageContainer">
