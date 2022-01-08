@@ -44,18 +44,23 @@
       position: absolute;
       top: 8px;
       right: 0;
-      font-size: 28px;
+      font-size: 36px;
       color: #00cab1;
       font-weight: bold;
       margin-top: 20px;
+      span {
+        font-size: 24px;
+      }
     }
     .pricePinTuan {
       font-size: 24px;
       line-height: 28px;
-      color: #695a5a;
+      color: #525662;
       margin-top: 8px;
       p {
         text-align: right;
+        text-decoration: line-through;
+        color: #999;
       }
     }
   }

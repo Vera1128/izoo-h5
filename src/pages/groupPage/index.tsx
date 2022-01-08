@@ -8,14 +8,18 @@ import StepImg from 'assets/images/step.png'
 import './index.scss'
 
 const testData = {
-  imgSrc: SwiperTestImg,
-  tagList: ['科学发展', '经济政策'],
-  name: '沪港银行历史展览馆丨认识货币与近代中国',
-  duration: 20,
-  totals: 36,
-  price: 199,
-  isPinTuan: true,
-  pinTuanPrice: 200,
+  title: '测试title',
+  tags: ['1636646219890'],
+  amount: 15,
+  avgAmount: 10,
+  scrollImages: [
+    'https://oss.catfill.cn/web/images/武康大楼.JPG',
+    'https://oss.catfill.cn/web/images/罗密欧阳台.jpg',
+    'https://oss.catfill.cn/web/images/密丹公寓.JPG',
+  ],
+  duration: 400,
+  totals: 10,
+  type: 'group',
 }
 
 const GroupPage = () => {

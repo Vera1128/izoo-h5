@@ -12,6 +12,7 @@ import BackIcon from 'components/BackIcon'
 import { AudioGlobal } from 'src/modules/audio'
 import { changeCollectStatus } from 'apis/detailPageInfo'
 import Button from 'components/Button'
+import { throttle } from 'src/utils'
 
 import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
@@ -41,9 +42,12 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3',
       'https://izoo-h5.oss-cn-beijing.aliyuncs.com/8d76354e48e275caf3e59630fa57993e.m4a',
     ]
-    AudioGlobal.getInstance().audiosInit(audioList, (progress) => {
-      console.log(progress)
-    })
+    AudioGlobal.getInstance().audiosInit(
+      audioList,
+      throttle((progress) => {
+        console.log(progress)
+      }),
+    )
   }, [])
   const clickPlayAudio = () => {
     AudioGlobal.getInstance().audioPlay('https://izoo-h5.oss-cn-beijing.aliyuncs.com/test.mp3')

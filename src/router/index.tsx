@@ -18,7 +18,7 @@ export default [
     exact: true,
   },
   {
-    path: '/order/:id',
+    path: '/order/:type',
     component: asyncImport('orderPage'),
     exact: true,
   },

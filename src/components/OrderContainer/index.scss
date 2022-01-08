@@ -27,6 +27,15 @@
       font-weight: bold;
       color: #525662;
       .originPrice {
+        color: #00cab1;
+        font-size: 36px;
+        text-align: right;
+        span {
+          font-size: 24px;
+          text-decoration: none;
+        }
+      }
+      .pricePinTuan {
         font-size: 24px;
         color: #999999;
         text-align: right;

@@ -6,43 +6,57 @@ import './index.scss'
 
 interface Props {
   data: {
-    imgSrc: string
-    tagList: Array<string>
-    name: string
+    title: string
+    /** 标签 */
+    tags: string[]
+    /** 金额 */
+    amount: number
+    /** 拼团金额 */
+    avgAmount: number
+    /** 轮播图片 */
+    scrollImages: string[]
+    /** 音频总时长 */
     duration: number
+    /** 内容条数 */
     totals: number
-    price: number
-    isPinTuan: boolean
-    pinTuanPrice: number
+    /**
+     * type: 订单类型
+     * group: 团购
+     * single: 单买
+     */
+    type: string
   }
 }
 
 function OrderPageItem(props: Props) {
   const {
-    data: { imgSrc, tagList, name, duration, totals, price, isPinTuan, pinTuanPrice },
+    data: { tags, scrollImages, amount, avgAmount, duration, totals, type },
   } = props
   return (
     <>
       <div className="orderPageItem">
-        <img src={imgSrc} alt="" className="orderPageItemImg" />
+        <img src={scrollImages[0]} alt="" className="orderPageItemImg" />
         <div className="orderPageContent">
-          <p className="desc">{name}</p>
+          <p className="desc">desc待定</p>
           <p className="duration">
             时长{duration}分钟&nbsp;&nbsp;讲解{totals}条
           </p>
           <div className="tagList">
-            {tagList.map((item) => (
+            {tags.map((item) => (
               <Tag key={item} text={item} className="tag" />
             ))}
           </div>
-          <div className={`price ${isPinTuan ? 'pricePinTuan' : ''}`}>
-            {isPinTuan ? (
+          <div className={`price ${type === 'group' ? 'pricePinTuan' : ''}`}>
+            {type === 'group' ? (
               <>
-                <PinTuanPrice price={pinTuanPrice} />
-                <p>￥{price}</p>
+                <PinTuanPrice price={avgAmount} />
+                <p>￥{amount}</p>
               </>
             ) : (
-              <>￥{price}</>
+              <>
+                <span>￥</span>
+                {amount}
+              </>
             )}
           </div>
         </div>
