@@ -67,7 +67,7 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo }) => {
       <Menu className="orderMenu">
         <div className="priceContainer">
           支付 <span className="smallIcon">￥</span>
-          <span className="price">88</span>
+          <span className="price">{type === 'single' ? detailInfo?.info.amount : detailInfo?.info.avgAmount}</span>
         </div>
         <Button className={`orderButtonInvalid ${canSubmit ? 'orderButton' : ''}`} onClick={submitOrder}>
           提交订单
