@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 
@@ -7,6 +7,7 @@ import TopSearch from 'components/Search'
 import EmptyBottom from 'components/EmptyBottom'
 import EmptyList from 'components/EmptyList'
 import SwitchThemeIcon from 'assets/images/switch-theme.png'
+import SwitchCityIcon from 'assets/images/switch-city.png'
 
 import 'swiper/css'
 import './index.scss'
@@ -52,8 +53,8 @@ const Index = ({
       <TopSearch
         rightButton={
           <div className="swicthIcon" onClick={switchThemeClickHandle}>
-            <p>切换主题</p>
-            <img src={SwitchThemeIcon} />
+            <p>{theme === 'city' ? '切换主题' : '切换城市'}</p>
+            <img src={theme === 'city' ? SwitchThemeIcon : SwitchCityIcon} />
           </div>
         }
       />
