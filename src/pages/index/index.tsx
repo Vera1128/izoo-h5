@@ -1,5 +1,6 @@
-import React, { FC, useState } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { Link } from 'react-router-dom'
+import { connect } from 'react-redux'
 
 import MenuBar from 'src/components/Menu'
 
@@ -30,7 +31,7 @@ const menuConfig = [
     iconSelected: tripSelectedIcon,
   },
   {
-    id: 'menu3',
+    id: 'personalCenter',
     to: '/index/personalCenter',
     title: '个人中心',
     pageTitle: '个人中心',
@@ -39,16 +40,18 @@ const menuConfig = [
   },
 ]
 
-const Index: FC<any> = (props) => {
-  const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === props.location.pathname)
-  const [selectedId, setSelectedId] = useState(matchPathArr[0]?.id || 'mainPage')
+const Index: FC<any> = ({ location, children, selectedId, setSelectedId }) => {
+  const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === location.pathname)
+  useEffect(() => {
+    setSelectedId(matchPathArr[0]?.id || 'mainPage')
+  }, [])
   const menuSwitchHandle = (menuItem) => () => {
     document.title = menuItem.pageTitle
     setSelectedId(menuItem.id)
   }
   return (
     <div className="wrap">
-      <div className="content">{props.children}</div>
+      <div className="content">{children}</div>
       <MenuBar>
         {menuConfig.map((menuItem) => (
           <Link
@@ -67,4 +70,12 @@ const Index: FC<any> = (props) => {
   )
 }
 
-export default Index
+const mapState = ({ base: { selectedId } }) => ({
+  selectedId,
+})
+
+const mapDispatch = ({ base: { setSelectedId } }) => ({
+  setSelectedId,
+})
+
+export default connect(mapState, mapDispatch)(Index)

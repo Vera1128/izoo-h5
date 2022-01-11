@@ -7,10 +7,11 @@ import './index.less'
 interface Props {
   className?: string
   list: Array<scheme.RecommendItem | null>
+  itemClick?: (item: any) => () => void
 }
 
 function RecommendList(props: Props) {
-  const { list } = props
+  const { list, itemClick } = props
   return (
     <div className={`recommendListContainer ${props.className}`}>
       <ListHeader title="热门推荐" hasBtn={false} className="listHeader" />
@@ -33,7 +34,9 @@ function RecommendList(props: Props) {
                   时长{(item.duration / 60).toFixed(2)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{item.totals}条
                 </p>
               </div>
-              <div className="listenBtn">进入收听</div>
+              <div className="listenBtn" onClick={itemClick(item.mainClassId)}>
+                进入收听
+              </div>
             </div>
           </div>
         ))}
@@ -44,6 +47,7 @@ function RecommendList(props: Props) {
 
 RecommendList.defaultProps = {
   className: '',
+  itemClick: () => () => {},
 } as Partial<Props>
 
 export default RecommendList

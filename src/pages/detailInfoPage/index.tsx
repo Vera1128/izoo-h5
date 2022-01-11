@@ -15,6 +15,9 @@ import { changeCollectStatus } from 'apis/detailPageInfo'
 import Button from 'components/Button'
 import { throttle } from 'src/utils'
 
+import EventManager from 'src/modules/eventManager'
+import { EventType } from 'src/modules/EventType'
+
 import HomeImg from 'assets/images/home.png'
 import ShareImg from 'assets/images/share.png'
 import HeartNormalImg from 'assets/images/heart-normal.png'
@@ -24,8 +27,9 @@ import LocationIcon from 'assets/images/location-icon.png'
 import PriceIcon from 'assets/images/price-icon.png'
 import TimeIcon from 'assets/images/time-icon.png'
 import TagIcon from 'assets/images/tag-icon.png'
-import playIcon from 'assets/images/play-icon.png'
+import playIcon from 'assets/images/play-icon-bold.png'
 import pauseIcon from 'assets/images/pause-icon.png'
+import audioContinueIcon from 'assets/images/music-flow-icon.png'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -43,7 +47,17 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
   const { catalogList, info, isCollect, isPayment } = detailInfo
   useEffect(() => {
     getDetailInfo(id)
-    return () => {}
+    let listener = null
+    EventManager.on(
+      EventType.AUDIO_PROGRESS_UPDATE,
+      (listener = throttle((progress) => {
+        setPlayProgress(progress)
+        console.log(progress)
+      }, 1000)),
+    )
+    return () => {
+      EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)
+    }
   }, [])
   useEffect(() => {
     if (catalogList?.length > 0) {
@@ -51,13 +65,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
       catalogList.forEach((item) => {
         if (item.isAudition) audioList.push(item)
       })
-      AudioGlobal.getInstance().audiosInit(
-        audioList,
-        throttle((progress) => {
-          setPlayProgress(progress)
-          console.log(progress)
-        }, 1000),
-      )
+      AudioGlobal.getInstance().audiosInit(audioList)
     }
   }, [detailInfo])
   const clickPlayAudio = (id) => {
@@ -118,9 +126,11 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
       </div>
     )
   }
+
   return (
     <div className="detailInfoPage">
       <BackIcon clickHandle={backToMainPage} />
+      <img src={audioContinueIcon} className="playContinue" />
       <Swiper
         slidesPerView="auto"
         className="mySwiper"

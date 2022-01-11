@@ -6,10 +6,11 @@ import './index.less'
 
 interface Props {
   list: Array<schemes.ThemeListItem | null>
+  itemClick?: (index: number) => () => void
 }
 
 function ThemeList(props: Props) {
-  const { list } = props
+  const { list, itemClick } = props
   const clickMoreHandle = () => {
     console.log('更多')
   }
@@ -17,17 +18,22 @@ function ThemeList(props: Props) {
     <div className="themeListContainer">
       <ListHeader title="行走主题" clickHandle={clickMoreHandle} hasBtn={false} className="listHeader" />
       <div className="themeList">
-        {list.map((item) => (
-          <div className="themeItem" key={item._id}>
-            <img src={item.icon} alt="主题图片" />
-            <p className="desc">{item.tag}</p>
-          </div>
-        ))}
+        {list.map(
+          (item, index) =>
+            item.tag && (
+              <div className="themeItem" key={item._id} onClick={itemClick(index)}>
+                <img src={item.icon} alt="主题图片" />
+                <p className="desc">{item.tag}</p>
+              </div>
+            ),
+        )}
       </div>
     </div>
   )
 }
 
-ThemeList.defaultProps = {} as Partial<Props>
+ThemeList.defaultProps = {
+  itemClick: () => () => {},
+} as Partial<Props>
 
 export default ThemeList

@@ -8,6 +8,7 @@ export default {
     typesArr: [],
     listArr: {},
     citySelectedId: 0,
+    theme: 'city',
   },
 
   effects: (dispatch) => ({
@@ -60,6 +61,12 @@ export default {
       return {
         ...state,
         listArr: payload,
+      }
+    },
+    setTheme(state, payload) {
+      return {
+        ...state,
+        theme: payload,
       }
     },
   },

@@ -35,6 +35,9 @@ const Index = ({
   getScrollData,
   getTagsData,
   getNearbyData,
+  setSelectedId,
+  setTheme,
+  setCitySelectedId,
 }) => {
   const pageRef = useRef(null)
   useEffect(() => {
@@ -58,6 +61,16 @@ const Index = ({
 
   const goToDetailInfoPage = (mainClassId) => () => {
     history.push(`/detailInfoPage/${mainClassId}`)
+  }
+  const clickMoreHandle = () => {
+    setSelectedId('allRoutes')
+    history.replace('/index/allRoutes')
+  }
+  const themeClickHandle = (index) => () => {
+    setSelectedId('allRoutes')
+    history.replace('/index/allRoutes')
+    setTheme('tag')
+    setCitySelectedId(index)
   }
   return (
     <div className="mainPageContainer" ref={pageRef} onScroll={debounce(scrollHandle, 500)}>
@@ -83,10 +96,10 @@ const Index = ({
         ))}
       </Swiper>
       <FocusOnCom />
-      <NearbyList list={nearbyList} itemClick={goToDetailInfoPage} />
-      <ThemeList list={themeList} />
+      <NearbyList list={nearbyList} itemClick={goToDetailInfoPage} clickMoreHandle={clickMoreHandle} />
+      <ThemeList list={themeList} itemClick={themeClickHandle} />
       <CityList list={cityList} />
-      <RecommendList list={populerList} />
+      <RecommendList list={populerList} itemClick={goToDetailInfoPage} />
       <EmptyBottom color="#666699" />
     </div>
   )
@@ -103,6 +116,8 @@ const mapState = ({ main: { offsetY, cityList, populerList, scrollList, themeLis
 
 const mapDispatch = ({
   main: { setOffsetY, getUserInfo, getCityData, getPopulerData, getScrollData, getTagsData, getNearbyData },
+  base: { setSelectedId },
+  allRoutes: { setTheme, setCitySelectedId },
 }) => ({
   setOffsetY,
   getUserInfo,
@@ -111,6 +126,9 @@ const mapDispatch = ({
   getScrollData,
   getTagsData,
   getNearbyData,
+  setSelectedId,
+  setTheme,
+  setCitySelectedId,
 })
 
 export default connect(mapState, mapDispatch)(Index)

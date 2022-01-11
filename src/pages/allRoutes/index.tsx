@@ -13,8 +13,17 @@ import './index.scss'
 
 let mySwiper = null
 
-const Index = ({ history, typesArr, listArr, citySelectedId, setCitySelectedId, getTypeList, getTypeData }) => {
-  const [theme, setTheme] = useState('city')
+const Index = ({
+  history,
+  theme,
+  setTheme,
+  typesArr,
+  listArr,
+  citySelectedId,
+  setCitySelectedId,
+  getTypeList,
+  getTypeData,
+}) => {
   useEffect(() => {
     getTypeList(theme)
   }, [])
@@ -66,44 +75,49 @@ const Index = ({ history, typesArr, listArr, citySelectedId, setCitySelectedId, 
           }}
           initialSlide={citySelectedId}
         >
-          {typesArr.map((city) => (
-            <SwiperSlide key={city.id}>
-              <div className="allRoutesList">
-                {listArr[city]?.length > 0 ? (
-                  <>
-                    {listArr[city].map((item) => (
-                      <AllRouteItem
-                        data={item}
-                        key={item.mainClassId}
-                        onClick={() => {
-                          history.push(`/detailInfoPage/${item.mainClassId}`)
-                        }}
-                      />
-                    ))}
-                    <EmptyBottom />
-                  </>
-                ) : (
-                  <EmptyList />
-                )}
-              </div>
-            </SwiperSlide>
-          ))}
+          {typesArr.map(
+            (city) =>
+              city && (
+                <SwiperSlide key={city.id}>
+                  <div className="allRoutesList">
+                    {listArr[city]?.length > 0 ? (
+                      <>
+                        {listArr[city].map((item) => (
+                          <AllRouteItem
+                            data={item}
+                            key={item.mainClassId}
+                            onClick={() => {
+                              history.push(`/detailInfoPage/${item.mainClassId}`)
+                            }}
+                          />
+                        ))}
+                        <EmptyBottom />
+                      </>
+                    ) : (
+                      <EmptyList />
+                    )}
+                  </div>
+                </SwiperSlide>
+              ),
+          )}
         </Swiper>
       </div>
     </div>
   )
 }
 
-const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr } }) => ({
+const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr, theme } }) => ({
   typesArr,
   listArr,
   citySelectedId,
+  theme,
 })
 
-const mapDispatch = ({ allRoutes: { setCitySelectedId, getTypeList, getTypeData } }) => ({
+const mapDispatch = ({ allRoutes: { setCitySelectedId, getTypeList, getTypeData, setTheme } }) => ({
   setCitySelectedId,
   getTypeList,
   getTypeData,
+  setTheme,
 })
 
 export default connect(mapState, mapDispatch)(Index)

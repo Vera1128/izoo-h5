@@ -7,13 +7,11 @@ interface Props {
   className?: string
   list: Array<any>
   itemClick?: (item: any) => () => void
+  clickMoreHandle?: () => void
 }
 
 function NearbyList(props: Props) {
-  const { list, itemClick } = props
-  const clickMoreHandle = () => {
-    console.log('更多', list)
-  }
+  const { list, itemClick, clickMoreHandle } = props
   return (
     <div className={`nearbyListContainer ${props.className}`}>
       <ListHeader title="离你不远" clickHandle={clickMoreHandle} />
@@ -42,6 +40,7 @@ function NearbyList(props: Props) {
 NearbyList.defaultProps = {
   className: '',
   itemClick: () => () => {},
+  clickMoreHandle: () => {},
 } as Partial<Props>
 
 export default NearbyList

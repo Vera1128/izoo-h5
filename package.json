@@ -24,6 +24,7 @@
     "axios": "^0.21.1",
     "clipboard-polyfill": "^3.0.3",
     "eslint-import-resolver-webpack": "^0.13.2",
+    "event-emitter": "^0.3.5",
     "hammerjs": "^2.0.8",
     "hh-mm-ss": "^1.2.0",
     "history": "4.10.1",

@@ -1,3 +1,6 @@
+import EventManager from 'src/modules/eventManager'
+import { EventType } from 'src/modules/EventType'
+
 interface AudiosType {
   [propName: string]: any
 }
@@ -27,7 +30,7 @@ export class AudioGlobal {
   }
 
   // audio列表更新
-  audiosInit(audioList: Array<any>, playProgressChangeCb: (progress: ProgressType) => void) {
+  audiosInit(audioList: Array<any>) {
     console.log('audioList', audioList)
     this.audios = {}
     this.audioCurr = null
@@ -52,7 +55,7 @@ export class AudioGlobal {
           progress: playProgress,
           isPlay: !audioTemp.paused,
         }
-        playProgressChangeCb({ ...this.progressMap })
+        EventManager.emit(EventType.AUDIO_PROGRESS_UPDATE, { ...this.progressMap })
       }
       audioTemp.src = audio.audioUri
     })
@@ -66,11 +69,11 @@ export class AudioGlobal {
         id,
         audio: this.audios[id],
       }
-      this.audioCurr.audio.play()
+      this.audioCurr?.audio.play()
     }
   }
 
   audioStop() {
-    this.audioCurr.pause()
+    this.audioCurr?.pause()
   }
 }
