@@ -5,15 +5,15 @@ const dev = {
 // hard code
 
 const test = {
-  publicPath: `http://127.0.0.1:8082/`,
+  publicPath: `https://walkidz.oss-cn-beijing.aliyuncs.com/h5/dist/`,
 }
 
 const uat = {
-  publicPath: `http://127.0.0.1:8082/`,
+  publicPath: `https://walkidz.oss-cn-beijing.aliyuncs.com/h5/dist/`,
 }
 
 const prod = {
-  publicPath: `http://127.0.0.1:8082/`,
+  publicPath: `https://walkidz.oss-cn-beijing.aliyuncs.com/h5/dist/`,
 }
 
 const config = {

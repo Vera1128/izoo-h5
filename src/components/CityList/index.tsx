@@ -10,19 +10,18 @@ interface ListItemProps {
 interface Props {
   className?: string
   list: Array<ListItemProps | null>
+  itemClick?: (item: any) => () => void
+  clickMoreHandle?: () => void
 }
 
 function CityList(props: Props) {
-  const { className, list } = props
-  const clickMoreHandle = () => {
-    console.log('更多')
-  }
+  const { className, list, clickMoreHandle, itemClick } = props
   return (
     <div className={`cityListContainer ${className}`}>
       <ListHeader title="城市路线" clickHandle={clickMoreHandle} />
       <div className="cityList">
-        {list.map((item) => (
-          <img className="cityItem" src={item.poster} key={item.city} alt="城市图片" />
+        {list.map((item, index) => (
+          <img className="cityItem" src={item.poster} key={item.city} alt="城市图片" onClick={itemClick(index)} />
         ))}
       </div>
     </div>
@@ -31,6 +30,8 @@ function CityList(props: Props) {
 
 CityList.defaultProps = {
   className: '',
+  itemClick: () => () => {},
+  clickMoreHandle: () => {},
 } as Partial<Props>
 
 export default CityList

@@ -66,10 +66,20 @@ const Index = ({
     setSelectedId('allRoutes')
     history.replace('/index/allRoutes')
   }
+  const clickCityMoreHandle = () => {
+    setSelectedId('allRoutes')
+    history.replace('/index/allRoutes')
+  }
   const themeClickHandle = (index) => () => {
     setSelectedId('allRoutes')
     history.replace('/index/allRoutes')
     setTheme('tag')
+    setCitySelectedId(index)
+  }
+  const cityClickHandle = (index) => () => {
+    setSelectedId('allRoutes')
+    history.replace('/index/allRoutes')
+    setTheme('city')
     setCitySelectedId(index)
   }
   return (
@@ -98,7 +108,7 @@ const Index = ({
       <FocusOnCom />
       <NearbyList list={nearbyList} itemClick={goToDetailInfoPage} clickMoreHandle={clickMoreHandle} />
       <ThemeList list={themeList} itemClick={themeClickHandle} />
-      <CityList list={cityList} />
+      <CityList list={cityList} itemClick={cityClickHandle} clickMoreHandle={clickCityMoreHandle} />
       <RecommendList list={populerList} itemClick={goToDetailInfoPage} />
       <EmptyBottom color="#666699" />
     </div>

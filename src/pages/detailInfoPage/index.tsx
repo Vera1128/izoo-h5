@@ -130,7 +130,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
   return (
     <div className="detailInfoPage">
       <BackIcon clickHandle={backToMainPage} />
-      <img src={audioContinueIcon} className="playContinue" />
+      {/* <img src={audioContinueIcon} className="playContinue" /> */}
       <Swiper
         slidesPerView="auto"
         className="mySwiper"

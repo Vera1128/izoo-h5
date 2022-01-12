@@ -8,7 +8,7 @@ const BASE_PATHNAME = `/${APP_NAME}/` // 基础路由地址
 const SERVER_PORT = 8080 // 开发环境的端口
 const SERVER_HOST = '0.0.0.0' // 开发环境的host - 需要配合switchhost来设置映射
 const ENV = process.env.NODE_ENV // 当前环境
-const IS_DEV = ENV !== 'prod' // 是否在测试环境
+const IS_DEV = ENV === 'dev' // 是否是开发模式
 const SENTRY_DSN = '' // sentry的dsn
 
 module.exports = {

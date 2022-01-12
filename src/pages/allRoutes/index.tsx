@@ -59,12 +59,15 @@ const Index = ({
         }
       />
       <div className="cityContainer">
-        {typesArr.map((type, index) => (
-          <div className="cityItem" key={type} onClick={cityClickHandle(type, index)} id={`cityItem-${type}`}>
-            <div className="cityName">{type}</div>
-            <div className={`cityNormal ${citySelectedId === index ? 'citySelected' : ''}`} />
-          </div>
-        ))}
+        {typesArr.map(
+          (type, index) =>
+            type && (
+              <div className="cityItem" key={type} onClick={cityClickHandle(type, index)} id={`cityItem-${type}`}>
+                <div className="cityName">{type}</div>
+                <div className={`cityNormal ${citySelectedId === index ? 'citySelected' : ''}`} />
+              </div>
+            ),
+        )}
       </div>
       <div className="line" />
       <div className="allRoutesListContainer">
