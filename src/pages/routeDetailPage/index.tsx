@@ -1,16 +1,23 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Hammer from 'hammerjs'
+import { connect } from 'react-redux'
 import BackIcon from 'components/BackIcon'
 import test1 from 'assets/test-image/1.png'
 import test2 from 'assets/test-image/2.png'
 import placeIcon from 'assets/images/place-icon.png'
 import './index.scss'
 
-const RouteDetailPage = ({ history }) => {
-  console.log('routeDetailPage')
+const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
   const [targetImg, setTargetImg] = useState(test1)
   const [showPreviewImg, setShowPreviewImg] = useState(false)
   const largeImgEl = useRef(null)
+  const {
+    params: { mainClassId, subId },
+  } = match
+
+  useEffect(() => {
+    getSubDetail({ mainClassId, subId })
+  }, [])
 
   useEffect(() => {
     console.log('初始化')
@@ -76,17 +83,17 @@ const RouteDetailPage = ({ history }) => {
   return (
     <div className="routeDetailPage">
       <BackIcon clickHandle={backToDetailListPage} />
-      <img src={test1} className="mainImg" />
+      <img src={subDetail.imagesList && subDetail.imagesList[0]} className="mainImg" />
       <div className="locationContainer">
         <img src={placeIcon} className="placeIcon" />
-        <p className="locationDesc">从武康大楼沿武康路前行从武康大楼沿武康路前行从武康大楼沿武康路前行</p>
+        <p className="locationDesc">{subDetail.address}</p>
       </div>
       <div className="contentContainer">
         <div className="audioContainer">1</div>
         <div className="smallImgContainer">
-          <img src={test1} className="smallImg" onClick={showPreviewHandle(test1)} />
-          <img src={test2} className="smallImg" onClick={showPreviewHandle(test2)} />
-          <img src={test1} className="smallImg" onClick={showPreviewHandle(test1)} />
+          {subDetail.extraImagesList?.map((image) => (
+            <img key={image} src={image} className="smallImg" onClick={showPreviewHandle(image)} />
+          ))}
         </div>
       </div>
       {showPreviewImg && (
@@ -105,4 +112,12 @@ const RouteDetailPage = ({ history }) => {
   )
 }
 
-export default RouteDetailPage
+const mapState = ({ detailInfoPage: { subDetail } }) => ({
+  subDetail,
+})
+
+const mapDispatch = ({ detailInfoPage: { getSubDetail } }) => ({
+  getSubDetail,
+})
+
+export default connect(mapState, mapDispatch)(RouteDetailPage)

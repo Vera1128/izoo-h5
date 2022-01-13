@@ -37,18 +37,26 @@ import './index.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
-const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, setDetailInfo }) => {
+const Index = ({
+  history,
+  match,
+  detailInfo,
+  catalogList,
+  getCatalogList,
+  getDetailInfo,
+  setCollectStatus,
+  setDetailInfo,
+}) => {
   const [showShareMask, setShowShareMask] = useState(false)
   const [selectMenu, setSelectMenu] = useState(1)
   const [playProgress, setPlayProgress] = useState({})
   const {
     params: { id },
   } = match
-  console.log('*********')
-  console.log(id)
-  const { catalogList, info, isCollect, isPayment } = detailInfo
+  const { info, isCollect, isPayment } = detailInfo
   useEffect(() => {
     getDetailInfo(id)
+    getCatalogList(id)
     let listener = null
     EventManager.on(
       EventType.AUDIO_PROGRESS_UPDATE,
@@ -87,10 +95,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
     // 是否已经支付
     if (isPayment)
       return (
-        <Button
-          className="freeBtn"
-          onClick={() => history.push({ pathname: '/routeListPage', query: { catalogList } })}
-        >
+        <Button className="freeBtn" onClick={() => history.push({ pathname: `/routeListPage/${id}` })}>
           <p className="largeText">进入收听</p>
           <p className="smallText">已购买</p>
         </Button>
@@ -98,10 +103,7 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
     // 是否免费
     if (!info?.isCharge) {
       return (
-        <Button
-          className="freeBtn"
-          onClick={() => history.push({ pathname: '/routeListPage', query: { catalogList } })}
-        >
+        <Button className="freeBtn" onClick={() => history.push({ pathname: `/routeListPage/${id}` })}>
           <p className="largeText">免费收听</p>
         </Button>
       )
@@ -255,12 +257,14 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
   )
 }
 
-const mapState = ({ detailInfoPage: { detailInfo } }) => ({
+const mapState = ({ detailInfoPage: { detailInfo, catalogList } }) => ({
   detailInfo,
+  catalogList,
 })
 
-const mapDispatch = ({ detailInfoPage: { getDetailInfo, setCollectStatus, setDetailInfo } }) => ({
+const mapDispatch = ({ detailInfoPage: { getDetailInfo, getCatalogList, setCollectStatus, setDetailInfo } }) => ({
   getDetailInfo,
+  getCatalogList,
   setCollectStatus,
   setDetailInfo,
 })

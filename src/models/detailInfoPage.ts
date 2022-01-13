@@ -1,10 +1,12 @@
 import _ from 'lodash'
-import { getDetailInfo, changeCollectStatus } from 'apis/detailPageInfo'
+import { getDetailInfo, getCatalogList, getSubDetail } from 'apis/detailPageInfo'
 
 export default {
   name: 'detailInfoPage',
   state: {
     detailInfo: {},
+    catalogList: [],
+    subDetail: {},
   },
 
   effects: (dispatch) => ({
@@ -14,6 +16,18 @@ export default {
         dispatch.detailInfoPage.setDetailInfo(res.res)
       }
     },
+    async getCatalogList(id) {
+      const res = await getCatalogList(id)
+      if (res) {
+        dispatch.detailInfoPage.setCatalogList(res.res.list)
+      }
+    },
+    async getSubDetail({ mainClassId, subId }) {
+      const res = await getSubDetail({ mainClassId, subId })
+      if (res) {
+        dispatch.detailInfoPage.setSubDetail(res.res)
+      }
+    },
   }),
 
   reducers: {
@@ -21,6 +35,18 @@ export default {
       return {
         ...state,
         detailInfo: payload,
+      }
+    },
+    setSubDetail(state, payload) {
+      return {
+        ...state,
+        subDetail: payload,
+      }
+    },
+    setCatalogList(state, payload) {
+      return {
+        ...state,
+        catalogList: payload,
       }
     },
     setCollectStatus(state, payload) {

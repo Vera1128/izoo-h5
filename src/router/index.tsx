@@ -28,12 +28,12 @@ export default [
     exact: true,
   },
   {
-    path: '/routeDetailPage',
+    path: '/routeDetailPage/:mainClassId/:subId',
     component: asyncImport('routeDetailPage'),
     exact: true,
   },
   {
-    path: '/routeListPage',
+    path: '/routeListPage/:id',
     component: asyncImport('routeListPage'),
     exact: true,
   },

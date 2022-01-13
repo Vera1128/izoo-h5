@@ -69,7 +69,7 @@ const createRoute = (routes) => <Switch>{routes.map((route, index) => createFixR
 const App = () => (
   <ErrorBoundary>
     <HashRouter>
-      <Redirect from="/" to="/index" />
+      {/* <Redirect from="/" to="/index" /> */}
       <Switch>{createRoute(routes)}</Switch>
     </HashRouter>
   </ErrorBoundary>
