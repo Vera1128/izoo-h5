@@ -1,5 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Router, Switch, Route, Redirect } from 'react-router-dom'
+import { HashRouter, Router, Switch, Route, Redirect } from 'react-router-dom'
 import ErrorBoundary from 'components/ErrorBoundary'
 import routes from 'src/router'
 import history from 'utils/history'
@@ -64,20 +64,14 @@ const createBasicRoute = (route, index) => {
   )
 }
 
-const createRoute = (routes) => (
-  <Switch>
-    {routes.map((route, index) => createFixRoute(route, index))}
-    {/* <Redirect to="/index/mainPage" /> */}
-  </Switch>
-)
+const createRoute = (routes) => <Switch>{routes.map((route, index) => createFixRoute(route, index))}</Switch>
 
 const App = () => (
   <ErrorBoundary>
-    <BrowserRouter basename="/h5/v1/">
-      {/* <Router children={createRoute(routes)} history={history} /> */}
+    <HashRouter>
+      <Redirect from="/" to="/index" />
       <Switch>{createRoute(routes)}</Switch>
-      {/* <Redirect to="/index/mainPage" /> */}
-    </BrowserRouter>
+    </HashRouter>
   </ErrorBoundary>
 )
 

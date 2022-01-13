@@ -44,6 +44,8 @@ const Index = ({ history, match, detailInfo, getDetailInfo, setCollectStatus, se
   const {
     params: { id },
   } = match
+  console.log('*********')
+  console.log(id)
   const { catalogList, info, isCollect, isPayment } = detailInfo
   useEffect(() => {
     getDetailInfo(id)
