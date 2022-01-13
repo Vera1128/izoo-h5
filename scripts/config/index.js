@@ -2,18 +2,16 @@ const dev = {
   publicPath: '/',
 }
 
-// hard code
-
 const test = {
-  publicPath: `https://walkidz.oss-cn-beijing.aliyuncs.com/h5/dist/`,
+  publicPath: `https://oss.walkidz.com/h5/v1/`,
 }
 
 const uat = {
-  publicPath: `https://walkidz.oss-cn-beijing.aliyuncs.com/h5/dist/`,
+  publicPath: `https://oss.walkidz.com/h5/v1/`,
 }
 
 const prod = {
-  publicPath: `https://walkidz.oss-cn-beijing.aliyuncs.com/h5/dist/`,
+  publicPath: `https://oss.walkidz.com/h5/v1/`,
 }
 
 const config = {

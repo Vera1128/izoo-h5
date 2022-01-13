@@ -64,12 +64,19 @@ const createBasicRoute = (route, index) => {
   )
 }
 
-const createRoute = (routes) => <Switch>{routes.map((route, index) => createFixRoute(route, index))}</Switch>
+const createRoute = (routes) => (
+  <Switch>
+    {routes.map((route, index) => createFixRoute(route, index))}
+    {/* <Redirect to="/index/mainPage" /> */}
+  </Switch>
+)
 
 const App = () => (
   <ErrorBoundary>
-    <BrowserRouter basename={APP_BASENAME}>
-      <Router children={createRoute(routes)} history={history} />
+    <BrowserRouter basename="/h5/v1/">
+      {/* <Router children={createRoute(routes)} history={history} /> */}
+      <Switch>{createRoute(routes)}</Switch>
+      {/* <Redirect to="/index/mainPage" /> */}
     </BrowserRouter>
   </ErrorBoundary>
 )
