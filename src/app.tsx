@@ -9,11 +9,11 @@ import sentry from 'utils/sentry'
 sentry?.SentryInit?.()
 
 // 非生产环境启用vconsole，便于排错
-if (APP_ENV === 'test') {
-  const VConsole = require('vconsole')
-  /* eslint-disable no-new */
-  new VConsole()
-}
+// if (APP_ENV === 'test') {
+const VConsole = require('vconsole')
+/* eslint-disable no-new */
+new VConsole()
+// }
 
 // 该组件通过递归的方式，将所有route中带有children路由的父路由进行解构,最终用createBasicRoute函数来渲染
 const createFixRoute = (route, index) => {

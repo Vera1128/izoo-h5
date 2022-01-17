@@ -1,4 +1,5 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
+import { connect } from 'react-redux'
 import AllRouteItem from 'components/AllRouteItem'
 import SearchIcon from 'assets/images/search-icon.png'
 import SearchEmptyImg from 'assets/images/search-empty.png'
@@ -6,27 +7,33 @@ import './index.scss'
 
 interface Props {
   rightButton?: React.ReactNode | string
+  itemClick?: (string) => () => void
 }
 
-const list = [
-  //   {
-  //     id: new Date().getTime(),
-  //     imgSrc: SwiperTestImg,
-  //     desc: '聚焦中国经济发展聚焦中国经济发展聚焦中国经济发展',
-  //     tagList: ['科学发展', '文学艺术'],
-  //     name: '沪港银行历史展览馆',
-  //     location: '上海',
-  //   },
-]
+function Search({
+  rightButton,
+  history,
+  hot,
+  list,
+  getSearchHistory,
+  search,
+  searchWord,
+  setSearchWord,
+  itemClick,
+  inputFocus,
+  showCancleText,
+  showSearchRes,
+  showRightButton,
+  setInputFocus,
+  setShowCancleText,
+  setShowSearchRes,
+  setShowRightButton,
+}) {
+  console.log('showRightButton', showRightButton)
+  const [searchValue, setSearchValue] = useState(searchWord)
 
-function Search(props: Props) {
-  const { rightButton } = props
-  const [inputFocus, setInputFocus] = useState(false)
-  const [showCancleText, setShowCancleText] = useState(false)
-  const [showSearchRes, setShowSearchRes] = useState(false)
-  const [showRightButton, setShowRightButton] = useState(true)
   const focusHandle = () => {
-    console.log('focus')
+    getSearchHistory()
     setInputFocus(true)
     setShowSearchRes(false)
     setShowRightButton(false)
@@ -42,11 +49,29 @@ function Search(props: Props) {
     setInputFocus(false)
     setShowCancleText(false)
     setShowSearchRes(false)
+    setSearchValue('')
     if (rightButton) {
       setShowRightButton(true)
     }
   }
-  const searchHandle = () => {
+  const searchHandle = async () => {
+    if (!searchValue) return
+    setSearchWord(searchValue)
+    await search(searchValue)
+    setShowSearchRes(true)
+  }
+  const inputHandle = (e) => {
+    const {
+      target: { value },
+    } = e
+    setSearchValue(value.trim())
+  }
+  const clearSearchHandle = () => {
+    console.log('清空历史搜索记录')
+  }
+  const clickTagToSearch = (tag) => async () => {
+    setSearchValue(tag)
+    await search(tag)
     setShowSearchRes(true)
   }
   return (
@@ -55,7 +80,14 @@ function Search(props: Props) {
         <div className="searchContainer">
           <div className="inputContent">
             <img src={SearchIcon} className="searchIcon" alt="" onClick={searchHandle} />
-            <input placeholder="搜索导览/景点/线路" className="input" onFocus={focusHandle} />
+            <input
+              value={searchValue}
+              placeholder="搜索导览/景点/线路"
+              className="input"
+              onFocus={focusHandle}
+              onInput={inputHandle}
+              type="search"
+            />
           </div>
         </div>
         {rightButton ? (
@@ -79,29 +111,35 @@ function Search(props: Props) {
       {inputFocus && (
         <div className="searchPanel">
           <div className="mySearchContainer">
-            <div className="titleContainer">
-              <div className="mainTitle">我的搜索</div>
-              <div className="subTitle">清空搜索记录</div>
-            </div>
-            <div className="searchTagContainer">
-              <div className="tag">静安公园</div>
-              <div className="tag">公园</div>
-            </div>
+            {history.length > 0 && (
+              <>
+                <div className="titleContainer">
+                  <div className="mainTitle">我的搜索</div>
+                  <div className="subTitle" onClick={clearSearchHandle}>
+                    清空搜索记录
+                  </div>
+                </div>
+
+                <div className="searchTagContainer">
+                  {history.slice(0, 10).map((item) => (
+                    <div className="tag" key={item} onClick={clickTagToSearch(item)}>
+                      {item}
+                    </div>
+                  ))}
+                </div>
+              </>
+            )}
           </div>
           <div className="mySearchContainer">
             <div className="titleContainer">
               <div className="mainTitle">热门搜索</div>
             </div>
             <div className="searchTagContainer">
-              <div className="tag">静安公园</div>
-              <div className="tag">公园</div>
-              <div className="tag">武康路</div>
-              <div className="tag">徐家汇</div>
-              <div className="tag">银行展览馆</div>
-              <div className="tag">园</div>
-              <div className="tag">公园</div>
-              <div className="tag">静公园</div>
-              <div className="tag">静安公园</div>
+              {hot.map((item) => (
+                <div className="tag" key={item} onClick={clickTagToSearch(item)}>
+                  {item}
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -111,12 +149,14 @@ function Search(props: Props) {
           <div className="searchResTitleContainer">
             <div className="titleContainer">
               <div className="mainTitle">搜索结果</div>
-              <div className="subTitle">共搜索到2个结果</div>
+              <div className="subTitle">共搜索到{list.length || 0}个结果</div>
             </div>
           </div>
           <div className="searchRes">
             {list.length > 0 ? (
-              list.map((item) => <AllRouteItem data={item} key={item.id} />)
+              list.map((item) => (
+                <AllRouteItem data={item} key={item.mainClassId} onClick={itemClick(item.mainClassId)} />
+              ))
             ) : (
               <div className="searchEmpty">
                 <img src={SearchEmptyImg} alt="" />
@@ -131,6 +171,40 @@ function Search(props: Props) {
 
 Search.defaultProps = {
   rightButton: '',
+  itemClick: () => () => {},
 } as Partial<Props>
 
-export default Search
+const mapState = ({
+  search: { history, hot, list, searchWord, inputFocus, showCancleText, showSearchRes, showRightButton },
+}) => ({
+  history,
+  hot,
+  list,
+  searchWord,
+  inputFocus,
+  showCancleText,
+  showSearchRes,
+  showRightButton,
+})
+
+const mapDispatch = ({
+  search: {
+    getSearchHistory,
+    search,
+    setSearchWord,
+    setInputFocus,
+    setShowCancleText,
+    setShowSearchRes,
+    setShowRightButton,
+  },
+}) => ({
+  getSearchHistory,
+  search,
+  setSearchWord,
+  setInputFocus,
+  setShowCancleText,
+  setShowSearchRes,
+  setShowRightButton,
+})
+
+export default connect(mapState, mapDispatch)(Search)

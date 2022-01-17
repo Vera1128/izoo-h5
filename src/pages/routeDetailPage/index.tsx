@@ -2,13 +2,11 @@ import React, { useState, useRef, useEffect } from 'react'
 import Hammer from 'hammerjs'
 import { connect } from 'react-redux'
 import BackIcon from 'components/BackIcon'
-import test1 from 'assets/test-image/1.png'
-import test2 from 'assets/test-image/2.png'
 import placeIcon from 'assets/images/place-icon.png'
 import './index.scss'
 
 const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
-  const [targetImg, setTargetImg] = useState(test1)
+  const [targetImg, setTargetImg] = useState('')
   const [showPreviewImg, setShowPreviewImg] = useState(false)
   const largeImgEl = useRef(null)
   const {

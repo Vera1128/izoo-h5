@@ -28,7 +28,7 @@ apiClient.flows.preCallApiFlow.push((v) => {
   const {
     req: { userId },
   } = v
-  if (!userId) v.req.userId = 'oDfcY69wA2QERN9mBhuMOvCFsPxQ'
+  if (!userId) v.req.userId = window.userInfo?.userId || 'oDfcY69wA2QERN9mBhuMOvCFsPxQ'
   return v
 })
 

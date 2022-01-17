@@ -24,9 +24,11 @@ const Index = ({
   setCitySelectedId,
   getTypeList,
   getTypeData,
+  setShowRightButton,
 }) => {
   useEffect(() => {
     getTypeList(theme)
+    setShowRightButton(true)
   }, [])
   const cityClickHandle = (id, index) => () => {
     setCitySelectedId(index)
@@ -48,6 +50,20 @@ const Index = ({
     mySwiper.slideTo(0)
     getTypeList(themeNew)
   }
+
+  const swiperChange = (index) => {
+    setCitySelectedId(index)
+    const typeItem = typesArr[index]
+    const cityDom = document.getElementById(`cityItem-${typeItem}`)
+    cityDom.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
+    if (!listArr[typeItem] || listArr[typeItem].length < 1) {
+      getTypeData({
+        type: theme,
+        value: typeItem,
+      })
+    }
+  }
+
   return (
     <div className="allRoutesContainer">
       <TopSearch
@@ -78,6 +94,9 @@ const Index = ({
             mySwiper = swiper
           }}
           initialSlide={citySelectedId}
+          onSlideChange={(swiper) => {
+            swiperChange(swiper.activeIndex)
+          }}
         >
           {typesArr.map(
             (city) =>
@@ -117,11 +136,15 @@ const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr, theme } }) =
   theme,
 })
 
-const mapDispatch = ({ allRoutes: { setCitySelectedId, getTypeList, getTypeData, setTheme } }) => ({
+const mapDispatch = ({
+  allRoutes: { setCitySelectedId, getTypeList, getTypeData, setTheme },
+  search: { setShowRightButton },
+}) => ({
   setCitySelectedId,
   getTypeList,
   getTypeData,
   setTheme,
+  setShowRightButton,
 })
 
 export default connect(mapState, mapDispatch)(Index)

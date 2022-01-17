@@ -7,7 +7,6 @@ export default {
   state: {
     num: 0,
     offsetY: 0,
-    userInfo: null,
     cityList: [], // 城市路线
     populerList: [], // 热门路线
     scrollList: [], // 轮播图
@@ -16,11 +15,6 @@ export default {
   },
 
   effects: (dispatch) => ({
-    // 测试登录
-    async getUserInfo() {
-      const res = await testLogin()
-      console.log(res)
-    },
     // 获取城市路线数据
     async getCityData() {
       const res = await getCityData()

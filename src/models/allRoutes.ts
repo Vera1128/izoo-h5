@@ -18,7 +18,8 @@ export default {
         const {
           res: { list },
         } = res
-        dispatch.allRoutes.setTypesArr(list)
+        const listNotEmpty = list.filter((item) => item !== '')
+        dispatch.allRoutes.setTypesArr(listNotEmpty)
         dispatch.allRoutes.setCitySelectedId(0)
         if (list.length > 0) {
           const listNew = {}

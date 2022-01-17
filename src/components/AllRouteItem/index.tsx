@@ -5,24 +5,24 @@ import './index.less'
 interface Props {
   data: {
     scrollImage: string
-    street: string
     tags: Array<string>
     title: string
     city: string
+    desc: string
   }
   onClick?: () => void
 }
 
 function AllRouteItem(props: Props) {
   const {
-    data: { scrollImage, street, tags, title, city },
+    data: { scrollImage, tags, title, city, desc },
     onClick,
   } = props
   return (
     <div className="allRouteItem" onClick={onClick}>
       <img src={scrollImage} alt="" className="allRouteItemImg" />
       <div className="allRouteContent">
-        <p className="desc">{street}</p>
+        <p className="desc">{desc}</p>
         <div className="tagList">{tags.map((item) => item && <Tag key={item} text={item} className="tag" />)}</div>
         <p className="name">{title}</p>
       </div>
