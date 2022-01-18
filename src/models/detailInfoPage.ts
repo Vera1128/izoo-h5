@@ -23,9 +23,26 @@ export default {
       }
     },
     async getSubDetail({ mainClassId, subId }) {
-      const res = await getSubDetail({ mainClassId, subId })
-      if (res) {
-        dispatch.detailInfoPage.setSubDetail(res.res)
+      const catalogListRes = await getCatalogList(mainClassId)
+      const subDetailRes = await getSubDetail({ mainClassId, subId })
+      if (catalogListRes && subDetailRes) {
+        const {
+          res: { list: catalogList },
+        } = catalogListRes
+        const { res: subDetail } = subDetailRes
+        let subDetailNew: any = { ...subDetail }
+        dispatch.detailInfoPage.setCatalogList(catalogList)
+        for (let i = 0; i < catalogList.length; i++) {
+          if (catalogList[i].subId === subId) {
+            subDetailNew = {
+              ...subDetailNew,
+              duration: catalogList[i].duration,
+              index: i,
+            }
+            break
+          }
+        }
+        dispatch.detailInfoPage.setSubDetail(subDetailNew)
       }
     },
   }),

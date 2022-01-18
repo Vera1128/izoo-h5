@@ -1,13 +1,18 @@
 import React, { useState, useRef, useEffect } from 'react'
 import Hammer from 'hammerjs'
 import { connect } from 'react-redux'
+import sf from 'seconds-formater'
 import BackIcon from 'components/BackIcon'
+import EventManager from 'src/modules/eventManager'
+import { EventType } from 'src/modules/EventType'
+import { throttle } from 'src/utils'
 import placeIcon from 'assets/images/place-icon.png'
 import './index.scss'
 
 const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
   const [targetImg, setTargetImg] = useState('')
   const [showPreviewImg, setShowPreviewImg] = useState(false)
+  const [playProgress, setPlayProgress] = useState({})
   const largeImgEl = useRef(null)
   const {
     params: { mainClassId, subId },
@@ -15,10 +20,20 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
 
   useEffect(() => {
     getSubDetail({ mainClassId, subId })
+    let listener = null
+    EventManager.on(
+      EventType.AUDIO_PROGRESS_UPDATE,
+      (listener = throttle((progress) => {
+        setPlayProgress(progress)
+        console.log(progress)
+      }, 1000)),
+    )
+    return () => {
+      EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)
+    }
   }, [])
 
   useEffect(() => {
-    console.log('初始化')
     if (largeImgEl.current) {
       const largeImgDom = largeImgEl.current
       const mc = new Hammer.Manager(largeImgDom)
@@ -87,7 +102,19 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
         <p className="locationDesc">{subDetail.address}</p>
       </div>
       <div className="contentContainer">
-        <div className="audioContainer">1</div>
+        <div className="audioContainer">
+          <div className="audioTitleContainer">1</div>
+          <div className="audioProgress">
+            <span className="currrent">
+              {sf.convert(Math.round(playProgress[subId]?.currentTime || 0)).format('MM:SS')}
+            </span>
+            <div className="progressContainer">
+              <div className="progressBar" style={{ width: playProgress[subId]?.progress || 0 }} />
+              <div className="progressDot" style={{ left: playProgress[subId]?.progress || 0 }} />
+            </div>
+            <span className="duration">{sf.convert(Math.round(subDetail.duration || 0)).format('MM:SS')}</span>
+          </div>
+        </div>
         <div className="smallImgContainer">
           {subDetail.extraImagesList?.map((image) => (
             <img key={image} src={image} className="smallImg" onClick={showPreviewHandle(image)} />

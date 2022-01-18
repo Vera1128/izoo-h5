@@ -199,7 +199,6 @@ const Index = ({
           {catalogList?.map((item, index) => (
             <div className="catalogItemContainer" key={item.subId}>
               <div className="catalogItem">
-                {/* hard code */}
                 {item.isAudition ? (
                   <>
                     <div className="num numAudition">试听</div>
