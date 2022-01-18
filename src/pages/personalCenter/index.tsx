@@ -175,7 +175,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                         <div className="centerContainer">
                           <div className="textContainer">{item.desc}</div>
                           <div className="tagList">
-                            {item.tags.map((tag) => (
+                            {item.tags.slice(0, 3).map((tag) => (
                               <Tag text={tag} className="tag" key={tag} />
                             ))}
                           </div>
