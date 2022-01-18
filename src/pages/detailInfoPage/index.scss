@@ -43,9 +43,9 @@
   }
   .detailInfoContent {
     width: 100%;
-    padding: 0 48px;
     .detailInfoMenu {
       width: 100%;
+      padding: 0 48px;
       height: 80px;
       display: flex;
       flex-direction: row;
@@ -71,10 +71,17 @@
         color: #00cab1;
       }
     }
+    .detailInfoBottomContainer {
+      width: 100%;
+      height: calc(100vh - 555px);
+      overflow-y: auto;
+      .routeDetailContent {
+        padding: 0 48px;
+      }
+    }
     .routeInfoContainer {
       width: 100%;
-      padding-top: 48px;
-      padding-bottom: 36px;
+      padding: 48px 48px 36px;
       .routeInfoItem {
         display: flex;
         height: 44px;
@@ -115,7 +122,7 @@
       border-radius: 64px;
       box-shadow: 0px 16px 16px 2px rgba(0, 0, 0, 0.25);
       padding: 24px 48px 96px;
-      margin: 56px 0 32px;
+      margin: 56px auto 32px;
       p {
         width: 100%;
         height: 82px;
@@ -246,8 +253,9 @@
       flex-direction: row;
       position: absolute;
       right: 0;
-      margin-top: 16px;
-      margin-bottom: 10px;
+      bottom: 5px;
+      // margin-top: 16px;
+      // margin-bottom: 10px;
       .buyItem {
         width: 194px;
         background: white;

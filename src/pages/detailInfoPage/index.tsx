@@ -133,7 +133,7 @@ const Index = ({
           <p>￥ {info?.amount}</p>
         </div>
         <div className="buyItem" onClick={() => history.push(`/order/group?routeId=${id}`)}>
-          <p>2人拼团</p>
+          <p>{info?.nums}人拼团</p>
           <p>￥ {info?.avgAmount}</p>
         </div>
       </div>
@@ -177,67 +177,69 @@ const Index = ({
             {selectMenu === 2 && <div className="line" />}
           </div>
         </div>
-        <div className="routeInfoContainer">
-          <div className="routeInfoItem">
-            <img src={LocationIcon} className="locationIcon" />
-            <p>{info?.address}</p>
-          </div>
-          <div className="routeInfoItem">
-            <img src={TimeIcon} className="timeIcon" />
-            <p>{info?.time}</p>
-          </div>
-          <div className="routeInfoItem">
-            <img src={PriceIcon} className="priceIcon" />
-            <p>{info?.tickets}</p>
-          </div>
-          <div className="routeInfoItem">
-            <img src={TagIcon} className="tagIcon" />
-            <div className="tagList">
-              {info?.tags.map((tag) => (
-                <Tag text={tag} className="tag" key={tag} />
-              ))}
+        <div className="detailInfoBottomContainer">
+          <div className="routeInfoContainer">
+            <div className="routeInfoItem">
+              <img src={LocationIcon} className="locationIcon" />
+              <p>{info?.address}</p>
+            </div>
+            <div className="routeInfoItem">
+              <img src={TimeIcon} className="timeIcon" />
+              <p>{info?.time}</p>
+            </div>
+            <div className="routeInfoItem">
+              <img src={PriceIcon} className="priceIcon" />
+              <p>{info?.tickets}</p>
+            </div>
+            <div className="routeInfoItem">
+              <img src={TagIcon} className="tagIcon" />
+              <div className="tagList">
+                {info?.tags.map((tag) => (
+                  <Tag text={tag} className="tag" key={tag} />
+                ))}
+              </div>
             </div>
           </div>
-        </div>
-        <p dangerouslySetInnerHTML={{ __html: info?.content }} />
-        <div className="routeCatalogList">
-          <p>讲解目录</p>
-          {catalogList?.map((item, index) => (
-            <div className="catalogItemContainer" key={item.subId}>
-              <div className="catalogItem">
-                {item.isAudition ? (
-                  <>
-                    <div className="num numAudition">试听</div>
-                    <div className="text textAudition">{item.title}</div>
-                    <img
-                      src={playProgress[item.subId]?.isPlay ? pauseIcon : playIcon}
-                      className="playIcon"
-                      onClick={() => clickPlayAudio(item.subId)}
-                    />
-                  </>
-                ) : (
-                  <>
-                    <div className="num">{`0${index + 1}`.slice(-2)}</div>
-                    <div className="text">{item.title}</div>
-                  </>
+          <p dangerouslySetInnerHTML={{ __html: info?.content }} className="routeDetailContent" />
+          <div className="routeCatalogList">
+            <p>讲解目录</p>
+            {catalogList?.map((item, index) => (
+              <div className="catalogItemContainer" key={item.subId}>
+                <div className="catalogItem">
+                  {item.isAudition ? (
+                    <>
+                      <div className="num numAudition">试听</div>
+                      <div className="text textAudition">{item.title}</div>
+                      <img
+                        src={playProgress[item.subId]?.isPlay ? pauseIcon : playIcon}
+                        className="playIcon"
+                        onClick={() => clickPlayAudio(item.subId)}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <div className="num">{`0${index + 1}`.slice(-2)}</div>
+                      <div className="text">{item.title}</div>
+                    </>
+                  )}
+                </div>
+                {item.isAudition && (
+                  <div className="audioProgress">
+                    <span className="currrent">
+                      {sf.convert(Math.round(playProgress[item.subId]?.currentTime || 0)).format('MM:SS')}
+                    </span>
+                    <div className="progressContainer">
+                      <div className="progressBar" style={{ width: playProgress[item.subId]?.progress || 0 }} />
+                      <div className="progressDot" style={{ left: playProgress[item.subId]?.progress || 0 }} />
+                    </div>
+                    <span className="duration">{sf.convert(Math.round(item.duration || 0)).format('MM:SS')}</span>
+                  </div>
                 )}
               </div>
-              {item.isAudition && (
-                <div className="audioProgress">
-                  <span className="currrent">
-                    {sf.convert(Math.round(playProgress[item.subId]?.currentTime || 0)).format('MM:SS')}
-                  </span>
-                  <div className="progressContainer">
-                    <div className="progressBar" style={{ width: playProgress[item.subId]?.progress || 0 }} />
-                    <div className="progressDot" style={{ left: playProgress[item.subId]?.progress || 0 }} />
-                  </div>
-                  <span className="duration">{sf.convert(Math.round(item.duration || 0)).format('MM:SS')}</span>
-                </div>
-              )}
-            </div>
-          ))}
+            ))}
+          </div>
+          <EmptyBottom color="white" />
         </div>
-        <EmptyBottom color="white" />
       </div>
 
       <div className="detailPageMenu">
