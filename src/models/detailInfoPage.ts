@@ -7,6 +7,8 @@ export default {
     detailInfo: {},
     catalogList: [],
     subDetail: {},
+    // 是否从routeDetailPage页面返回的
+    backFromRouteDetail: false,
   },
 
   effects: (dispatch) => ({
@@ -73,6 +75,12 @@ export default {
           ...state.detailInfo,
           isCollect: payload,
         },
+      }
+    },
+    setBackFromRouteDetail(state, payload) {
+      return {
+        ...state,
+        backFromRouteDetail: payload,
       }
     },
   },

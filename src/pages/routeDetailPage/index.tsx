@@ -5,11 +5,14 @@ import sf from 'seconds-formater'
 import BackIcon from 'components/BackIcon'
 import EventManager from 'src/modules/eventManager'
 import { EventType } from 'src/modules/EventType'
-import { throttle } from 'src/utils'
+import { AudioGlobal } from 'src/modules/audio'
+import { throttle, formatNum } from 'src/utils'
 import placeIcon from 'assets/images/place-icon.png'
+import playIcon from 'assets/images/play-icon-bold.png'
+import pauseIcon from 'assets/images/pause-icon.png'
 import './index.scss'
 
-const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
+const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList, setBackFromRouteDetail }) => {
   const [targetImg, setTargetImg] = useState('')
   const [showPreviewImg, setShowPreviewImg] = useState(false)
   const [playProgress, setPlayProgress] = useState({})
@@ -90,7 +93,12 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
   }
 
   const backToDetailListPage = () => {
+    setBackFromRouteDetail(true)
     history.go(-1)
+  }
+
+  const clickPlayAudio = (id) => {
+    AudioGlobal.getInstance().audioPlay(id)
   }
 
   return (
@@ -103,7 +111,15 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
       </div>
       <div className="contentContainer">
         <div className="audioContainer">
-          <div className="audioTitleContainer">1</div>
+          <div className="audioTitleContainer">
+            <span className="routeIndex">{`${formatNum(subDetail.index + 1)}/${formatNum(catalogList.length)}`}</span>
+            <p className="subTitle">{subDetail.subTitle}</p>
+            <img
+              src={playProgress[subId]?.isPlay ? pauseIcon : playIcon}
+              className="playIcon"
+              onClick={() => clickPlayAudio(subId)}
+            />
+          </div>
           <div className="audioProgress">
             <span className="currrent">
               {sf.convert(Math.round(playProgress[subId]?.currentTime || 0)).format('MM:SS')}
@@ -137,12 +153,14 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail }) => {
   )
 }
 
-const mapState = ({ detailInfoPage: { subDetail } }) => ({
+const mapState = ({ detailInfoPage: { subDetail, catalogList } }) => ({
   subDetail,
+  catalogList,
 })
 
-const mapDispatch = ({ detailInfoPage: { getSubDetail } }) => ({
+const mapDispatch = ({ detailInfoPage: { getSubDetail, setBackFromRouteDetail } }) => ({
   getSubDetail,
+  setBackFromRouteDetail,
 })
 
 export default connect(mapState, mapDispatch)(RouteDetailPage)

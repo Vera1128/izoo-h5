@@ -12,15 +12,17 @@ import pauseIcon from 'assets/images/pause-icon.png'
 import izooIcon from 'assets/images/izoo-icon.png'
 import './index.scss'
 
-const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDetail }) => {
+const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDetail, backFromRouteDetail }) => {
   console.log('catalogList', catalogList)
   const [playProgress, setPlayProgress] = useState({})
   const {
     params: { id },
   } = match
   useEffect(() => {
-    getCatalogList(id)
-    AudioGlobal.getInstance().audioStop()
+    if (!backFromRouteDetail) {
+      getCatalogList(id)
+      AudioGlobal.getInstance().audioStop()
+    }
     let listener1 = null
     EventManager.on(
       EventType.AUDIO_PROGRESS_UPDATE,
@@ -34,7 +36,7 @@ const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDeta
     }
   }, [])
   useEffect(() => {
-    if (catalogList?.length > 0) {
+    if (catalogList?.length > 0 && !backFromRouteDetail) {
       const audioList = []
       catalogList.forEach((item) => {
         if (item.isAudition) audioList.push(item)
@@ -78,8 +80,9 @@ const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDeta
   )
 }
 
-const mapState = ({ detailInfoPage: { catalogList } }) => ({
+const mapState = ({ detailInfoPage: { catalogList, backFromRouteDetail } }) => ({
   catalogList,
+  backFromRouteDetail,
 })
 
 const mapDispatch = ({ detailInfoPage: { getCatalogList, setSubDetail } }) => ({

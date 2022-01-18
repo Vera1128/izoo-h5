@@ -78,6 +78,7 @@ module.exports = {
     'no-param-reassign': 'off',
     'no-multi-assign': 'off',
     'no-plusplus': 'off',
+    'no-lonely-if': 'off',
 
     // sonarjs
     'sonarjs/cognitive-complexity': 'error',

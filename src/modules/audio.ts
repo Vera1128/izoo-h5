@@ -1,5 +1,6 @@
 import EventManager from 'src/modules/eventManager'
 import { EventType } from 'src/modules/EventType'
+import { notify } from '@tgu/toast'
 
 interface AudiosType {
   [propName: string]: any
@@ -63,17 +64,35 @@ export class AudioGlobal {
 
   // 播放具体src的音频
   audioPlay(id: string) {
-    if (this.audioCurr) this.audioCurr.audio.pause()
+    if (!this.audios[id]) {
+      notify('啊哦，音频地址出问题啦~', 1000)
+      return
+    }
     if (this.audioCurr?.id !== id) {
+      this.audioCurr?.audio.pause()
       this.audioCurr = {
         id,
         audio: this.audios[id],
       }
-      this.audioCurr?.audio.play()
+      try {
+        this.audioCurr?.audio.play()
+      } catch (error) {
+        notify('啊哦，音频播放出问题啦~', 1000)
+      }
+    } else {
+      if (this.audioCurr?.audio.paused) {
+        try {
+          this.audioCurr?.audio.play()
+        } catch (error) {
+          notify('啊哦，音频播放出问题啦~', 1000)
+        }
+      } else {
+        this.audioCurr?.audio.pause()
+      }
     }
   }
 
   audioStop() {
-    this.audioCurr?.pause()
+    this.audioCurr?.audio.pause()
   }
 }

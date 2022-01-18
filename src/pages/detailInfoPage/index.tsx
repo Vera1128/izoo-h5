@@ -37,6 +37,8 @@ import './index.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
+let listener = null
+
 const Index = ({
   history,
   match,
@@ -46,6 +48,7 @@ const Index = ({
   getDetailInfo,
   setCollectStatus,
   setDetailInfo,
+  setBackFromRouteDetail,
 }) => {
   const [showShareMask, setShowShareMask] = useState(false)
   const [selectMenu, setSelectMenu] = useState(1)
@@ -59,7 +62,6 @@ const Index = ({
     listenReport(id, '', 0)
     getDetailInfo(id)
     getCatalogList(id)
-    let listener = null
     EventManager.on(
       EventType.AUDIO_PROGRESS_UPDATE,
       (listener = throttle((progress) => {
@@ -93,11 +95,16 @@ const Index = ({
     if (res.res.state) notify('收藏成功', 1000)
     else notify('已取消收藏', 1000)
   }
+  const goToRouteListHandle = () => {
+    EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)
+    setBackFromRouteDetail(false)
+    history.push({ pathname: `/routeListPage/${id}` })
+  }
   const showBottomBtn = () => {
     // 是否已经支付
     if (isPayment)
       return (
-        <Button className="freeBtn" onClick={() => history.push({ pathname: `/routeListPage/${id}` })}>
+        <Button className="freeBtn" onClick={goToRouteListHandle}>
           <p className="largeText">进入收听</p>
           <p className="smallText">已购买</p>
         </Button>
@@ -105,7 +112,7 @@ const Index = ({
     // 是否免费
     if (!info?.isCharge) {
       return (
-        <Button className="freeBtn" onClick={() => history.push({ pathname: `/routeListPage/${id}` })}>
+        <Button className="freeBtn" onClick={goToRouteListHandle}>
           <p className="largeText">免费收听</p>
         </Button>
       )
@@ -192,7 +199,6 @@ const Index = ({
             </div>
           </div>
         </div>
-        <div onClick={clickPlayAudio}>点击</div>
         <p dangerouslySetInnerHTML={{ __html: info?.content }} />
         <div className="routeCatalogList">
           <p>讲解目录</p>
@@ -263,11 +269,14 @@ const mapState = ({ detailInfoPage: { detailInfo, catalogList } }) => ({
   catalogList,
 })
 
-const mapDispatch = ({ detailInfoPage: { getDetailInfo, getCatalogList, setCollectStatus, setDetailInfo } }) => ({
+const mapDispatch = ({
+  detailInfoPage: { getDetailInfo, getCatalogList, setCollectStatus, setDetailInfo, setBackFromRouteDetail },
+}) => ({
   getDetailInfo,
   getCatalogList,
   setCollectStatus,
   setDetailInfo,
+  setBackFromRouteDetail,
 })
 
 export default connect(mapState, mapDispatch)(Index)

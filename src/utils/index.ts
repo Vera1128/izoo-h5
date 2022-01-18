@@ -221,3 +221,9 @@ export const getPxCurr = (pxNum) => {
   const width = window.innerWidth
   return 1.0 * pxNum * (width / 750)
 }
+
+//数字前补0
+export const formatNum = (num) => {
+  if (num < 10) return `0${num}`
+  return num
+}
