@@ -23,7 +23,13 @@ export default {
     async getListenList() {
       const res = await getListenList()
       if (res) {
-        dispatch.personalCenter.setListenList(res.res.list)
+        const {
+          res: { list },
+        } = res
+        if (list.length > 0) {
+          list.splice(1, 0, null)
+        }
+        dispatch.personalCenter.setListenList(list)
       }
     },
   }),

@@ -31,9 +31,16 @@ export async function changeCollectStatus(id: string) {
   return res
 }
 
+// 收听内容信息上报
+export async function listenReport(mainClassId: string, subId: string, duration: number) {
+  const res = await rpcClient.callApi('ListenReport', { mainClassId, subId, duration })
+  return res
+}
+
 export default {
   getDetailInfo,
   getCatalogList,
   getSubDetail,
   changeCollectStatus,
+  listenReport,
 }

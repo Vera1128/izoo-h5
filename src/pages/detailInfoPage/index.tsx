@@ -11,7 +11,7 @@ import Mask from 'components/Mask'
 import Tag from 'components/Tag'
 import BackIcon from 'components/BackIcon'
 import { AudioGlobal } from 'src/modules/audio'
-import { changeCollectStatus } from 'apis/detailPageInfo'
+import { changeCollectStatus, listenReport } from 'apis/detailPageInfo'
 import Button from 'components/Button'
 import { throttle } from 'src/utils'
 
@@ -55,6 +55,8 @@ const Index = ({
   } = match
   const { info, isCollect, isPayment } = detailInfo
   useEffect(() => {
+    // 收听内容信息上报
+    listenReport(id, '', 0)
     getDetailInfo(id)
     getCatalogList(id)
     let listener = null

@@ -249,8 +249,8 @@
         display: flex;
         flex-direction: row;
         justify-content: space-between;
+        padding: 16px 0;
         .historyItem {
-          padding: 16px 0;
           width: calc(50% - 12px);
           .itemImg {
             @include imgStyle;

@@ -9,6 +9,7 @@ import { notify } from '@tgu/toast'
 import Tag from 'components/Tag'
 import FocusOn from 'components/FocusOn'
 import EmptyList from 'components/EmptyList'
+import EmptyBottom from 'components/EmptyBottom'
 import { changeCollectStatus } from 'apis/detailPageInfo'
 
 import { getPxCurr } from 'utils/index'
@@ -148,6 +149,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                 <div className="btn">一键复制</div>
               </div>
             </div>
+            <EmptyBottom />
           </div>
         </SwiperSlide>
 
@@ -191,6 +193,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                     </div>
                   </div>
                 ))}
+                <EmptyBottom />
               </>
             ) : (
               <EmptyList text="你暂时还没有收藏" />
@@ -204,14 +207,14 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
             <div className="tips">根据收听时间&nbsp;从最近到最早</div>
             <div className="historyList">
               {listenList.map((item, index) => {
-                if (index > listenList.length / 2) return
+                if (index % 2 === 1) return
                 return (
                   <div className="historyListRow" key={item.mainClassId}>
                     <div className="historyItem" onClick={() => goToDetailInfoPage(item.mainClassId)}>
                       <img src={item.scrollImage} className="itemImg" />
                       <div className="placeContainer">
                         <img src={earphone} />
-                        {item.title.substring(0, 6)}
+                        {index === 0 ? item.title.substring(0, 6) : item.title}
                         {index === 0 && <div className="recentListen">最近听过</div>}
                       </div>
                       <div className="desc">{item.desc}</div>
@@ -221,17 +224,18 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                         className="historyItem"
                         onClick={() => goToDetailInfoPage(listenList[index + 1].mainClassId)}
                       >
-                        <img src={item.scrollImage} className="itemImg" />
+                        <img src={listenList[index + 1].scrollImage} className="itemImg" />
                         <div className="placeContainer">
                           <img src={earphone} />
-                          {item.title}
+                          {listenList[index + 1].title}
                         </div>
-                        <div className="desc">{item.desc}</div>
+                        <div className="desc">{listenList[index + 1].desc}</div>
                       </div>
                     )}
                   </div>
                 )
               })}
+              <EmptyBottom />
             </div>
           </div>
         </SwiperSlide>
