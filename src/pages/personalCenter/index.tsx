@@ -84,9 +84,11 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
 
   return (
     <div className="personalCenterContainer">
-      <div className="userInfo">
-        <img src={SwiperTestImg} alt="头像" className="avater" />
-        <span className="name">小布</span>
+      <div className="userInfoContainer">
+        <div className="userInfo">
+          <img src={SwiperTestImg} alt="头像" className="avater" />
+          <span className="name">小布</span>
+        </div>
       </div>
       <PersonalMenu menuIndex={menuIndex} clickMenuHandle={clickMenuHandle} />
       <Swiper
@@ -159,41 +161,43 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
             {favoritesList.length > 0 ? (
               <>
                 <div className="tips">根据收藏时间&nbsp;从最近到最早</div>
-                {favoritesList.map((item, index) => (
-                  <div key={item.mainClassId} className="collectItem">
-                    <SlideDelete
-                      onEnd={() => showDeleteIcon(index)}
-                      reset={currIndex !== index}
-                      index={index}
-                      onMyDragStar={dragStartHandle}
-                      offsetWidth={distance}
-                      criticalWidth={distance / 2}
-                      className="collectContent"
-                    >
-                      <div className="content" onClick={() => goToDetailInfoPage(item.mainClassId)}>
-                        <img src={item.scrollImage} className="coverImg" />
-                        <div className="centerContainer">
-                          <div className="textContainer">{item.desc}</div>
-                          <div className="tagList">
-                            {item.tags.slice(0, 3).map((tag) => (
-                              <Tag text={tag} className="tag" key={tag} />
-                            ))}
+                <div className="collectList">
+                  {favoritesList.map((item, index) => (
+                    <div key={item.mainClassId} className="collectItem">
+                      <SlideDelete
+                        onEnd={() => showDeleteIcon(index)}
+                        reset={currIndex !== index}
+                        index={index}
+                        onMyDragStar={dragStartHandle}
+                        offsetWidth={distance}
+                        criticalWidth={distance / 2}
+                        className="collectContent"
+                      >
+                        <div className="content" onClick={() => goToDetailInfoPage(item.mainClassId)}>
+                          <img src={item.scrollImage} className="coverImg" />
+                          <div className="centerContainer">
+                            <div className="textContainer">{item.desc}</div>
+                            <div className="tagList">
+                              {item.tags.slice(0, 3).map((tag) => (
+                                <Tag text={tag} className="tag" key={tag} />
+                              ))}
+                            </div>
+                            <p className="title">{item.title}</p>
                           </div>
-                          <p className="title">{item.title}</p>
-                        </div>
 
-                        <div className="placeContainer">
-                          <img src={heart} />
-                          <p>{item.city}</p>
+                          <div className="placeContainer">
+                            <img src={heart} />
+                            <p>{item.city}</p>
+                          </div>
                         </div>
+                      </SlideDelete>
+                      <div className="deleteIcon" onClick={collectDeleteHandle(item.mainClassId)}>
+                        删除
                       </div>
-                    </SlideDelete>
-                    <div className="deleteIcon" onClick={collectDeleteHandle(item.mainClassId)}>
-                      删除
                     </div>
-                  </div>
-                ))}
-                <EmptyBottom />
+                  ))}
+                  <EmptyBottom />
+                </div>
               </>
             ) : (
               <EmptyList text="你暂时还没有收藏" />
