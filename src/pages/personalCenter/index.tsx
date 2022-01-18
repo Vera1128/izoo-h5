@@ -9,6 +9,7 @@ import { notify } from '@tgu/toast'
 import Tag from 'components/Tag'
 import FocusOn from 'components/FocusOn'
 import EmptyList from 'components/EmptyList'
+import { changeCollectStatus } from 'apis/detailPageInfo'
 
 import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
@@ -71,6 +72,13 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
   }
   const goToDetailInfoPage = (id) => {
     history.push(`/detailInfoPage/${id}`)
+  }
+
+  const collectDeleteHandle = (id) => async () => {
+    const res = await changeCollectStatus(id)
+    if (!res.res.state) {
+      getFavoritesList()
+    }
   }
 
   return (
@@ -178,7 +186,9 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                         </div>
                       </div>
                     </SlideDelete>
-                    <div className="deleteIcon">删除</div>
+                    <div className="deleteIcon" onClick={collectDeleteHandle(item.mainClassId)}>
+                      删除
+                    </div>
                   </div>
                 ))}
               </>
@@ -201,7 +211,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                       <img src={item.scrollImage} className="itemImg" />
                       <div className="placeContainer">
                         <img src={earphone} />
-                        {item.title}
+                        {item.title.substring(0, 6)}
                         {index === 0 && <div className="recentListen">最近听过</div>}
                       </div>
                       <div className="desc">{item.desc}</div>

@@ -1,7 +1,6 @@
-import React, { FC, useEffect, useState } from 'react'
+import React, { FC, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
-import { getQueryParam } from 'utils/index'
 
 import MenuBar from 'src/components/Menu'
 
@@ -41,22 +40,9 @@ const menuConfig = [
   },
 ]
 
-const Index: FC<any> = ({ location, children, selectedId, setSelectedId, getUserInfo, getSignature }) => {
+const Index: FC<any> = ({ location, children, selectedId, setSelectedId }) => {
   const matchPathArr = menuConfig.filter((menuItem) => menuItem.to === location.pathname)
   useEffect(() => {
-    const appId = 'wxf93b23e8acb83eff'
-    const code = getQueryParam('code')
-    console.log('code', getQueryParam('code'))
-    // if (!code) {
-    //   localStorage.removeItem('code')
-    //   window.location.replace(
-    //     `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${encodeURIComponent(
-    //       window.location.href,
-    //     )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`,
-    //   )
-    // }
-    // localStorage.setItem('code', getQueryParam('code'))
-    getUserInfo(code)
     setSelectedId(matchPathArr[0]?.id || 'mainPage')
   }, [])
   const menuSwitchHandle = (menuItem) => () => {
