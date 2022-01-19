@@ -1,21 +1,26 @@
-import React, { useState } from 'react'
-import InterceptPopup from 'components/InterceptPopup'
+import React, { useState, useEffect } from 'react'
 import focusIcon from 'assets/images/focus-icon.png'
 import closeIcon from 'assets/images/close-icon.png'
+import { showFocusPanel } from './focusPanelIndex'
 import './index.less'
 
 interface Props {
-  className?: string
   showCloseIcon?: boolean
+  type?: number
 }
 
 function FocusOn(props: Props) {
   const [closeFocusPanel, setCloseFocusPanel] = useState(false)
   const [showInterceptPopup, setShowInterceptPopup] = useState(false)
+  useEffect(() => {
+    if (showInterceptPopup) {
+      showFocusPanel(props.type)
+    }
+  }, [showInterceptPopup])
   return (
     <>
       {!closeFocusPanel && (
-        <div className={`focusOn ${props.className}`}>
+        <div className="focusOn">
           <img src={focusIcon} className="focusIcon" alt="公众号图标" />
           <div className="focusTextContent">
             <p className="focusTitle">爱走星球</p>
@@ -36,14 +41,6 @@ function FocusOn(props: Props) {
               onClick={() => setCloseFocusPanel(true)}
             />
           )}
-          {showInterceptPopup && (
-            <InterceptPopup onClickHandle={() => setShowInterceptPopup(false)}>
-              <p className="popupText">
-                为了保存您的订单信息 <br />
-                请先一键关注服务号
-              </p>
-            </InterceptPopup>
-          )}
         </div>
       )}
     </>
@@ -51,8 +48,8 @@ function FocusOn(props: Props) {
 }
 
 FocusOn.defaultProps = {
-  className: '',
   showCloseIcon: true,
+  type: 1,
 } as Partial<Props>
 
 export default FocusOn
