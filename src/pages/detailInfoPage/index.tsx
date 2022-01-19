@@ -29,7 +29,6 @@ import TimeIcon from 'assets/images/time-icon.png'
 import TagIcon from 'assets/images/tag-icon.png'
 import playIcon from 'assets/images/play-icon-bold.png'
 import pauseIcon from 'assets/images/pause-icon.png'
-import audioContinueIcon from 'assets/images/music-flow-icon.png'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -66,8 +65,7 @@ const Index = ({
       EventType.AUDIO_PROGRESS_UPDATE,
       (listener = throttle((progress) => {
         setPlayProgress(progress)
-        console.log(progress)
-      }, 1000)),
+      }, 300)),
     )
     return () => {
       EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)

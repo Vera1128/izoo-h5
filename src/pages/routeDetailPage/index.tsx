@@ -28,8 +28,7 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
       EventType.AUDIO_PROGRESS_UPDATE,
       (listener = throttle((progress) => {
         setPlayProgress(progress)
-        console.log(progress)
-      }, 1000)),
+      }, 300)),
     )
     return () => {
       EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)

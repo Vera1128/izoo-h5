@@ -1,11 +1,17 @@
-import React, { FC, useEffect } from 'react'
+import React, { FC, useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { getQueryParam } from 'utils/index'
 
+import EventManager from 'src/modules/eventManager'
+import { EventType } from 'src/modules/EventType'
+import { AudioGlobal } from 'src/modules/audio'
+
+import audioContinueIcon from 'assets/images/music-flow-icon.png'
+
 import './index.scss'
 
-const App: FC<any> = ({ children, getUserInfo }) => {
-  console.log('app')
+const App: FC<any> = ({ children, getUserInfo, match, location }) => {
+  const [showPlayAudioIcon, setShowPlayAudioIcon] = useState(false)
   useEffect(() => {
     const appId = 'wxf93b23e8acb83eff'
     const code = getQueryParam('code')
@@ -20,9 +26,36 @@ const App: FC<any> = ({ children, getUserInfo }) => {
     // }
     // localStorage.setItem('code', getQueryParam('code'))
     getUserInfo(code)
+    let listener = null
+    EventManager.on(
+      EventType.AUDIO_PROGRESS_UPDATE,
+      (listener = (progress) => {
+        const progressValue: any = Object.values(progress)
+        for (let i = 0; i < progressValue.length; i++) {
+          if (progressValue[i].isPlay) {
+            setShowPlayAudioIcon(true)
+            return
+          }
+          setShowPlayAudioIcon(false)
+        }
+      }),
+    )
+    return () => {
+      EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)
+    }
   }, [])
 
-  return <div className="app">{children}</div>
+  const closeAudioPlay = () => {
+    console.log('closeAudioPlay')
+    AudioGlobal.getInstance().audioStop()
+  }
+
+  return (
+    <div className="app">
+      {showPlayAudioIcon && <img src={audioContinueIcon} className="audioContinueIcon" onClick={closeAudioPlay} />}
+      {children}
+    </div>
+  )
 }
 
 const mapState = ({ base: { userInfo } }) => ({
