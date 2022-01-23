@@ -277,22 +277,25 @@ const Index = ({
           <EmptyBottom color="white" />
         </div>
       </div>
-
-      <div className="detailPageMenu">
-        <div className="menuContainer1" onClick={backToMainPage}>
-          <img src={HomeImg} className="homeIcon" />
-          <p className="menuText">首页</p>
+      <div className="detailPageMenuBottom">
+        <div className="detailPageMenu">
+          <div className="menuContainer1" onClick={backToMainPage}>
+            <img src={HomeImg} className="homeIcon" />
+            <p className="menuText">首页</p>
+          </div>
+          <div className="menuContainer1 menuContainerMargin" onClick={() => setShowShareMask(true)}>
+            <img src={ShareImg} className="shareIcon" />
+            <p className="menuText">分享</p>
+          </div>
+          <div className="menuContainer1 menuContainerMargin" onClick={changeCollectStatusHandle}>
+            <img src={isCollect ? HeartCollectImg : HeartNormalImg} className="heartIcon" />
+            <p className="menuText">收藏</p>
+          </div>
+          {showBottomBtn()}
         </div>
-        <div className="menuContainer1 menuContainerMargin" onClick={() => setShowShareMask(true)}>
-          <img src={ShareImg} className="shareIcon" />
-          <p className="menuText">分享</p>
-        </div>
-        <div className="menuContainer1 menuContainerMargin" onClick={changeCollectStatusHandle}>
-          <img src={isCollect ? HeartCollectImg : HeartNormalImg} className="heartIcon" />
-          <p className="menuText">收藏</p>
-        </div>
-        {showBottomBtn()}
+        <div className="emptyMenuBottom" />
       </div>
+
       {showShareMask && (
         <Mask onClickHandle={() => setShowShareMask(false)}>
           <img src={DetailPageShareImg} className="shareImg" />

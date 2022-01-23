@@ -7,7 +7,12 @@ interface Props {
 }
 
 function MenuBar(props: Props) {
-  return <div className={`menu ${props.className}`}>{props.children}</div>
+  return (
+    <div className="menuContainerBottom">
+      <div className={`menu ${props.className}`}>{props.children}</div>
+      <div className="emptyMenuBottom" />
+    </div>
+  )
 }
 
 MenuBar.defaultProps = {
