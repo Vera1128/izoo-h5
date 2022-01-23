@@ -13,7 +13,6 @@ import izooIcon from 'assets/images/izoo-icon.png'
 import './index.scss'
 
 const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDetail, backFromRouteDetail }) => {
-  console.log('catalogList', catalogList)
   const [playProgress, setPlayProgress] = useState({})
   const {
     params: { id },

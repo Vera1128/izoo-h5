@@ -86,7 +86,6 @@ function Search({
               className="input"
               onFocus={focusHandle}
               onInput={inputHandle}
-              type="search"
             />
           </div>
         </div>

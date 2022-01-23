@@ -9,8 +9,8 @@ interface ProgressType {
   [propName: string]: any
 }
 
-export class AudioGlobal {
-  private static _this: AudioGlobal = null
+export class AudioGlobalDetail {
+  private static _this: AudioGlobalDetail = null
 
   public audios: AudiosType = null
 
@@ -18,11 +18,9 @@ export class AudioGlobal {
 
   public progressMap: ProgressType = {}
 
-  public continuousPlay: true // 是否连续播放
-
-  static getInstance(): AudioGlobal {
+  static getInstance(): AudioGlobalDetail {
     if (!this._this) {
-      this._this = new AudioGlobal()
+      this._this = new AudioGlobalDetail()
     }
     return this._this
   }
@@ -34,7 +32,6 @@ export class AudioGlobal {
 
   // audio列表更新
   audiosInit(audioList: Array<any>) {
-    console.log('audioList', audioList)
     this.audios = {}
     this.audioCurr = null
     audioList.forEach((audio) => {
@@ -58,7 +55,7 @@ export class AudioGlobal {
           progress: playProgress,
           isPlay: !audioTemp.paused,
         }
-        EventManager.emit(EventType.AUDIO_PROGRESS_UPDATE, { ...this.progressMap })
+        EventManager.emit(EventType.AUDIO_PROGRESS_UPDATE_DETAIL, { ...this.progressMap })
       }
       audioTemp.src = audio.audioUri
     })

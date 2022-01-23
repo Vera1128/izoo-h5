@@ -46,7 +46,6 @@ const App: FC<any> = ({ children, getUserInfo, match, location }) => {
   }, [])
 
   const closeAudioPlay = () => {
-    console.log('closeAudioPlay')
     AudioGlobal.getInstance().audioStop()
   }
 

@@ -41,9 +41,9 @@ const Index = ({
 }) => {
   const pageRef = useRef(null)
   useEffect(() => {
-    getSignature(window.location.href).then(() => {
+    getSignature(window.location.href.split('#')[0]).then(() => {
       wx.ready(() => {
-        console.log('wx config success')
+        console.log('wx config ready')
         wx.getLocation({
           success: function (res) {
             const { latitude, longitude } = res
@@ -74,7 +74,7 @@ const Index = ({
         wx.updateTimelineShareData(shareInfo)
       })
       wx.error((res: any) => {
-        console.log('wx config error')
+        console.log('mainPage wx config error')
         console.log(res)
       })
     })
