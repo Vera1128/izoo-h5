@@ -100,6 +100,20 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
     AudioGlobal.getInstance().audioPlay(id)
   }
 
+  const goToPreRouteDetail = () => {
+    const { index } = subDetail
+    if (index === 0) return
+    const preIndex = index - 1
+    history.replace(`/routeDetailPage/${mainClassId}/${catalogList[preIndex].subId}`)
+  }
+
+  const goToNextRouteDetail = () => {
+    const { index } = subDetail
+    if (index === catalogList.length - 1) return
+    const nextIndex = index + 1
+    history.replace(`/routeDetailPage/${mainClassId}/${catalogList[nextIndex].subId}`)
+  }
+
   return (
     <div className="routeDetailPage">
       <BackIcon clickHandle={backToDetailListPage} />
@@ -142,11 +156,23 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
         </div>
       )}
       <div className="menu">
-        <div className="menuItem">上一处</div>
+        <div
+          className="menuItem"
+          style={{ visibility: subDetail.index === 0 ? 'hidden' : 'visible' }}
+          onClick={goToPreRouteDetail}
+        >
+          上一处
+        </div>
         <div className="menuItem" onClick={backToDetailListPage}>
           返回目录
         </div>
-        <div className="menuItem">下一处</div>
+        <div
+          className="menuItem"
+          style={{ visibility: subDetail.index === catalogList.length - 1 ? 'hidden' : 'visible' }}
+          onClick={goToNextRouteDetail}
+        >
+          下一处
+        </div>
       </div>
     </div>
   )
