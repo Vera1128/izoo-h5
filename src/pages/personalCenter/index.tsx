@@ -218,7 +218,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                       <img src={item.scrollImage} className="itemImg" />
                       <div className="placeContainer">
                         <img src={earphone} />
-                        {index === 0 ? item.title.substring(0, 6) : item.title}
+                        {index === 0 ? item.title.substring(0, 5) : item.title}
                         {index === 0 && <div className="recentListen">最近听过</div>}
                       </div>
                       <div className="desc">{item.desc}</div>
