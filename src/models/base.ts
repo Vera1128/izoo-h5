@@ -1,6 +1,6 @@
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
-import { testLogin, getSignature, prodLogin } from 'apis/api'
+import { testLogin, getSignature, prodLogin, ssoToFlow } from 'apis/api'
 
 export default {
   name: 'base',
@@ -8,17 +8,27 @@ export default {
     selectedId: 'mainPage',
     userInfo: {
       info: {},
-      userId: '',
+      sso: '',
     },
   },
 
   effects: (dispatch) => ({
     // 测试登录
     async getUserInfo(code) {
+      // 存在登录态,则略过
+      if (localStorage.getItem('sso')) {
+        return
+      }
       const res = !code ? await testLogin() : await prodLogin(code)
+      console.log('登录:', res)
       if (res) {
+        ssoToFlow(res.res.sso)
+
         dispatch.base.setUserInfo(res.res)
+        // @杨杨
         window.userInfo = res.res
+        // @董帅
+        localStorage.setItem('sso', res.res.sso)
       }
     },
     // 获取wxconfig

@@ -6,7 +6,7 @@ import { serviceProto } from '../walkidz-shared/shared/protocols/serviceProto'
 // 创建全局唯一的 apiClient，需要时从该文件引入
 const apiClient = new HttpClient(serviceProto, {
   server: 'https://api.walkidz.com/release/',
-  // server: 'http://127.0.0.1:9000',
+  // server: 'http://172.19.82.226:9000',
   json: true,
   logger: console,
 })
@@ -26,10 +26,17 @@ apiClient.flows.preApiReturnFlow.push((v) => {
 
 apiClient.flows.preCallApiFlow.push((v) => {
   // 如果不存在userId，则加上
-  const {
-    req: { userId },
-  } = v
-  if (!userId) v.req.userId = window.userInfo?.userId || 'oDfcY69wA2QERN9mBhuMOvCFsPxQ'
+
+  // @董帅
+  const sso = localStorage.getItem('sso') as undefined
+
+  if (sso && !v.req.sso) {
+    v.req.sso = sso
+  }
+  // const {
+  //   req: { sso },
+  // } = v
+  // if (!sso) v.req.userId = window.userInfo?.userId || 'oDfcY69wA2QERN9mBhuMOvCFsPxQ'
   return v
 })
 
