@@ -67,9 +67,7 @@ const handleErrorTips = (status: number, msg?: string) => {
 
 // 请求拦截器
 axios.interceptors.request.use(
-  (config) => {
-    return config
-  },
+  (config) => config,
   (err) => {
     // 拦截器出错
     Toast('请求出错了', 2000)
@@ -81,9 +79,7 @@ axios.interceptors.request.use(
 
 // 响应拦截器
 axios.interceptors.response.use(
-  (res) => {
-    return Promise.resolve(res)
-  },
+  (res) => Promise.resolve(res),
   (err) => {
     sentry.SentryRepost(err)
     const status = err.response ? err.response.status : -100
@@ -94,7 +90,7 @@ axios.interceptors.response.use(
       // 针对401请求特殊处理，加上f params,防止一直重复请求
       // 跳转到登陆页去登陆授权
       if (getQueryParam('f') !== 'request') {
-        // 
+        //
       }
     } else if (err.code === 'ECONNABORTED' && err.message.indexOf('timeout') !== -1) {
       // 上报一下错误
@@ -109,69 +105,71 @@ axios.interceptors.response.use(
 
 // 请求封装
 // 错误信息不反悔，直接给出错误提示
-const Request = (method = 'get') => (
-  url: string, // 请求路径
-  data = {}, // 请求参数
-  params = {}, // 额外的请求参数
-) => {
-  let uri = ''
-  // 额外配置参数
-  const newParams = { ...defaultParams, ...params }
-  const newData = data && newParams?.sort ? optionSort(data) : data
-  if (newParams?.toast) {
-    Toast('请求中...')
-  }
-  // axios get请求是包装在params中的
-  const opts = method?.toLocaleLowerCase() === 'get' ? { params: newData } : newData
-  // const requestType: any = axios[method || 'get']
-  // 请求参数
-  const requestConfig = { ...defaultRequestConfig }
-  // 判断是否有baseUrl
-  if (newParams?.baseUrl) {
-    uri += newParams.baseUrl
-    requestConfig.baseURL = newParams.baseUrl
-  }
-  // post请求参数放在params中
-  if (newParams?.ipv) {
-    requestConfig.params = opts
-  }
-  // 添加前端请求前缀
-  if (newParams?.frontPath) {
-    uri += newParams.frontPath
-  }
-  // 接口版本号
-  if (newParams?.apiVersion) {
-    uri += `/${newParams.apiVersion}`
-  }
-  // 链接地址
-  uri += url
-  // 请求地址
-  if (newParams?.headers) {
-    requestConfig.headers = newParams.headers
-  }
-  return axios[method](uri, opts, requestConfig).then((res: any) => {
-    const dat = res.data
-    const { code } = dat
-    if (newParams.accredit || code === 0) {
-      // 提示成功信息
-      if (newParams.sucessPrompt) {
-        // 是否是自定义的响应信息
-        const isTips = typeof newParams.sucessPrompt === 'string'
-        Toast(isTips ? newParams.sucessPrompt : res.message || '操作成功', 1000)
+const Request =
+  (method = 'get') =>
+  (
+    url: string, // 请求路径
+    data = {}, // 请求参数
+    params = {}, // 额外的请求参数
+  ) => {
+    let uri = ''
+    // 额外配置参数
+    const newParams = { ...defaultParams, ...params }
+    const newData = data && newParams?.sort ? optionSort(data) : data
+    if (newParams?.toast) {
+      Toast('请求中...')
+    }
+    // axios get请求是包装在params中的
+    const opts = method?.toLocaleLowerCase() === 'get' ? { params: newData } : newData
+    // const requestType: any = axios[method || 'get']
+    // 请求参数
+    const requestConfig = { ...defaultRequestConfig }
+    // 判断是否有baseUrl
+    if (newParams?.baseUrl) {
+      uri += newParams.baseUrl
+      requestConfig.baseURL = newParams.baseUrl
+    }
+    // post请求参数放在params中
+    if (newParams?.ipv) {
+      requestConfig.params = opts
+    }
+    // 添加前端请求前缀
+    if (newParams?.frontPath) {
+      uri += newParams.frontPath
+    }
+    // 接口版本号
+    if (newParams?.apiVersion) {
+      uri += `/${newParams.apiVersion}`
+    }
+    // 链接地址
+    uri += url
+    // 请求地址
+    if (newParams?.headers) {
+      requestConfig.headers = newParams.headers
+    }
+    return axios[method](uri, opts, requestConfig).then((res: any) => {
+      const dat = res.data
+      const { code } = dat
+      if (newParams.accredit || code === 0) {
+        // 提示成功信息
+        if (newParams.sucessPrompt) {
+          // 是否是自定义的响应信息
+          const isTips = typeof newParams.sucessPrompt === 'string'
+          Toast(isTips ? newParams.sucessPrompt : res.message || '操作成功', 1000)
+        }
+        return newParams.origin ? res : newParams.intact ? dat : dat.data
       }
-      return newParams.origin ? res : newParams.intact ? dat : dat.data
-    }
-    // 接口响应状态出错，上报异常
-    // 错误提醒
-    if (newParams.errorPrompt) {
-      const isTips = typeof newParams.errorPrompt === 'string'
-      isTips && Toast(newParams?.errorPromptMessage ?? dat?.message)
-    }
-    sentry.SentryRepost(res)
-    // 状态错误，不处理
-    return Promise.reject(dat)
-  })
-}
+      // 接口响应状态出错，上报异常
+      // 错误提醒
+      if (newParams.errorPrompt) {
+        const isTips = typeof newParams.errorPrompt === 'string'
+        isTips && Toast(newParams?.errorPromptMessage ?? dat?.message)
+      }
+      sentry.SentryRepost(res)
+      // 状态错误，不处理
+      return Promise.reject(dat)
+    })
+  }
 
 export const get = Request('get')
 export const post = Request('post')
