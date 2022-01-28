@@ -5,8 +5,10 @@ declare module '*.png'
 declare module '*.svg'
 declare module '*.jpg'
 declare module '*.gif'
-
-declare module '*.json'
+declare module '*.json' {
+  const value: any
+  export default value
+}
 
 declare module 'swiper/react'
 

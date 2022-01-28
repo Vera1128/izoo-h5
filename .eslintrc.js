@@ -42,16 +42,7 @@ module.exports = {
   plugins: ['react', '@typescript-eslint', 'promise', 'sonarjs'],
   rules: {
     '@typescript-eslint/explicit-module-boundary-types': 'off',
-    'import/extensions': [
-      'error',
-      'ignorePackages',
-      {
-        ts: 'never',
-        tsx: 'never',
-        json: 'never',
-        js: 'never',
-      },
-    ],
+    'import/extensions': 'off',
     semi: ['warn', 'never'],
     'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx', '.ts', '.tsx'] }],
     'no-use-before-define': [

@@ -25,6 +25,7 @@ let mySwiper = null
 
 const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, history, menuIndex, setMenuIndex }) => {
   const [currIndex, setCurrIndex] = useState(0)
+  const [showCouponPanel, setShowCouponPanel] = useState(false)
 
   useEffect(() => {
     fetchData(menuIndex)
@@ -82,13 +83,29 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
     }
   }
 
+  const clickCouponHandle = () => {
+    console.log(showCouponPanel)
+    setShowCouponPanel(!showCouponPanel)
+  }
+
   return (
     <div className="personalCenterContainer">
       <div className="userInfoContainer">
         <div className="userInfo">
           <img src={SwiperTestImg} alt="头像" className="avater" />
           <span className="name">小布</span>
+          {/* <div
+            className={`couponContainer ${showCouponPanel ? 'couponContainerActive' : ''}`}
+            onClick={clickCouponHandle}
+          >
+            查看兑换券
+          </div> */}
         </div>
+        {/* <div className="couponPanel">
+          <div className="couponContent">
+            <div className="coupon">1</div>
+          </div>
+        </div> */}
       </div>
       <PersonalMenu menuIndex={menuIndex} clickMenuHandle={clickMenuHandle} />
       <Swiper

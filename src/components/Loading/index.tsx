@@ -1,14 +1,16 @@
 import React from 'react'
-
+import Lottie from 'lottie-react'
 import './index.scss'
+import loadingAnimation from 'assets/lotties/loading.json'
 
-const Loading = () => (
-  <div className="lds-ring">
-    <div />
-    <div />
-    <div />
-    <div />
-  </div>
-)
+function Loading() {
+  return (
+    <div className="loading">
+      <div className="loading-center">
+        <Lottie className="animation-loading" animationData={loadingAnimation} loop={true} />
+      </div>
+    </div>
+  )
+}
 
 export default Loading
