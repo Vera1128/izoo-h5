@@ -27,9 +27,25 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
   const [currIndex, setCurrIndex] = useState(0)
   const [showCouponPanel, setShowCouponPanel] = useState(false)
 
+  // @董帅
+  const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
+    avatar: '',
+    nickName: '',
+    gender: 0,
+  })
+
   useEffect(() => {
     fetchData(menuIndex)
+    // @董帅
+    getCurrentUserInfo()
   }, [])
+
+  // @董帅
+  const getCurrentUserInfo = async () => {
+    const result = localStorage.getItem('userInfo')
+
+    setUserInfo(JSON.parse(result))
+  }
 
   const showDeleteIcon = (index) => {
     console.log('出现delete icon')
@@ -92,14 +108,14 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
     <div className="personalCenterContainer">
       <div className="userInfoContainer">
         <div className="userInfo">
-          <img src={SwiperTestImg} alt="头像" className="avater" />
-          <span className="name">小布</span>
           {/* <div
             className={`couponContainer ${showCouponPanel ? 'couponContainerActive' : ''}`}
             onClick={clickCouponHandle}
           >
             查看兑换券
           </div> */}
+          <img src={userInfo.avatar} alt="头像" className="avater" />
+          <span className="name">{userInfo.nickName}</span>
         </div>
         {/* <div className="couponPanel">
           <div className="couponContent">

@@ -24,6 +24,14 @@ export async function getSignature(url) {
   return res
 }
 
+// 记录 flow 中
+export function ssoToFlow(sso: string) {
+  rpcClient.flows.preApiReturnFlow.push((v) => {
+    v.req.sso = sso
+    return v
+  })
+}
+
 export default {
   testLogin,
   getSignature,
