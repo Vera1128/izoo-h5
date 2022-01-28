@@ -117,8 +117,8 @@ const Index = ({
     AudioGlobalDetail.getInstance().audioStop()
   }
 
-  const clickPlayAudio = (id) => {
-    audioPlay(id)
+  const clickPlayAudio = (subId) => {
+    audioPlay(subId)
   }
 
   const backToMainPage = () => {

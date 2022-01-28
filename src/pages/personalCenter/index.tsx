@@ -26,9 +26,25 @@ let mySwiper = null
 const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, history, menuIndex, setMenuIndex }) => {
   const [currIndex, setCurrIndex] = useState(0)
 
+  // @董帅
+  const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
+    avatar: '',
+    nickName: '',
+    gender: 0,
+  })
+
   useEffect(() => {
     fetchData(menuIndex)
+    // @董帅
+    getCurrentUserInfo()
   }, [])
+
+  // @董帅
+  const getCurrentUserInfo = async () => {
+    const result = localStorage.getItem('userInfo')
+
+    setUserInfo(JSON.parse(result))
+  }
 
   const showDeleteIcon = (index) => {
     console.log('出现delete icon')
@@ -86,8 +102,9 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
     <div className="personalCenterContainer">
       <div className="userInfoContainer">
         <div className="userInfo">
-          <img src={SwiperTestImg} alt="头像" className="avater" />
-          <span className="name">小布</span>
+          {/* <img src={SwiperTestImg} alt="头像" className="avater" /> */}
+          <img src={userInfo.avatar} alt="头像" className="avater" />
+          <span className="name">{userInfo.nickName}</span>
         </div>
       </div>
       <PersonalMenu menuIndex={menuIndex} clickMenuHandle={clickMenuHandle} />
@@ -218,7 +235,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
                       <img src={item.scrollImage} className="itemImg" />
                       <div className="placeContainer">
                         <img src={earphone} />
-                        {index === 0 ? item.title.substring(0, 6) : item.title}
+                        {index === 0 ? item.title.substring(0, 5) : item.title}
                         {index === 0 && <div className="recentListen">最近听过</div>}
                       </div>
                       <div className="desc">{item.desc}</div>

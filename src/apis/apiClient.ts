@@ -15,11 +15,9 @@ apiClient.flows.preApiReturnFlow.push((v) => {
   const { isSucc, err } = v.return
   if (err?.code === 'NEED_LOGIN') {
     testLogin()
-    return
   }
   if (!isSucc && err?.message) {
     notify(err?.message, 2000)
-    return
   }
   return v
 })

@@ -29,6 +29,7 @@ export default {
         window.userInfo = res.res
         // @董帅
         localStorage.setItem('sso', res.res.sso)
+        localStorage.setItem('userInfo', JSON.stringify(res.res.info))
       }
     },
     // 获取wxconfig
