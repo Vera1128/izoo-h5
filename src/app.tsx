@@ -4,6 +4,7 @@ import ErrorBoundary from 'components/ErrorBoundary'
 import routes from 'src/router'
 import history from 'utils/history'
 import sentry from 'utils/sentry'
+import { getCurrentUser } from './apis/api'
 
 // sentry 初始化
 sentry?.SentryInit?.()
@@ -54,8 +55,7 @@ const createBasicRoute = (route, index) => {
       key={index}
       path={path}
       component={(props) => {
-        props.history.listen((path) => {
-          //  路由监听
+        props.history.listen(async (path: any) => {
           console.log('路由监听', path)
         })
         return <Component {...props} />

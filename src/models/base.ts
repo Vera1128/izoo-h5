@@ -1,6 +1,9 @@
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
-import { testLogin, getSignature, prodLogin, ssoToFlow } from 'apis/api'
+import { testLogin, getSignature, prodLogin, ssoToFlow, redirectLogin } from 'apis/api'
+import { currentBrowser } from 'src/utils'
+import { ResTestLogin } from 'src/walkidz-shared/shared/protocols/Login/PtlTestLogin'
+import { ApiReturn } from 'tsrpc-proto'
 
 export default {
   name: 'base',
@@ -19,7 +22,22 @@ export default {
       if (localStorage.getItem('sso')) {
         return
       }
-      const res = !code ? await testLogin() : await prodLogin(code)
+
+      const device = currentBrowser()
+
+      let res: ApiReturn<ResTestLogin>
+      if (device === 'browser') {
+        res = await testLogin()
+      }
+      if (device === 'app') {
+        if (!code) {
+          redirectLogin()
+        } else {
+          res = await prodLogin(code)
+        }
+      }
+
+      // const res = !code ? await testLogin() : await prodLogin(code)
       console.log('登录:', res)
       if (res) {
         ssoToFlow(res.res.sso)
