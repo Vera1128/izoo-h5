@@ -108,20 +108,25 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
     <div className="personalCenterContainer">
       <div className="userInfoContainer">
         <div className="userInfo">
-          {/* <div
+          <img src={userInfo.avatar} alt="头像" className="avater" />
+          <span className="name">{userInfo.nickName}</span>
+          <div
             className={`couponContainer ${showCouponPanel ? 'couponContainerActive' : ''}`}
             onClick={clickCouponHandle}
           >
-            查看兑换券
-          </div> */}
-          <img src={userInfo.avatar} alt="头像" className="avater" />
-          <span className="name">{userInfo.nickName}</span>
-        </div>
-        {/* <div className="couponPanel">
-          <div className="couponContent">
-            <div className="coupon">1</div>
+            {showCouponPanel ? '收起' : '查看兑换券'}
           </div>
-        </div> */}
+        </div>
+        {showCouponPanel && (
+          <div className="couponPanel">
+            <div className="couponContent">
+              <div className="coupon">
+                <p className="title">星际通行券</p>
+                <p className="time">有效期至 2022.3.20</p>
+              </div>
+            </div>
+          </div>
+        )}
       </div>
       <PersonalMenu menuIndex={menuIndex} clickMenuHandle={clickMenuHandle} />
       <Swiper

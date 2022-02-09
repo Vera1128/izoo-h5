@@ -3,15 +3,15 @@ const dev = {
 }
 
 const test = {
-  publicPath: `https://oss.walkidz.com/h5/v2/`,
+  publicPath: `https://oss.walkidz.com/h5/v1/`,
 }
 
 const uat = {
-  publicPath: `https://oss.walkidz.com/h5/v2/`,
+  publicPath: `https://oss.walkidz.com/h5/v1/`,
 }
 
 const prod = {
-  publicPath: `https://oss.walkidz.com/h5/v2/`,
+  publicPath: `https://oss.walkidz.com/h5/v1/`,
 }
 
 const config = {

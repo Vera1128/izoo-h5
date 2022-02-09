@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-30 17:34:54
+ * @LastEditTime: 2022-02-08 19:47:02
+ */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 
@@ -49,16 +55,13 @@ const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDeta
     history.go(-1)
   }
   const goToRouteDetail = (subId) => (e) => {
-    // 点击到播放按钮是要播放的
-    if (!Array.from(e.target.classList).includes('playIcon')) {
-      setSubDetail({})
-      history.push(`/routeDetailPage/${id}/${subId}`)
-    }
+    setSubDetail({})
+    history.push(`/routeDetailPage/${id}/${subId}`)
   }
   return (
     <div className="routeListPage">
       <BackIcon clickHandle={backToDetailInfoPage} />
-      <div className="head">讲解目录</div>
+      <div className="head">选择讲解条目</div>
       <div className="routeList">
         {(catalogList || []).map((catalog, index) => (
           <div className="routeListItem" onClick={goToRouteDetail(catalog.subId)} key={catalog.subId}>
@@ -68,7 +71,7 @@ const RouteListPage = ({ history, match, getCatalogList, catalogList, setSubDeta
             <img
               src={playProgress[catalog.subId]?.isPlay ? pauseIcon : playIcon}
               className="playIcon"
-              onClick={() => clickPlayAudio(catalog.subId)}
+              // onClick={() => clickPlayAudio(catalog.subId)}
             />
           </div>
         ))}

@@ -3,6 +3,11 @@ import asyncImport from 'router/asyncImport'
 // 路由配置 - 使用动态加载的方式配置路由
 export default [
   {
+    path: '/test',
+    component: asyncImport('test'),
+    exact: true,
+  },
+  {
     path: '/',
     component: asyncImport('app'),
     exact: true,
@@ -45,5 +50,6 @@ export default [
       },
     ],
   },
+
   { component: asyncImport('404') },
 ]

@@ -133,7 +133,12 @@ const Index = ({
       >
         {scrollList.map((item) => (
           <SwiperSlide key={item.mainClassId}>
-            <img src={item.scrollImg} className="swiperContent" alt="轮播图" />
+            <img
+              src={item.scrollImg}
+              className="swiperContent"
+              alt="轮播图"
+              onClick={goToDetailInfoPage(item.mainClassId)}
+            />
           </SwiperSlide>
         ))}
       </Swiper>

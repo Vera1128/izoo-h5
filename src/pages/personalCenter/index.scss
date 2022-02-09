@@ -354,6 +354,19 @@
           border-radius: 40px;
           padding: 28px 40px;
           margin-right: 26px;
+          .title {
+            width: 100%;
+            font-size: 40px;
+            color: #00cab1;
+            line-height: 58px;
+          }
+          .time {
+            width: 100%;
+            font-size: 28px;
+            color: #00cab1;
+            line-height: 40px;
+            margin-top: 8px;
+          }
         }
       }
     }
@@ -383,6 +396,7 @@
       margin-left: 32px;
     }
     .couponContainer {
+      min-width: 184px;
       height: 40px;
       line-height: 40px;
       text-align: center;
@@ -397,7 +411,7 @@
     }
     .couponContainerActive {
       background: #ffffff;
-      color: white;
+      color: #00cab1;
     }
   }
   .tips {

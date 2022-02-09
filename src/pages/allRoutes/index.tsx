@@ -69,7 +69,7 @@ const Index = ({
       <TopSearch
         rightButton={
           <div className="swicthIcon" onClick={switchThemeClickHandle}>
-            <p>{theme === 'city' ? '切换主题' : '切换城市'}</p>
+            <p>{theme === 'city' ? '查看主题' : '查看城市'}</p>
             <img src={theme === 'city' ? SwitchThemeIcon : SwitchCityIcon} />
           </div>
         }
