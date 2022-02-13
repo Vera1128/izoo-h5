@@ -16,6 +16,7 @@ import { getPxCurr } from 'utils/index'
 import SwiperTestImg from 'assets/images/swiper-test.png'
 import heart from 'assets/images/heart.png'
 import earphone from 'assets/images/earphone-icon.png'
+import contactQrcode from 'assets/images/contact-qrcode.png'
 
 import './index.scss'
 import 'swiper/css'
@@ -284,14 +285,18 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
 
         <SwiperSlide>
           <div className="contactContainer">
-            <p className="contactNumber">
-              订单售后&nbsp;&nbsp;<a href="tel:177 4820 6510">177 4820 6510 </a>
-              <br />
-              <br />
-              商务合作&nbsp;&nbsp;<a href="tel:400 8886666">400 8886666 </a>
-              <br />
-              <br />
-            </p>
+            <div className="qrcodeContainer">
+              <div className="qrcodeItem">
+                <p className="title">订单售后</p>
+                <img src={contactQrcode} className="qrcode" alt="二维码图片" />
+                <p className="contactTips">扫描添加企业微信</p>
+              </div>
+              <div className="qrcodeItem">
+                <p className="title">商务合作</p>
+                <img src={contactQrcode} className="qrcode" alt="二维码图片" />
+                <p className="contactTips">扫描添加企业微信</p>
+              </div>
+            </div>
             <p className="contactNumber recommendContainer">
               <br />
               意见反馈 <br />
@@ -301,6 +306,7 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
               <br />
             </p>
             <FocusOn showCloseIcon={false} />
+            <EmptyBottom />
           </div>
         </SwiperSlide>
       </Swiper>

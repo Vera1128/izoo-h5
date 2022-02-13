@@ -314,13 +314,53 @@
   }
   .contactContainer {
     width: 100%;
-    padding: 44px 0;
+    height: calc(100vh - 344px);
+    padding: 104px 0 44px;
+    overflow-y: auto;
+    .qrcodeContainer {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      .qrcodeItem {
+        min-width: 208px;
+        .title {
+          width: 100%;
+          height: 44px;
+          text-align: center;
+          line-height: 35px;
+          font-size: 30px;
+          color: #525662;
+          font-weight: 500;
+        }
+        .qrcode {
+          width: 208px;
+          height: 208px;
+          object-fit: contain;
+          margin-top: 42px;
+        }
+        .contactTips {
+          height: 34px;
+          text-align: center;
+          line-height: 28px;
+          font-size: 24px;
+          color: #525662;
+          font-weight: 400;
+        }
+      }
+      .qrcodeItem:first-of-type {
+        margin-right: 79px;
+      }
+      .qrcodeItem:nth-of-type(2) {
+        margin-left: 79px;
+      }
+    }
     .contactNumber {
       padding: 30px 64px 0 86px;
       line-height: 50px;
       font-size: 30px;
       color: #525662;
       font-weight: lighter;
+      margin-top: 92px;
       a {
         text-decoration: #628ba8 underline;
         color: #628ba8;
