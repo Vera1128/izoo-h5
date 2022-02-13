@@ -7,6 +7,7 @@ import './index.less'
 interface Props {
   showCloseIcon?: boolean
   type?: number
+  closeCallback?: () => void
 }
 
 function FocusOn(props: Props) {
@@ -38,7 +39,10 @@ function FocusOn(props: Props) {
               className="closeIcon"
               alt="关闭图标"
               role="presentation"
-              onClick={() => setCloseFocusPanel(true)}
+              onClick={() => {
+                setCloseFocusPanel(true)
+                props?.closeCallback()
+              }}
             />
           )}
         </div>
@@ -50,6 +54,7 @@ function FocusOn(props: Props) {
 FocusOn.defaultProps = {
   showCloseIcon: true,
   type: 1,
+  closeCallback: () => {},
 } as Partial<Props>
 
 export default FocusOn

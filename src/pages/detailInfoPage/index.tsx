@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import SwiperCore, { Pagination, Autoplay } from 'swiper'
@@ -13,7 +13,7 @@ import Tag from 'components/Tag'
 import BackIcon from 'components/BackIcon'
 import { changeCollectStatus, listenReport } from 'apis/detailPageInfo'
 import Button from 'components/Button'
-import { throttle } from 'src/utils'
+import { throttle, getPxCurr } from 'src/utils'
 
 import EventManager from 'src/modules/eventManager'
 import { EventType } from 'src/modules/EventType'
@@ -38,6 +38,8 @@ import './index.scss'
 
 SwiperCore.use([Pagination, Autoplay])
 
+let scrollTopDistance = 0
+
 const Index = ({
   history,
   match,
@@ -53,10 +55,14 @@ const Index = ({
   const [showShareMask, setShowShareMask] = useState(false)
   const [selectMenu, setSelectMenu] = useState(1)
   const [playProgress, setPlayProgress] = useState({})
+  const [isFocusOnClosed, setIsFocusOnClosed] = useState(false)
   const {
     params: { id },
   } = match
   const { info, isCollect, isPayment } = detailInfo
+  const detailInfoContainerRef = useRef(null)
+  const detailInfoContentRef = useRef(null)
+  const detailInfoPageRef = useRef(null)
   useEffect(() => {
     // 收听内容信息上报
     listenReport(id, '', 0)
@@ -107,6 +113,14 @@ const Index = ({
       AudioGlobalDetail.getInstance().audiosInit(audioList)
     }
   }, [detailInfo])
+
+  useEffect(() => {
+    if (detailInfoContainerRef?.current && detailInfoContentRef?.current) {
+      // 正文到顶部的距离 = 自身父级的offsetTop +  自身的offsetTop + 切换tab的高度
+      const distance = detailInfoContentRef.current.offsetTop + detailInfoContainerRef.current.offsetTop + getPxCurr(80)
+      scrollTopDistance = distance
+    }
+  }, [detailInfo, isFocusOnClosed])
 
   const audioPlay = (id: string) => {
     AudioGlobal.getInstance().audioStop()
@@ -177,8 +191,12 @@ const Index = ({
     )
   }
 
+  const setInfoContentIntoView = () => {
+    detailInfoPageRef.current.scrollTop = scrollTopDistance
+  }
+
   return (
-    <div className="detailInfoPage">
+    <div className="detailInfoPage" ref={detailInfoPageRef}>
       <BackIcon clickHandle={backToMainPage} />
       <Swiper
         slidesPerView="auto"
@@ -201,14 +219,20 @@ const Index = ({
             </SwiperSlide>
           ))}
       </Swiper>
-      <FocusOnCom />
-      <div className="detailInfoContent">
+      <FocusOnCom closeCallback={() => setIsFocusOnClosed(true)} />
+      <div className="detailInfoContent" ref={detailInfoContentRef}>
         <div className="detailInfoMenu">
           <div className={`menuItem ${selectMenu === 1 ? 'menuItemSelected' : ''}`} onClick={() => setSelectMenu(1)}>
             景点攻略
             {selectMenu === 1 && <div className="line" />}
           </div>
-          <div className={`menuItem ${selectMenu === 2 ? 'menuItemSelected' : ''}`} onClick={() => setSelectMenu(2)}>
+          <div
+            className={`menuItem ${selectMenu === 2 ? 'menuItemSelected' : ''}`}
+            onClick={() => {
+              setSelectMenu(2)
+              setInfoContentIntoView()
+            }}
+          >
             导览简介
             {selectMenu === 2 && <div className="line" />}
           </div>
@@ -236,7 +260,11 @@ const Index = ({
               </div>
             </div>
           </div>
-          <p dangerouslySetInnerHTML={{ __html: info?.content }} className="routeDetailContent" />
+          <p
+            dangerouslySetInnerHTML={{ __html: info?.content }}
+            className="routeDetailContent"
+            ref={detailInfoContainerRef}
+          />
           <div className="routeCatalogList">
             <p>讲解目录</p>
             {catalogList?.map((item, index) => (
