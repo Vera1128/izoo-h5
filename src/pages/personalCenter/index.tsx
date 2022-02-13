@@ -17,6 +17,7 @@ import SwiperTestImg from 'assets/images/swiper-test.png'
 import heart from 'assets/images/heart.png'
 import earphone from 'assets/images/earphone-icon.png'
 import contactQrcode from 'assets/images/contact-qrcode.png'
+import planetIcon from 'assets/images/coupon-bg.png'
 
 import './index.scss'
 import 'swiper/css'
@@ -27,6 +28,7 @@ let mySwiper = null
 const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, history, menuIndex, setMenuIndex }) => {
   const [currIndex, setCurrIndex] = useState(0)
   const [showCouponPanel, setShowCouponPanel] = useState(false)
+  const [showCouponDetail, setShowCouponDetail] = useState(false)
 
   // @董帅
   const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
@@ -105,6 +107,16 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
     setShowCouponPanel(!showCouponPanel)
   }
 
+  const closeCouponClick = () => {
+    if (showCouponDetail) setShowCouponDetail(false)
+    else setShowCouponPanel(false)
+  }
+
+  const handleCouponClick = (couponId) => () => {
+    console.log(couponId)
+    setShowCouponDetail(true)
+  }
+
   return (
     <div className="personalCenterContainer">
       <div className="userInfoContainer">
@@ -121,14 +133,27 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
         {showCouponPanel && (
           <div className="couponPanel">
             <div className="couponContent">
-              <div className="coupon">
+              <div className="coupon" onClick={handleCouponClick(0)}>
+                <p className="title">星际通行券</p>
+                <p className="time">有效期至 2022.3.20</p>
+              </div>
+              <div className="coupon" onClick={handleCouponClick(1)}>
                 <p className="title">星际通行券</p>
                 <p className="time">有效期至 2022.3.20</p>
               </div>
             </div>
+            <div className="couponMask" onClick={closeCouponClick} />
           </div>
         )}
       </div>
+      {showCouponDetail && (
+        <div className="couponDescContainer">
+          <p className="title">免费获得任意路线一条</p>
+          <img src={planetIcon} className="couponIcon" />
+          <p className="mainTitle">星际通行券</p>
+          <p className="subTitle">有效期至 2022.3.20 24:00</p>
+        </div>
+      )}
       <PersonalMenu menuIndex={menuIndex} clickMenuHandle={clickMenuHandle} />
       <Swiper
         className="mySwiper"
