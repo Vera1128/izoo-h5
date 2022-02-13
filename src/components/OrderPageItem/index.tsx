@@ -1,6 +1,11 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-01 16:58:44
+ * @LastEditTime: 2022-02-13 17:56:17
+ */
 import React from 'react'
 import PinTuanPrice from 'components/PinTuanPrice'
-import bottomBorder from 'assets/images/bottom-border.png'
 import Tag from '../Tag'
 import './index.scss'
 

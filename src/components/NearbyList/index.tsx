@@ -1,4 +1,5 @@
 import React from 'react'
+import EarphoneIcon from 'assets/images/earphone-icon.png'
 import EmptyList from '../EmptyList'
 import ListHeader from '../ListHeader'
 import './index.less'
@@ -19,12 +20,13 @@ function NearbyList(props: Props) {
         {list.length > 0 ? (
           list.map(({ mainClassId, title, distance, scrollImage, desc }) => (
             <div className="nearbyItem" key={mainClassId} onClick={itemClick(mainClassId)}>
-              <img src={scrollImage} />
+              <img src={scrollImage} className="scrollImage" />
               <div className="placeInfo">
                 <div className="place">
-                  <span>{title}</span>
+                  <img src={EarphoneIcon} className="listenIcon" />
+                  <p className="placeInfoTitle">{`${title.length > 6 ? title.substring(0, 6) : title}`}</p>
                 </div>
-                <span className="distance">{`${distance.toFixed(2)}km`}</span>
+                <div className="distance">{`${distance.toFixed(2)}km`}</div>
               </div>
               <div className="desc">{desc || '简介TODO'} </div>
             </div>
