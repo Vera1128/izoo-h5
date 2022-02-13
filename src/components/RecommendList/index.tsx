@@ -31,7 +31,7 @@ function RecommendList(props: Props) {
                 </div>
 
                 <p className="num">
-                  时长{(item.duration / 60).toFixed(2)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{item.totals}条
+                  时长{Math.round(item.duration / 60)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{item.totals}条
                 </p>
               </div>
               <div className="listenBtn" onClick={itemClick(item.mainClassId)}>
