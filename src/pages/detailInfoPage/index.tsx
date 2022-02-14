@@ -192,7 +192,14 @@ const Index = ({
   }
 
   const setInfoContentIntoView = () => {
-    detailInfoPageRef.current.scrollTop = scrollTopDistance
+    const dom = detailInfoPageRef.current
+    const timer = setInterval(() => {
+      if (dom.scrollTop < scrollTopDistance - 10) {
+        dom.scrollTop += 10
+      } else {
+        clearInterval(timer)
+      }
+    }, 1)
   }
 
   return (

@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import wx from 'weixin-js-sdk'
 
 import AllRouteItem from 'components/AllRouteItem'
 import TopSearch from 'components/Search'
@@ -11,6 +12,8 @@ import SwitchCityIcon from 'assets/images/switch-city.png'
 
 import 'swiper/css'
 import './index.scss'
+
+const shareConfig = require('src/config/share.json')
 
 let mySwiper = null
 
@@ -25,10 +28,34 @@ const Index = ({
   getTypeList,
   getTypeData,
   setShowRightButton,
+  getSignature,
 }) => {
   useEffect(() => {
     getTypeList(theme)
     setShowRightButton(true)
+    getSignature(window.location.href.split('#')[0]).then(() => {
+      wx.ready(() => {
+        console.log('wx config ready')
+        const shareInfo = {
+          title: shareConfig.title,
+          desc: shareConfig.subTitle,
+          link: shareConfig.link,
+          imgUrl: shareConfig.icon, // 分享图标
+          fail: (res) => {
+            console.log('设置失败信息', res)
+          },
+          success: (res) => {
+            console.log('设置成功信息', res)
+          },
+        }
+        wx.updateAppMessageShareData(shareInfo)
+        wx.updateTimelineShareData(shareInfo)
+      })
+      wx.error((res: any) => {
+        console.log('mainPage wx config error')
+        console.log(res)
+      })
+    })
   }, [])
   const cityClickHandle = (id, index) => () => {
     setCitySelectedId(index)
@@ -139,12 +166,14 @@ const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr, theme } }) =
 const mapDispatch = ({
   allRoutes: { setCitySelectedId, getTypeList, getTypeData, setTheme },
   search: { setShowRightButton },
+  base: { getSignature },
 }) => ({
   setCitySelectedId,
   getTypeList,
   getTypeData,
   setTheme,
   setShowRightButton,
+  getSignature,
 })
 
 export default connect(mapState, mapDispatch)(Index)

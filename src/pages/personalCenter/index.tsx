@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { connect } from 'react-redux'
 import * as clipboard from 'clipboard-polyfill/text'
+import wx from 'weixin-js-sdk'
 
 import SlideDelete from 'components/SlideDelete'
 import PersonalMenu from 'components/PersonalMenu'
@@ -22,10 +23,21 @@ import planetIcon from 'assets/images/coupon-bg.png'
 import './index.scss'
 import 'swiper/css'
 
+const shareConfig = require('src/config/share.json')
+
 const distance = getPxCurr(196)
 let mySwiper = null
 
-const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, history, menuIndex, setMenuIndex }) => {
+const Index = ({
+  getFavoritesList,
+  getListenList,
+  favoritesList,
+  listenList,
+  history,
+  menuIndex,
+  setMenuIndex,
+  getSignature,
+}) => {
   const [currIndex, setCurrIndex] = useState(0)
   const [showCouponPanel, setShowCouponPanel] = useState(false)
   const [showCouponDetail, setShowCouponDetail] = useState(false)
@@ -41,6 +53,29 @@ const Index = ({ getFavoritesList, getListenList, favoritesList, listenList, his
     fetchData(menuIndex)
     // @董帅
     getCurrentUserInfo()
+    getSignature(window.location.href.split('#')[0]).then(() => {
+      wx.ready(() => {
+        console.log('wx config ready')
+        const shareInfo = {
+          title: shareConfig.title,
+          desc: shareConfig.subTitle,
+          link: shareConfig.link,
+          imgUrl: shareConfig.icon, // 分享图标
+          fail: (res) => {
+            console.log('设置失败信息', res)
+          },
+          success: (res) => {
+            console.log('设置成功信息', res)
+          },
+        }
+        wx.updateAppMessageShareData(shareInfo)
+        wx.updateTimelineShareData(shareInfo)
+      })
+      wx.error((res: any) => {
+        console.log('mainPage wx config error')
+        console.log(res)
+      })
+    })
   }, [])
 
   // @董帅
@@ -345,10 +380,14 @@ const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex } }) 
   menuIndex,
 })
 
-const mapDispatch = ({ personalCenter: { getFavoritesList, getListenList, setMenuIndex } }) => ({
+const mapDispatch = ({
+  personalCenter: { getFavoritesList, getListenList, setMenuIndex },
+  base: { getSignature },
+}) => ({
   getFavoritesList,
   getListenList,
   setMenuIndex,
+  getSignature,
 })
 
 export default connect(mapState, mapDispatch)(Index)
