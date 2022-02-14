@@ -59,7 +59,7 @@ const Index = ({
   const {
     params: { id },
   } = match
-  const { info, isCollect, isPayment } = detailInfo
+  const { info, isCollect, isPayment, duration, totals } = detailInfo
   const detailInfoContainerRef = useRef(null)
   const detailInfoContentRef = useRef(null)
   const detailInfoPageRef = useRef(null)
@@ -301,6 +301,9 @@ const Index = ({
                 )}
               </div>
             ))}
+            <div className="bottomSum">
+              时长{Math.round(duration / 60)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{totals}条
+            </div>
           </div>
           <EmptyBottom color="white" />
         </div>
