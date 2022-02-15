@@ -210,7 +210,7 @@ const Index = ({
                 <div className="desc">沪港银行历史展览馆丨认识货币与近代中国认识货币与近代中国</div>
                 <div className="priceContainer">
                   <div className="pricePintuan">
-                    <div className="btnPintuan">拼团价</div>
+                    <div className="btnPintuanPersonalCenter">拼团价</div>
                     <span>￥</span>35
                   </div>
                   <div className="priceOriginal">

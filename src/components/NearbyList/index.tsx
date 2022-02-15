@@ -18,7 +18,7 @@ function NearbyList(props: Props) {
       <ListHeader title="离你不远" clickHandle={clickMoreHandle} />
       <div className="nearbyList">
         {list.length > 0 ? (
-          list.map(({ mainClassId, title, distance, scrollImage, desc }) => (
+          list.slice(0, 4).map(({ mainClassId, title, distance, scrollImage, desc }) => (
             <div className="nearbyItem" key={mainClassId} onClick={itemClick(mainClassId)}>
               <img src={scrollImage} className="scrollImage" />
               <div className="placeInfo">
