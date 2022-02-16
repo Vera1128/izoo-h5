@@ -197,7 +197,7 @@ const Index = ({
   const setInfoContentIntoView = () => {
     const dom = detailInfoPageRef.current
     const timer = setInterval(() => {
-      if (dom.scrollTop < scrollTopDistance - 10) {
+      if (dom.scrollTop < scrollTopDistance - 10 && dom.scrollHeight - dom.scrollTop > window.innerHeight) {
         dom.scrollTop += 10
       } else {
         clearInterval(timer)
@@ -206,116 +206,118 @@ const Index = ({
   }
 
   return (
-    <div className="detailInfoPage" ref={detailInfoPageRef}>
-      <BackIcon clickHandle={backToMainPage} />
-      <Swiper
-        slidesPerView="auto"
-        className="mySwiper"
-        watchSlidesProgress={true}
-        pagination={{
-          clickable: false,
-        }}
-        onSwiper={() => {}}
-        initialSlide={0}
-        autoplay={{
-          delay: 2500,
-          disableOnInteraction: false,
-        }}
-      >
-        {info?.scrollImages.length > 0 &&
-          info?.scrollImages.map((item) => (
-            <SwiperSlide key={item}>
-              <img src={item} className="swiperContent" alt="轮播图" />
-            </SwiperSlide>
-          ))}
-      </Swiper>
-      <FocusOnCom closeCallback={() => setIsFocusOnClosed(true)} />
-      <div className="detailInfoContent" ref={detailInfoContentRef}>
-        <div className="detailInfoMenu">
-          <div className={`menuItem ${selectMenu === 1 ? 'menuItemSelected' : ''}`} onClick={() => setSelectMenu(1)}>
-            景点攻略
-            {selectMenu === 1 && <div className="line" />}
+    <>
+      <div className="detailInfoPage" ref={detailInfoPageRef}>
+        <BackIcon clickHandle={backToMainPage} />
+        <Swiper
+          slidesPerView="auto"
+          className="mySwiper"
+          watchSlidesProgress={true}
+          pagination={{
+            clickable: false,
+          }}
+          onSwiper={() => {}}
+          initialSlide={0}
+          autoplay={{
+            delay: 2500,
+            disableOnInteraction: false,
+          }}
+        >
+          {info?.scrollImages.length > 0 &&
+            info?.scrollImages.map((item) => (
+              <SwiperSlide key={item}>
+                <img src={item} className="swiperContent" alt="轮播图" />
+              </SwiperSlide>
+            ))}
+        </Swiper>
+        <FocusOnCom closeCallback={() => setIsFocusOnClosed(true)} />
+        <div className="detailInfoContent" ref={detailInfoContentRef}>
+          <div className="detailInfoMenu">
+            <div className={`menuItem ${selectMenu === 1 ? 'menuItemSelected' : ''}`} onClick={() => setSelectMenu(1)}>
+              景点攻略
+              {selectMenu === 1 && <div className="line" />}
+            </div>
+            <div
+              className={`menuItem ${selectMenu === 2 ? 'menuItemSelected' : ''}`}
+              onClick={() => {
+                setSelectMenu(2)
+                setInfoContentIntoView()
+              }}
+            >
+              导览简介
+              {selectMenu === 2 && <div className="line" />}
+            </div>
           </div>
-          <div
-            className={`menuItem ${selectMenu === 2 ? 'menuItemSelected' : ''}`}
-            onClick={() => {
-              setSelectMenu(2)
-              setInfoContentIntoView()
-            }}
-          >
-            导览简介
-            {selectMenu === 2 && <div className="line" />}
-          </div>
-        </div>
-        <div className="detailInfoBottomContainer">
-          <div className="routeInfoContainer">
-            <div className="routeInfoItem">
-              <img src={LocationIcon} className="locationIcon" />
-              <p>{info?.address}</p>
-            </div>
-            <div className="routeInfoItem">
-              <img src={TimeIcon} className="timeIcon" />
-              <p>{info?.time}</p>
-            </div>
-            <div className="routeInfoItem">
-              <img src={PriceIcon} className="priceIcon" />
-              <p>{info?.tickets}</p>
-            </div>
-            <div className="routeInfoItem">
-              <img src={TagIcon} className="tagIcon" />
-              <div className="tagList">
-                {info?.tags.map((tag) => (
-                  <Tag text={tag} className="tag" key={tag} />
-                ))}
+          <div className="detailInfoBottomContainer">
+            <div className="routeInfoContainer">
+              <div className="routeInfoItem">
+                <img src={LocationIcon} className="locationIcon" />
+                <p>{info?.address}</p>
+              </div>
+              <div className="routeInfoItem">
+                <img src={TimeIcon} className="timeIcon" />
+                <p>{info?.time}</p>
+              </div>
+              <div className="routeInfoItem">
+                <img src={PriceIcon} className="priceIcon" />
+                <p>{info?.tickets}</p>
+              </div>
+              <div className="routeInfoItem">
+                <img src={TagIcon} className="tagIcon" />
+                <div className="tagList">
+                  {info?.tags.map((tag) => (
+                    <Tag text={tag} className="tag" key={tag} />
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-          <p
-            dangerouslySetInnerHTML={{ __html: info?.content }}
-            className="routeDetailContent"
-            ref={detailInfoContainerRef}
-          />
-          <div className="routeCatalogList">
-            <p>讲解目录</p>
-            {catalogList?.map((item, index) => (
-              <div className="catalogItemContainer" key={item.subId}>
-                <div className="catalogItem">
-                  {item.isAudition ? (
-                    <>
-                      <div className="num numAudition">试听</div>
-                      <div className="text textAudition">{item.title}</div>
-                      <img
-                        src={playProgress[item.subId]?.isPlay ? pauseIcon : playIcon}
-                        className="playIcon"
-                        onClick={() => clickPlayAudio(item.subId)}
-                      />
-                    </>
-                  ) : (
-                    <>
-                      <div className="num">{`0${index + 1}`.slice(-2)}</div>
-                      <div className="text">{item.title}</div>
-                    </>
+            <p
+              dangerouslySetInnerHTML={{ __html: info?.content }}
+              className="routeDetailContent"
+              ref={detailInfoContainerRef}
+            />
+            <div className="routeCatalogList">
+              <p>讲解目录</p>
+              {catalogList?.map((item, index) => (
+                <div className="catalogItemContainer" key={item.subId}>
+                  <div className="catalogItem">
+                    {item.isAudition ? (
+                      <>
+                        <div className="num numAudition">试听</div>
+                        <div className="text textAudition">{item.title}</div>
+                        <img
+                          src={playProgress[item.subId]?.isPlay ? pauseIcon : playIcon}
+                          className="playIcon"
+                          onClick={() => clickPlayAudio(item.subId)}
+                        />
+                      </>
+                    ) : (
+                      <>
+                        <div className="num">{`0${index + 1}`.slice(-2)}</div>
+                        <div className="text">{item.title}</div>
+                      </>
+                    )}
+                  </div>
+                  {item.isAudition && (
+                    <div className="audioProgress">
+                      <span className="currrent">
+                        {sf.convert(Math.round(playProgress[item.subId]?.currentTime || 0)).format('MM:SS')}
+                      </span>
+                      <div className="progressContainer">
+                        <div className="progressBar" style={{ width: playProgress[item.subId]?.progress || 0 }} />
+                        <div className="progressDot" style={{ left: playProgress[item.subId]?.progress || 0 }} />
+                      </div>
+                      <span className="duration">{sf.convert(Math.round(item.duration || 0)).format('MM:SS')}</span>
+                    </div>
                   )}
                 </div>
-                {item.isAudition && (
-                  <div className="audioProgress">
-                    <span className="currrent">
-                      {sf.convert(Math.round(playProgress[item.subId]?.currentTime || 0)).format('MM:SS')}
-                    </span>
-                    <div className="progressContainer">
-                      <div className="progressBar" style={{ width: playProgress[item.subId]?.progress || 0 }} />
-                      <div className="progressDot" style={{ left: playProgress[item.subId]?.progress || 0 }} />
-                    </div>
-                    <span className="duration">{sf.convert(Math.round(item.duration || 0)).format('MM:SS')}</span>
-                  </div>
-                )}
+              ))}
+              <div className="bottomSum">
+                时长{Math.round(duration / 60)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{totals}条
               </div>
-            ))}
-            <div className="bottomSum">
-              时长{Math.round(duration / 60)}分钟&nbsp;&nbsp;&nbsp;&nbsp;讲解{totals}条
             </div>
+            <EmptyBottom color="white" />
           </div>
-          <EmptyBottom color="white" />
         </div>
       </div>
       <div className="detailPageMenuBottom">
@@ -342,7 +344,7 @@ const Index = ({
           <img src={DetailPageShareImg} className="shareImg" />
         </Mask>
       )}
-    </div>
+    </>
   )
 }
 
