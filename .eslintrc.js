@@ -70,6 +70,7 @@ module.exports = {
     'no-multi-assign': 'off',
     'no-plusplus': 'off',
     'no-lonely-if': 'off',
+    camelcase: 'off',
 
     // sonarjs
     'sonarjs/cognitive-complexity': 'error',

@@ -28,3 +28,16 @@ export type TypeDataParams = {
 } & {
   value: string
 }
+
+export interface ReqCreateOrder {
+  /**
+   * type: 订单类型
+   * group: 团购
+   * single: 单买
+   */
+  type: 'group' | 'single'
+  /** 景点唯一 id */
+  mainClassId: string
+  /** 用户唯一 id */
+  userId?: string
+}

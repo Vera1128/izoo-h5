@@ -31,9 +31,12 @@ export function extend<T>(a: T, b: T): T {
 
 // 获取查询参数
 export function getQueryParam(k, query?: string, seperator = '&') {
+  console.log(k, query)
   const param = {}
   const queryStr = query || window.location.search.substring(1)
   const arr = queryStr.split(seperator || '&')
+
+  console.log(queryStr, arr)
 
   for (const i in arr) {
     const tem = arr[i].match(/^\s*([%\w]+)=(.*)[#]?$/)

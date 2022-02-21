@@ -20,6 +20,7 @@ const testData = {
   duration: 400,
   totals: 10,
   type: 'group',
+  desc: '1',
 }
 
 const GroupPage = () => {

@@ -139,6 +139,8 @@ const Index = ({
   }
 
   const backToMainPage = () => {
+    console.log(history)
+    console.log(history.length)
     audioStop()
     history.go(-1)
     setDetailInfo({})

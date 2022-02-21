@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { notify } from '@tgu/toast'
 import { connect } from 'react-redux'
+import wx from 'weixin-js-sdk'
 import { getQueryParam } from 'utils/index'
 import BackIcon from 'components/BackIcon'
 import OrderPageItem from 'components/OrderPageItem'
@@ -23,23 +24,46 @@ const testData = {
   duration: 400,
   totals: 10,
   type: 'single',
+  desc: '1',
 }
 
-const OrderPage = ({ history, location, match, detailInfo, getDetailInfo }) => {
-  const id = getQueryParam('routeId')
+const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, createOrder, getSignature }) => {
+  const id = getQueryParam('routeId', location.search.substring(1))
   const {
     params: { type },
   } = match
   const [canSubmit, setCanSubmit] = useState(false)
   useEffect(() => {
     getDetailInfo(id)
+    getSignature(window.location.href.split('#')[0]).then(() => {
+      wx.ready(() => {
+        // console.log('购买页wx config ready')
+        // const shareInfo = {
+        //   title: `${info.title}亲子行走语音导览`,
+        //   desc: info.desc || '',
+        //   link: window.location.href,
+        //   imgUrl: shareConfig.icon, // 分享图标
+        //   fail: (res) => {
+        //     console.log('设置失败信息', res)
+        //   },
+        //   success: (res) => {
+        //     console.log('设置成功信息', res)
+        //   },
+        // }
+        // wx.updateAppMessageShareData(shareInfo)
+        // wx.updateTimelineShareData(shareInfo)
+      })
+      wx.error((res: any) => {
+        console.log('下单页 wx config error')
+        console.log(res)
+      })
+    })
   }, [])
   if (detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}') {
     // 添加type
     detailInfo.info.type = type
-    // hard code
-    detailInfo.info.duration = 500
-    detailInfo.info.totals = 50
+    detailInfo.info.duration = detailInfo.duration
+    detailInfo.info.totals = detailInfo.totals
   }
   const backClickHandle = () => {
     console.log('backClickHandle')
@@ -52,7 +76,12 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo }) => {
   const submitOrder = () => {
     if (!canSubmit) {
       notify('请输入正确的手机号', 2000)
+      return
     }
+    createOrder({
+      type,
+      mainClassId: id,
+    })
   }
   return (
     <div className="orderPageContainer">
@@ -67,7 +96,7 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo }) => {
       <Menu className="orderMenu">
         <div className="priceContainer">
           支付 <span className="smallIcon">￥</span>
-          <span className="price">{type === 'single' ? detailInfo?.info.amount : detailInfo?.info.avgAmount}</span>
+          <span className="price">{type === 'single' ? detailInfo?.info?.amount : detailInfo?.info?.avgAmount}</span>
         </div>
         <Button className={`orderButtonInvalid ${canSubmit ? 'orderButton' : ''}`} onClick={submitOrder}>
           提交订单
@@ -81,8 +110,10 @@ const mapState = ({ detailInfoPage: { detailInfo } }) => ({
   detailInfo,
 })
 
-const mapDispatch = ({ detailInfoPage: { getDetailInfo } }) => ({
+const mapDispatch = ({ detailInfoPage: { getDetailInfo }, order: { createOrder }, base: { getSignature } }) => ({
   getDetailInfo,
+  createOrder,
+  getSignature,
 })
 
 export default connect(mapState, mapDispatch)(OrderPage)

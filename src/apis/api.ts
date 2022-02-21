@@ -42,7 +42,7 @@ export function ssoToFlow(sso: string) {
 
 // 重定向
 export function redirectLogin() {
-  const url = `https://oss.walkidz.com/h5/v2/index.html`
+  const url = `https://oss.walkidz.com/h5/v1/index.html`
   const jump = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf93b23e8acb83eff&redirect_uri=${encodeURIComponent(
     url,
   )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redire`

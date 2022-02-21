@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-01 16:58:44
- * @LastEditTime: 2022-02-13 17:56:17
+ * @LastEditTime: 2022-02-20 17:50:44
  */
 import React from 'react'
 import PinTuanPrice from 'components/PinTuanPrice'
@@ -30,21 +30,23 @@ interface Props {
      * single: 单买
      */
     type: string
+    /** 描述 */
+    desc: string
   }
 }
 
 function OrderPageItem(props: Props) {
   const {
-    data: { tags, scrollImages, amount, avgAmount, duration, totals, type },
+    data: { title, tags, scrollImages, amount, avgAmount, duration, totals, type, desc },
   } = props
   return (
     <>
       <div className="orderPageItem">
         <img src={scrollImages[0]} alt="" className="orderPageItemImg" />
         <div className="orderPageContent">
-          <p className="desc">desc待定</p>
+          <p className="desc">{`${title}|${desc}`}</p>
           <p className="duration">
-            时长{duration}分钟&nbsp;&nbsp;讲解{totals}条
+            时长{Math.round(duration / 60)}分钟&nbsp;&nbsp;讲解{totals}条
           </p>
           <div className="tagList">
             {tags.map((item) => (
