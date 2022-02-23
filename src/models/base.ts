@@ -26,16 +26,16 @@ export default {
       const device = currentBrowser()
 
       let res: ApiReturn<ResTestLogin>
-      if (device === 'browser') {
-        res = await testLogin()
+      // if (device === 'browser') {
+      //   res = await testLogin()
+      // }
+      // if (device === 'app') {
+      if (!code) {
+        redirectLogin()
+      } else {
+        res = await prodLogin(code)
       }
-      if (device === 'app') {
-        if (!code) {
-          redirectLogin()
-        } else {
-          res = await prodLogin(code)
-        }
-      }
+      // }
 
       // const res = !code ? await testLogin() : await prodLogin(code)
       console.log('登录:', res)

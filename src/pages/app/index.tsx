@@ -5,6 +5,7 @@ import { getQueryParam } from 'utils/index'
 import EventManager from 'src/modules/eventManager'
 import { EventType } from 'src/modules/EventType'
 import { AudioGlobal } from 'src/modules/audio'
+import Loading from 'src/components/Loading'
 
 import audioContinueIcon from 'assets/images/music-flow-icon.png'
 
@@ -12,6 +13,7 @@ import './index.scss'
 
 const App: FC<any> = ({ children, getUserInfo, match, location }) => {
   const [showPlayAudioIcon, setShowPlayAudioIcon] = useState(false)
+  const [showLoading, setShowLoading] = useState(true)
   useEffect(() => {
     const appId = 'wxf93b23e8acb83eff'
     const code = getQueryParam('code')
@@ -25,7 +27,9 @@ const App: FC<any> = ({ children, getUserInfo, match, location }) => {
     //   )
     // }
     // localStorage.setItem('code', getQueryParam('code'))
-    getUserInfo(code)
+    getUserInfo(code).then(() => {
+      setShowLoading(false)
+    })
     let listener = null
     EventManager.on(
       EventType.AUDIO_PROGRESS_UPDATE,
@@ -52,7 +56,7 @@ const App: FC<any> = ({ children, getUserInfo, match, location }) => {
   return (
     <div className="app">
       {showPlayAudioIcon && <img src={audioContinueIcon} className="audioContinueIcon" onClick={closeAudioPlay} />}
-      {children}
+      {showLoading ? <Loading /> : children}
     </div>
   )
 }

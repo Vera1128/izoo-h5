@@ -19,13 +19,13 @@ apiClient.flows.preApiReturnFlow.push((v) => {
   if (err?.code === 'NEED_LOGIN') {
     // 如果没有登录,检测当前设备环境,浏览器走 testLogin, 手机设备需要重定向到登录
     const device = currentBrowser()
-    if (device === 'browser') {
-      testLogin()
-    }
-    if (device === 'app') {
-      redirectLogin()
-      return v
-    }
+    // if (device === 'browser') {
+    //   testLogin()
+    // }
+    // if (device === 'app') {
+    redirectLogin()
+    return v
+    // }
   }
   if (!isSucc && err?.message) {
     notify(err?.message, 2000)
