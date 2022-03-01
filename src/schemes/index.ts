@@ -41,3 +41,10 @@ export interface ReqCreateOrder {
   /** 用户唯一 id */
   userId?: string
 }
+
+export interface createOrderProps {
+  reqOrder: ReqCreateOrder
+  paySuccess: () => void
+  payCancel: () => void
+  payFail: () => void
+}

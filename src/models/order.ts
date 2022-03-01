@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2022-02-20 18:29:24
- * @LastEditTime: 2022-02-20 19:12:58
+ * @LastEditTime: 2022-03-01 21:56:58
  */
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
@@ -14,9 +14,8 @@ export default {
   state: {},
 
   effects: (dispatch) => ({
-    // 测试登录
-    async createOrder(reqOrder: scheme.ReqCreateOrder) {
-      const res = await createOrder(reqOrder)
+    async createOrder(propsReq: scheme.createOrderProps) {
+      const res = await createOrder(propsReq.reqOrder)
       if (res) {
         const { timestamp, signType, nonceStr, prepay_id, paySign } = res.res
         wx.chooseWXPay({
@@ -36,17 +35,20 @@ export default {
             // res.errMsg将在用户支付成功后返回ok，但并不保证它绝对可靠， 切记。
             if (res.errMsg === 'chooseWXPay:ok') {
               console.log('微信支付成功')
+              propsReq.paySuccess()
             }
           },
           // 支付取消回调函数
           cancel: function (res) {
             console.log('支付取消')
             console.log(res)
+            propsReq.payCancel()
           },
           // 支付失败回调函数
           fail: function (res) {
             console.log('支付失败~')
             console.log(res)
+            propsReq.payFail()
           },
         })
       }

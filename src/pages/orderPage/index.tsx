@@ -78,9 +78,19 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
       notify('请输入正确的手机号', 2000)
       return
     }
+    const paySuccessCB = () => {
+      history.push({ pathname: `/routeListPage/${id}` })
+    }
+    const payCancelCB = () => {}
+    const payFailCB = () => {}
     createOrder({
-      type,
-      mainClassId: id,
+      reqOrder: {
+        type,
+        mainClassId: id,
+      },
+      paySuccess: paySuccessCB,
+      payCancel: payCancelCB,
+      payFail: payFailCB,
     })
   }
   return (
