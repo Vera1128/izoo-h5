@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-11-22 10:16:00
+ * @LastEditTime: 2022-03-14 21:14:15
+ */
 import asyncImport from 'router/asyncImport'
 
 // 路由配置 - 使用动态加载的方式配置路由
@@ -34,7 +40,7 @@ export default [
         exact: true,
       },
       {
-        path: 'group/:id',
+        path: 'group/:id/:groupId',
         component: asyncImport('groupPage'),
         exact: true,
       },

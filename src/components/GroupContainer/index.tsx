@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-22 22:57:10
+ * @LastEditTime: 2022-03-15 10:05:19
+ */
 import React, { useState } from 'react'
 import Button from '../Button'
 import CountDown from '../CountDown'
@@ -37,6 +43,8 @@ function GroupOrder(props: Props) {
     console.log('倒计时结束')
     setGroupStatus(2)
   }
+
+  console.log('groupStatus', groupStatus)
   return (
     <div className="groupOrderContainer">
       <div className="groupOrderTitle">
@@ -52,7 +60,7 @@ function GroupOrder(props: Props) {
         {groupStatus === 0 || groupStatus === 1 ? (
           <>
             剩余
-            <CountDown targetDate="2021-12-22 00:00:00" finishCb={countDownFinishCb} />
+            <CountDown targetDate="2022-03-15 10:20:00" finishCb={countDownFinishCb} />
             后结束
           </>
         ) : (

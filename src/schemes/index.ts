@@ -44,7 +44,7 @@ export interface ReqCreateOrder {
 
 export interface createOrderProps {
   reqOrder: ReqCreateOrder
-  paySuccess: () => void
+  paySuccess: (string) => void
   payCancel: () => void
   payFail: () => void
 }

@@ -8,6 +8,7 @@ import OrderPageItem from 'components/OrderPageItem'
 import Menu from 'components/MenuOrder'
 import Button from 'components/Button'
 import Order from 'components/OrderContainer'
+import { ORDER_TYPE } from 'src/constants/index'
 
 import './index.scss'
 
@@ -78,8 +79,12 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
       notify('请输入正确的手机号', 2000)
       return
     }
-    const paySuccessCB = () => {
-      history.push({ pathname: `/routeListPage/${id}` })
+    const paySuccessCB = (groupId) => {
+      if (type === ORDER_TYPE.SINGLE) {
+        history.push({ pathname: `/routeListPage/${id}` })
+      } else if (type === ORDER_TYPE.GROUP) {
+        history.push({ pathname: `/group/${id}/${groupId}` })
+      }
     }
     const payCancelCB = () => {}
     const payFailCB = () => {}

@@ -1,9 +1,11 @@
 .routeDetailPage {
   width: 100vw;
   height: 100vh;
+  overflow-y: auto;
   background: #fff8f3;
   .mainImg {
     width: 100%;
+    display: block;
   }
   .contentContainer {
     width: 100%;
@@ -12,7 +14,7 @@
       width: 100%;
       border-radius: 48px;
       border: 4px solid #d7c4ab;
-      padding: 28px 48px 34px 48px;
+      padding: 28px 48px 26px 48px;
       .audioTitleContainer {
         width: 100%;
         height: 64px;

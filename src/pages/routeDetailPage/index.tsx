@@ -11,17 +11,20 @@ import placeIcon from 'assets/images/place-icon.png'
 import playIcon from 'assets/images/play-icon-bold.png'
 import pauseIcon from 'assets/images/pause-icon.png'
 import './index.scss'
+import EmptyBottom from 'src/components/EmptyBottom'
 
 const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList, setBackFromRouteDetail }) => {
   const [targetImg, setTargetImg] = useState('')
   const [showPreviewImg, setShowPreviewImg] = useState(false)
   const [playProgress, setPlayProgress] = useState({})
   const largeImgEl = useRef(null)
+  const testEl = useRef(null)
   const {
     params: { mainClassId, subId },
   } = match
 
   useEffect(() => {
+    console.log('yyqx', largeImgEl.current)
     getSubDetail({ mainClassId, subId })
     let listener = null
     EventManager.on(
@@ -34,9 +37,8 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
       EventManager.off(EventType.AUDIO_PROGRESS_UPDATE, listener)
     }
   }, [])
-
   useEffect(() => {
-    if (largeImgEl.current) {
+    if (showPreviewImg && largeImgEl.current) {
       const largeImgDom = largeImgEl.current
       const mc = new Hammer.Manager(largeImgDom)
       const Pinch = new Hammer.Pinch()
@@ -80,7 +82,7 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
             `translate3d(0, 0, 0)`
       })
     }
-  }, [largeImgEl.current])
+  }, [showPreviewImg])
 
   const showPreviewHandle = (img) => () => {
     setShowPreviewImg(true)
@@ -151,10 +153,11 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
         </div>
       </div>
       {showPreviewImg && (
-        <div className="largeImgPanel" onClick={closePreviewHandle}>
+        <div className="largeImgPanel" onClick={closePreviewHandle} ref={testEl}>
           <img src={targetImg} className="largeImg" ref={largeImgEl} />
         </div>
       )}
+      <EmptyBottom color="#FFF9F3" />
       <div className="menu">
         <div
           className="menuItem"

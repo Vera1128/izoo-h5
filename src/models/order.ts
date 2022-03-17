@@ -2,22 +2,31 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2022-02-20 18:29:24
- * @LastEditTime: 2022-03-01 21:56:58
+ * @LastEditTime: 2022-03-14 21:05:12
  */
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
-import { createOrder } from 'apis/order'
+import { createOrder, refreshOrder, getGroupData } from 'apis/order'
 import * as scheme from '../schemes/index'
 
 export default {
   name: 'order',
-  state: {},
+  state: {
+    groupData: {
+      /** 团长头像 */
+      ownerAvatar: '',
+      /** 参与者头像 */
+      joinAvatar: '',
+      /** 团购状态 */
+      type: 'wait',
+    },
+  },
 
   effects: (dispatch) => ({
     async createOrder(propsReq: scheme.createOrderProps) {
       const res = await createOrder(propsReq.reqOrder)
       if (res) {
-        const { timestamp, signType, nonceStr, prepay_id, paySign } = res.res
+        const { timestamp, signType, nonceStr, prepay_id, paySign, orderId } = res.res
         wx.chooseWXPay({
           // 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符
           timestamp: timestamp,
@@ -30,12 +39,14 @@ export default {
           // 支付签名
           paySign: paySign,
           // 支付成功后的回调函数
-          success: function (res) {
+          success: async function (res) {
             // res.errMsg === 'chooseWXPay:ok'方式判断前端返回,微信团队郑重提示：
             // res.errMsg将在用户支付成功后返回ok，但并不保证它绝对可靠， 切记。
             if (res.errMsg === 'chooseWXPay:ok') {
               console.log('微信支付成功')
-              propsReq.paySuccess()
+              const res = await refreshOrder(orderId)
+              console.log('团购订单返回', res.res.groupId)
+              propsReq.paySuccess(res?.res?.groupId)
             }
           },
           // 支付取消回调函数
@@ -53,7 +64,25 @@ export default {
         })
       }
     },
+    async getGroupData(groupId) {
+      const res = await getGroupData(groupId)
+      if (res) {
+        const { ownerAvatar, joinAvatar, type } = res.res
+        dispatch.order.setGroupData({
+          ownerAvatar,
+          joinAvatar,
+          type,
+        })
+      }
+    },
   }),
 
-  reducers: {},
+  reducers: {
+    setGroupData(state, payload) {
+      return {
+        ...state,
+        groupData: payload,
+      }
+    },
+  },
 }
