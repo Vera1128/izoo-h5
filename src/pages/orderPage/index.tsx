@@ -93,6 +93,7 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
         type,
         mainClassId: id,
       },
+      orderType: type,
       paySuccess: paySuccessCB,
       payCancel: payCancelCB,
       payFail: payFailCB,

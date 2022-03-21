@@ -2,11 +2,12 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2022-02-20 18:29:24
- * @LastEditTime: 2022-03-14 21:05:12
+ * @LastEditTime: 2022-03-19 12:49:42
  */
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
 import { createOrder, refreshOrder, getGroupData } from 'apis/order'
+import { ORDER_TYPE } from 'src/constants/index'
 import * as scheme from '../schemes/index'
 
 export default {
@@ -24,6 +25,7 @@ export default {
 
   effects: (dispatch) => ({
     async createOrder(propsReq: scheme.createOrderProps) {
+      console.log('订单是否是团购', propsReq.orderType === ORDER_TYPE.GROUP)
       const res = await createOrder(propsReq.reqOrder)
       if (res) {
         const { timestamp, signType, nonceStr, prepay_id, paySign, orderId } = res.res
@@ -44,9 +46,11 @@ export default {
             // res.errMsg将在用户支付成功后返回ok，但并不保证它绝对可靠， 切记。
             if (res.errMsg === 'chooseWXPay:ok') {
               console.log('微信支付成功')
-              const res = await refreshOrder(orderId)
-              console.log('团购订单返回', res.res.groupId)
-              propsReq.paySuccess(res?.res?.groupId)
+              if (propsReq.orderType === ORDER_TYPE.GROUP) {
+                const res = await refreshOrder(orderId)
+                console.log('团购订单返回', res.res.groupId)
+                propsReq.paySuccess(res?.res?.groupId)
+              } else propsReq.paySuccess('')
             }
           },
           // 支付取消回调函数

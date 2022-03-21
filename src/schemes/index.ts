@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-11-30 19:50:37
+ * @LastEditTime: 2022-03-19 12:35:33
+ */
 export interface NearbyParams {
   /** 经度 */
   longitude: string
@@ -44,6 +50,7 @@ export interface ReqCreateOrder {
 
 export interface createOrderProps {
   reqOrder: ReqCreateOrder
+  orderType: string
   paySuccess: (string) => void
   payCancel: () => void
   payFail: () => void
