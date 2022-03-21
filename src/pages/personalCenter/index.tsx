@@ -8,7 +8,6 @@ import SlideDelete from 'components/SlideDelete'
 import PersonalMenu from 'components/PersonalMenu'
 import { notify } from '@tgu/toast'
 import Tag from 'components/Tag'
-import FocusOn from 'components/FocusOn'
 import EmptyList from 'components/EmptyList'
 import EmptyBottom from 'components/EmptyBottom'
 import { changeCollectStatus } from 'apis/detailPageInfo'
@@ -18,6 +17,7 @@ import SwiperTestImg from 'assets/images/swiper-test.png'
 import heart from 'assets/images/heart.png'
 import earphone from 'assets/images/earphone-icon.png'
 import contactQrcode from 'assets/images/contact-qrcode.png'
+import contactWechat from 'assets/images/contact-wechat.png'
 import planetIcon from 'assets/images/coupon-bg.png'
 
 import './index.scss'
@@ -29,6 +29,7 @@ const distance = getPxCurr(196)
 let mySwiper = null
 
 const Index = ({
+  getOrderList,
   getFavoritesList,
   getListenList,
   favoritesList,
@@ -102,6 +103,7 @@ const Index = ({
   function fetchData(index) {
     switch (index) {
       case 0:
+        // getOrderList()
         break
       case 1:
         getFavoritesList()
@@ -299,7 +301,7 @@ const Index = ({
                 </div>
               </>
             ) : (
-              <EmptyList text="你暂时还没有收藏" />
+              <EmptyList>你暂时还没有收藏哦~</EmptyList>
             )}
           </div>
         </SwiperSlide>
@@ -347,25 +349,26 @@ const Index = ({
           <div className="contactContainer">
             <div className="qrcodeContainer">
               <div className="qrcodeItem">
-                <p className="title">订单售后</p>
-                <img src={contactQrcode} className="qrcode" alt="二维码图片" />
-                <p className="contactTips">扫描添加企业微信</p>
+                <p className="title">
+                  <span className="important-tips">售后与合作</span>请长按下图添加
+                  <br />
+                  企业客服微信,企业客服微信无法
+                  <br />
+                  看到您的朋友圈，请放心添加
+                </p>
+                <img src={contactWechat} className="qrcode" alt="二维码图片" />
               </div>
               <div className="qrcodeItem">
-                <p className="title">商务合作</p>
+                <p className="title">
+                  <span className="important-tips">意见与反馈</span>请长按下图关注服务号，
+                  <br />
+                  在对话框中输入您的消息。
+                  <br />
+                  您的反馈对我们非常重要！
+                </p>
                 <img src={contactQrcode} className="qrcode" alt="二维码图片" />
-                <p className="contactTips">扫描添加企业微信</p>
               </div>
             </div>
-            <p className="contactNumber recommendContainer">
-              <br />
-              意见反馈 <br />
-              <br />
-              请在“爱走星球”公众号的对话框中以文字或语音输入您的意见和反馈。 您的意见对我们非常重要！
-              <br />
-              <br />
-            </p>
-            <FocusOn showCloseIcon={false} />
             <EmptyBottom />
           </div>
         </SwiperSlide>
@@ -381,13 +384,14 @@ const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex } }) 
 })
 
 const mapDispatch = ({
-  personalCenter: { getFavoritesList, getListenList, setMenuIndex },
+  personalCenter: { getFavoritesList, getListenList, setMenuIndex, getOrderList },
   base: { getSignature },
 }) => ({
   getFavoritesList,
   getListenList,
   setMenuIndex,
   getSignature,
+  getOrderList,
 })
 
 export default connect(mapState, mapDispatch)(Index)

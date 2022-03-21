@@ -1,5 +1,11 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-20 10:24:44
+ * @LastEditTime: 2022-03-21 15:58:06
+ */
 import _ from 'lodash'
-import { getFavoritesList, getListenList } from 'apis/personalCenter'
+import { getFavoritesList, getListenList, getOrderList } from 'apis/personalCenter'
 
 export default {
   name: 'personalCenter',
@@ -32,6 +38,15 @@ export default {
         dispatch.personalCenter.setListenList(list)
       }
     },
+    async getOrderList() {
+      const res = await getOrderList()
+      if (res) {
+        const {
+          res: { list },
+        } = res
+        dispatch.personalCenter.setOrderList(list)
+      }
+    },
   }),
 
   reducers: {
@@ -45,6 +60,12 @@ export default {
       return {
         ...state,
         listenList: payload,
+      }
+    },
+    setOrderList(state, payload) {
+      return {
+        ...state,
+        orderList: payload,
       }
     },
     setMenuIndex(state, payload) {

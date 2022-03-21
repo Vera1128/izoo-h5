@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-20 10:24:44
- * @LastEditTime: 2021-12-22 18:02:25
+ * @LastEditTime: 2022-03-21 15:46:14
  */
 import rpcClient from './apiClient'
 
@@ -19,10 +19,10 @@ export async function getListenList() {
 }
 
 // 获取订单列表
-// export async function getOrderList() {
-//   const res = await rpcClient.callApi('Center/OrderData', {})
-//   return res
-// }
+export async function getOrderList() {
+  const res = await rpcClient.callApi('Center/OrderData', {})
+  return res
+}
 
 // 更改收藏状态
 export async function changeCollectStatus(id: string) {
@@ -34,4 +34,5 @@ export default {
   getFavoritesList,
   getListenList,
   changeCollectStatus,
+  getOrderList,
 }

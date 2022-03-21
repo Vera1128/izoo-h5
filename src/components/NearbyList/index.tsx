@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-11-01 15:33:37
+ * @LastEditTime: 2022-03-21 21:46:24
+ */
 import React from 'react'
 import EarphoneIcon from 'assets/images/earphone-icon.png'
 import EmptyList from '../EmptyList'
@@ -32,7 +38,7 @@ function NearbyList(props: Props) {
             </div>
           ))
         ) : (
-          <EmptyList text="附近还没有景点哦~" classname="nearbyEmpty" />
+          <EmptyList classname="nearbyEmpty">附近还没有景点哦~</EmptyList>
         )}
       </div>
     </div>

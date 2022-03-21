@@ -1,20 +1,25 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-01 15:19:04
+ * @LastEditTime: 2022-03-21 21:45:32
+ */
 import React from 'react'
 import './index.scss'
 
 interface Props {
   classname?: string
-  text?: string
+  children: JSX.Element | JSX.Element[] | string
 }
 
 function EmptyList(props: Props) {
-  const { classname, text } = props
+  const { classname, children } = props
 
-  return <div className={`emptyList ${classname}`}>{text}</div>
+  return <div className={`emptyList ${classname}`}>{children}</div>
 }
 
 EmptyList.defaultProps = {
   classname: '',
-  text: '列表为空',
 } as Partial<Props>
 
 export default EmptyList

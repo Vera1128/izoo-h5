@@ -63,6 +63,10 @@
     height: 100%;
     overflow: auto;
     padding: 0 32px;
+    .empty-list-img {
+      width: 364px;
+      margin: 168px auto 0;
+    }
   }
   .swicthIcon {
     width: calc(100% - 572px);

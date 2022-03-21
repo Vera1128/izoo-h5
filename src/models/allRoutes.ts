@@ -9,6 +9,7 @@ export default {
     listArr: {},
     citySelectedId: 0,
     theme: 'city',
+    showEmptyListImg: false,
   },
 
   effects: (dispatch) => ({
@@ -36,10 +37,13 @@ export default {
       console.log(res)
     },
     async getTypeData(data: scheme.TypeDataParams, { allRoutes }) {
+      dispatch.allRoutes.setShowEmptyListImg(false)
       const res = await getTypeData(data)
       if (res) {
+        const { list } = res.res
+        if (list.length === 0) dispatch.allRoutes.setShowEmptyListImg(true)
         const listArrNew = _.cloneDeep(allRoutes.listArr)
-        listArrNew[data.value] = res.res.list
+        listArrNew[data.value] = list
         dispatch.allRoutes.setListArr(listArrNew)
       }
     },
@@ -68,6 +72,12 @@ export default {
       return {
         ...state,
         theme: payload,
+      }
+    },
+    setShowEmptyListImg(state, payload) {
+      return {
+        ...state,
+        showEmptyListImg: payload,
       }
     },
   },

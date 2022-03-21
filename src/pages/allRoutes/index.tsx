@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import wx from 'weixin-js-sdk'
@@ -9,6 +9,7 @@ import EmptyBottom from 'components/EmptyBottom'
 import EmptyList from 'components/EmptyList'
 import SwitchThemeIcon from 'assets/images/switch-theme.png'
 import SwitchCityIcon from 'assets/images/switch-city.png'
+import RoutesListEmpty from 'assets/images/routes-list-empty.png'
 
 import 'swiper/css'
 import './index.scss'
@@ -29,6 +30,7 @@ const Index = ({
   getTypeData,
   setShowRightButton,
   getSignature,
+  showEmptyListImg,
 }) => {
   useEffect(() => {
     getTypeList(theme)
@@ -144,7 +146,13 @@ const Index = ({
                         <EmptyBottom />
                       </>
                     ) : (
-                      <EmptyList />
+                      <EmptyList>
+                        {showEmptyListImg ? (
+                          <img src={RoutesListEmpty} className="empty-list-img" />
+                        ) : (
+                          <>正在搜索中，请稍后</>
+                        )}
+                      </EmptyList>
                     )}
                   </div>
                 </SwiperSlide>
@@ -156,11 +164,12 @@ const Index = ({
   )
 }
 
-const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr, theme } }) => ({
+const mapState = ({ allRoutes: { typesArr, citySelectedId, listArr, theme, showEmptyListImg } }) => ({
   typesArr,
   listArr,
   citySelectedId,
   theme,
+  showEmptyListImg,
 })
 
 const mapDispatch = ({
