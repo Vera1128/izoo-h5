@@ -1,8 +1,14 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-23 10:36:59
+ * @LastEditTime: 2022-04-05 16:14:50
+ */
 import React, { FC, useState, useEffect } from 'react'
 import './index.scss'
 
 interface IProps {
-  targetDate: string
+  targetDate: number
   finishCb: () => void
 }
 let timer = window.setTimeout(() => {})
@@ -12,7 +18,7 @@ const CountDown: FC<IProps> = ({ targetDate, finishCb = () => {} }) => {
   const [hour, setHour] = useState('00')
   const [minute, setMinute] = useState('00')
   const [second, setSecond] = useState('00')
-  const targetTime = new Date(targetDate).getTime()
+  const targetTime = targetDate
 
   const formatTime = (t: any) => {
     if (t < 10) return `0${t}`

@@ -59,9 +59,13 @@ const Index = ({
       })
     })
   }, [])
+  useEffect(() => {
+    if (mySwiper) {
+      mySwiper.slideTo(citySelectedId)
+    }
+  }, [citySelectedId])
   const cityClickHandle = (id, index) => () => {
     setCitySelectedId(index)
-    mySwiper.slideTo(index)
     const cityDom = document.getElementById(`cityItem-${id}`)
     cityDom.scrollIntoView({ behavior: 'smooth', block: 'end', inline: 'nearest' })
     if (!listArr[id] || listArr[id].length < 1) {
@@ -76,7 +80,6 @@ const Index = ({
     const themeNew = theme === 'city' ? 'tag' : 'city'
     setTheme(themeNew)
     setCitySelectedId(0)
-    mySwiper.slideTo(0)
     getTypeList(themeNew)
   }
 
@@ -92,6 +95,10 @@ const Index = ({
       })
     }
   }
+
+  console.log('***')
+  console.log(listArr)
+  console.log(citySelectedId)
 
   return (
     <div className="allRoutesContainer">
@@ -121,6 +128,7 @@ const Index = ({
           className="mySwiper"
           onSwiper={(swiper) => {
             mySwiper = swiper
+            console.log('swiper 初始化')
           }}
           initialSlide={citySelectedId}
           onSlideChange={(swiper) => {

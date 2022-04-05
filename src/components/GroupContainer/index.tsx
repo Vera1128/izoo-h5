@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:57:10
- * @LastEditTime: 2022-03-15 10:05:19
+ * @LastEditTime: 2022-04-05 17:21:28
  */
 import React, { useState } from 'react'
 import Button from '../Button'
@@ -15,8 +15,13 @@ interface Props {
 
 const groupStatusConfig = {
   // 团长开团
-  0: {
+  wait: {
     buttonText: '邀请朋友一起拼',
+  },
+  failed: {
+    title: '团购订单失败 到期并无人参与',
+    tips: '已结束',
+    buttonText: '我要开团',
   },
   // 加入该团
   1: {
@@ -37,18 +42,22 @@ const groupStatusConfig = {
 }
 
 function GroupOrder(props: Props) {
-  console.log(props.data)
-  const [groupStatus, setGroupStatus] = useState(0)
+  const {
+    data: { ownerAvatar, joinAvatar, type, endTime },
+  } = props
+  console.log('type', type)
+  const [groupStatus, setGroupStatus] = useState(type)
   const countDownFinishCb = () => {
     console.log('倒计时结束')
-    setGroupStatus(2)
+    // setGroupStatus(2)
   }
+  const groupButtonClickHanndle = () => {}
 
   console.log('groupStatus', groupStatus)
   return (
     <div className="groupOrderContainer">
       <div className="groupOrderTitle">
-        {groupStatus === 0 || groupStatus === 1 ? (
+        {groupStatus === 'wait' ? (
           <>
             仅差&nbsp;<span>1</span>&nbsp;人参加，即可省钱成功
           </>
@@ -57,10 +66,10 @@ function GroupOrder(props: Props) {
         )}
       </div>
       <div className="countdownContainer">
-        {groupStatus === 0 || groupStatus === 1 ? (
+        {groupStatus === 'wait' ? (
           <>
             剩余
-            <CountDown targetDate="2022-03-15 10:20:00" finishCb={countDownFinishCb} />
+            <CountDown targetDate={endTime} finishCb={countDownFinishCb} />
             后结束
           </>
         ) : (
@@ -69,11 +78,14 @@ function GroupOrder(props: Props) {
       </div>
       <div className="avaterListContainer">
         <div className="avaterContainer">
-          1<div className="tag">团长</div>
+          <img src={ownerAvatar} alt="" className="avaterImg" />
+          <div className="tag">团长</div>
         </div>
-        <div className="avaterContainer">1</div>
+        <div className="avaterContainer">{joinAvatar && <img src={joinAvatar} alt="" className="avaterImg" />}</div>
       </div>
-      <Button className="groupButton">{groupStatusConfig[groupStatus].buttonText}</Button>
+      <Button className="groupButton" onClick={groupButtonClickHanndle}>
+        {groupStatusConfig[groupStatus].buttonText}
+      </Button>
     </div>
   )
 }

@@ -38,7 +38,7 @@ const Index = ({
   getNearbyData,
   setSelectedId,
   setTheme,
-  setCitySelectedId,
+  setCurrentThemeName,
   getSignature,
 }) => {
   const pageRef = useRef(null)
@@ -101,19 +101,21 @@ const Index = ({
   }
   const clickCityMoreHandle = () => {
     setSelectedId('allRoutes')
+    setTheme('city')
+    setCurrentThemeName('')
     history.replace('/index/allRoutes')
   }
-  const themeClickHandle = (index) => () => {
+  const themeClickHandle = (theme) => () => {
     setSelectedId('allRoutes')
     history.replace('/index/allRoutes')
     setTheme('tag')
-    setCitySelectedId(index)
+    setCurrentThemeName(theme)
   }
-  const cityClickHandle = (index) => () => {
+  const cityClickHandle = (theme) => () => {
     setSelectedId('allRoutes')
     history.replace('/index/allRoutes')
     setTheme('city')
-    setCitySelectedId(index)
+    setCurrentThemeName(theme)
   }
   return (
     <div className="mainPageContainer" ref={pageRef} onScroll={debounce(scrollHandle, 500)}>
@@ -146,7 +148,7 @@ const Index = ({
       <FocusOnCom />
       <NearbyList list={nearbyList} itemClick={goToDetailInfoPage} clickMoreHandle={clickMoreHandle} />
       <ThemeList list={themeList} itemClick={themeClickHandle} />
-      <CityList list={cityList} itemClick={cityClickHandle} clickMoreHandle={clickCityMoreHandle} />
+      {/* <CityList list={cityList} itemClick={cityClickHandle} clickMoreHandle={clickCityMoreHandle} /> */}
       <RecommendList list={populerList} itemClick={goToDetailInfoPage} />
       <EmptyBottom color="#666699" />
     </div>
@@ -165,7 +167,7 @@ const mapState = ({ main: { offsetY, cityList, populerList, scrollList, themeLis
 const mapDispatch = ({
   main: { setOffsetY, getCityData, getPopulerData, getScrollData, getTagsData, getNearbyData },
   base: { setSelectedId, getSignature },
-  allRoutes: { setTheme, setCitySelectedId },
+  allRoutes: { setTheme, setCurrentThemeName },
 }) => ({
   setOffsetY,
   getCityData,
@@ -175,7 +177,7 @@ const mapDispatch = ({
   getNearbyData,
   setSelectedId,
   setTheme,
-  setCitySelectedId,
+  setCurrentThemeName,
   getSignature,
 })
 

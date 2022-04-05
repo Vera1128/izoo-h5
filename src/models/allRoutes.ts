@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-12-07 10:18:58
+ * @LastEditTime: 2022-03-23 22:38:17
+ */
 import _ from 'lodash'
 import { getTypeList, getTypeData } from 'apis/allRoutes'
 import * as scheme from 'src/schemes'
@@ -10,10 +16,11 @@ export default {
     citySelectedId: 0,
     theme: 'city',
     showEmptyListImg: false,
+    currentThemeName: '',
   },
 
   effects: (dispatch) => ({
-    async getTypeList(type: scheme.TypeListParams) {
+    async getTypeList(type: scheme.TypeListParams, { allRoutes }) {
       const res = await getTypeList(type)
       if (res) {
         const {
@@ -21,16 +28,28 @@ export default {
         } = res
         const listNotEmpty = list.filter((item) => item !== '')
         dispatch.allRoutes.setTypesArr(listNotEmpty)
-        dispatch.allRoutes.setCitySelectedId(0)
+        const { currentThemeName } = allRoutes
+        let typeIndex = 0
+        if (!currentThemeName) {
+          dispatch.allRoutes.setCitySelectedId(0)
+        } else {
+          for (let i = 0; i < listNotEmpty.length; i++) {
+            if (listNotEmpty[i] === currentThemeName) {
+              typeIndex = i
+              dispatch.allRoutes.setCitySelectedId(i)
+              break
+            }
+          }
+        }
         if (list.length > 0) {
           const listNew = {}
           list.forEach((item) => {
             listNew[item] = []
           })
           dispatch.allRoutes.setListArr(listNew)
-          dispatch.allRoutes.getTypeData({
+          await dispatch.allRoutes.getTypeData({
             type,
-            value: list[0],
+            value: list[typeIndex],
           })
         }
       }
@@ -54,6 +73,12 @@ export default {
       return {
         ...state,
         citySelectedId: payload,
+      }
+    },
+    setCurrentThemeName(state, payload) {
+      return {
+        ...state,
+        currentThemeName: payload,
       }
     },
     setTypesArr(state, payload) {

@@ -1,5 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react'
-import Hammer from 'hammerjs'
+// import Hammer from 'hammerjs'
+import AlloyFinger from 'alloyfinger'
+import Transform from 'css3transform'
 import { connect } from 'react-redux'
 import sf from 'seconds-formater'
 import BackIcon from 'components/BackIcon'
@@ -40,47 +42,79 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
   useEffect(() => {
     if (showPreviewImg && largeImgEl.current) {
       const largeImgDom = largeImgEl.current
-      const mc = new Hammer.Manager(largeImgDom)
-      const Pinch = new Hammer.Pinch()
-      const Pan = new Hammer.Pan()
-      const Tap = new Hammer.Tap()
-      mc.add(Pinch)
-      mc.add(Pan)
-      mc.add(Tap)
-      mc.on('pinch', (e) => {
-        const { scale } = e
-        // if (scale < 1) return
-        largeImgDom.style.scale = scale
+      Transform(largeImgDom)
+      let initScale
+      const ad = new AlloyFinger(largeImgDom, {
+        multipointStart: function (evt) {
+          // reset origin x and y
+          const centerX = (evt.touches[0].pageX + evt.touches[1].pageX) / 2
+          const centerY = (evt.touches[0].pageY + evt.touches[1].pageY) / 2
+          const cr = largeImgDom.getBoundingClientRect()
+          const img_centerX = cr.left + cr.width / 2
+          const img_centerY = cr.top + cr.height / 2
+          const offX = centerX - img_centerX
+          const offY = centerY - img_centerY
+          const preOriginX = largeImgDom.originX
+          const preOriginY = largeImgDom.originY
+          largeImgDom.originX = offX / largeImgDom.scaleX
+          largeImgDom.originY = offY / largeImgDom.scaleY
+          // reset translateX and translateY
+          largeImgDom.translateX += offX - preOriginX * largeImgDom.scaleX
+          largeImgDom.translateY += offY - preOriginY * largeImgDom.scaleX
+          initScale = largeImgDom.scaleX
+        },
+        pinch: function (evt) {
+          console.log(evt.zoom)
+          largeImgDom.scaleX = largeImgDom.scaleY = initScale * evt.zoom
+        },
+        pressMove: function (evt) {
+          largeImgDom.translateX += evt.deltaX
+          largeImgDom.translateY += evt.deltaY
+          evt.preventDefault()
+        },
       })
-      let x = 0
-      let y = 0
-      mc.on('panmove', (e) => {
-        const { deltaX, deltaY } = e
-        const targetStyle = largeImgDom.style
-        targetStyle.webkitTransform =
-          targetStyle.MsTransform =
-          targetStyle.msTransform =
-          targetStyle.MozTransform =
-          targetStyle.OTransform =
-          targetStyle.transform =
-            `translate3d(${deltaX + x}px, ${deltaY + y}px, 0)`
-      })
-      mc.on('panend', (e) => {
-        const { deltaX, deltaY } = e
-        x = deltaX + x
-        y = deltaY + y
-      })
-      mc.on('tap', () => {
-        largeImgDom.style.scale = 1
-        const targetStyle = largeImgDom.style
-        targetStyle.webkitTransform =
-          targetStyle.MsTransform =
-          targetStyle.msTransform =
-          targetStyle.MozTransform =
-          targetStyle.OTransform =
-          targetStyle.transform =
-            `translate3d(0, 0, 0)`
-      })
+
+      // const mc = new Hammer.Manager(largeImgDom)
+      // const Pinch = new Hammer.Pinch()
+      // const Pan = new Hammer.Pan()
+      // const Tap = new Hammer.Tap()
+      // mc.add(Pinch)
+      // mc.add(Pan)
+      // mc.add(Tap)
+      // mc.on('pinch', (e) => {
+      //   const { scale } = e
+      //   // if (scale < 1) return
+      //   largeImgDom.style.scale = scale
+      // })
+      // let x = 0
+      // let y = 0
+      // mc.on('panmove', (e) => {
+      //   const { deltaX, deltaY } = e
+      //   const targetStyle = largeImgDom.style
+      //   targetStyle.webkitTransform =
+      //     targetStyle.MsTransform =
+      //     targetStyle.msTransform =
+      //     targetStyle.MozTransform =
+      //     targetStyle.OTransform =
+      //     targetStyle.transform =
+      //       `translate3d(${deltaX + x}px, ${deltaY + y}px, 0)`
+      // })
+      // mc.on('panend', (e) => {
+      //   const { deltaX, deltaY } = e
+      //   x = deltaX + x
+      //   y = deltaY + y
+      // })
+      // mc.on('tap', () => {
+      //   largeImgDom.style.scale = 1
+      //   const targetStyle = largeImgDom.style
+      //   targetStyle.webkitTransform =
+      //     targetStyle.MsTransform =
+      //     targetStyle.msTransform =
+      //     targetStyle.MozTransform =
+      //     targetStyle.OTransform =
+      //     targetStyle.transform =
+      //       `translate3d(0, 0, 0)`
+      // })
     }
   }, [showPreviewImg])
 

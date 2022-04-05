@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2022-02-20 18:29:24
- * @LastEditTime: 2022-03-19 12:49:42
+ * @LastEditTime: 2022-04-05 16:26:22
  */
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
@@ -13,14 +13,7 @@ import * as scheme from '../schemes/index'
 export default {
   name: 'order',
   state: {
-    groupData: {
-      /** 团长头像 */
-      ownerAvatar: '',
-      /** 参与者头像 */
-      joinAvatar: '',
-      /** 团购状态 */
-      type: 'wait',
-    },
+    groupData: null,
   },
 
   effects: (dispatch) => ({
@@ -71,11 +64,12 @@ export default {
     async getGroupData(groupId) {
       const res = await getGroupData(groupId)
       if (res) {
-        const { ownerAvatar, joinAvatar, type } = res.res
+        const { ownerAvatar, joinAvatar, type, endTime } = res.res
         dispatch.order.setGroupData({
           ownerAvatar,
           joinAvatar,
           type,
+          endTime,
         })
       }
     },

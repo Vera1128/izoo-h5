@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-11-01 17:25:34
+ * @LastEditTime: 2022-03-23 21:03:47
+ */
 import React, { useState } from 'react'
 import * as schemes from 'src/schemes'
 import themeIcon from 'assets/images/theme-icon.png'
@@ -6,7 +12,7 @@ import './index.less'
 
 interface Props {
   list: Array<schemes.ThemeListItem | null>
-  itemClick?: (index: number) => () => void
+  itemClick?: (tag: string) => () => void
 }
 
 function ThemeList(props: Props) {
@@ -21,7 +27,7 @@ function ThemeList(props: Props) {
         {list.map(
           (item, index) =>
             item.tag && (
-              <div className="themeItem" key={item._id} onClick={itemClick(index)}>
+              <div className="themeItem" key={item._id} onClick={itemClick(item.tag)}>
                 <img src={item.icon} alt="主题图片" />
                 <p className="desc">{item.tag}</p>
               </div>

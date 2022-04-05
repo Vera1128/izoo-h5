@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:54:26
- * @LastEditTime: 2022-03-15 10:03:26
+ * @LastEditTime: 2022-04-05 16:31:15
  */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -37,6 +37,7 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
     params: { id, groupId },
   } = match
   console.log(groupId)
+  let groupInfo
   useEffect(() => {
     getDetailInfo(id)
     getGroupData(groupId)
@@ -64,6 +65,17 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
       })
     })
   }, [])
+
+  if (groupData) {
+    const { ownerAvatar, joinAvatar, type, endTime } = groupData
+    groupInfo = {
+      ownerAvatar,
+      joinAvatar,
+      type,
+      endTime,
+    }
+  }
+
   if (detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}') {
     // 添加type
     detailInfo.info.type = ORDER_TYPE.GROUP
@@ -74,13 +86,15 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
     console.log('backClickHandle')
     history.go(-1)
   }
+
+  console.log('groupData', groupData)
   return (
     <div className="orderPageContainer">
       <BackIcon clickHandle={backClickHandle} />
       <OrderPageItem
         data={detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}' ? detailInfo.info : testData}
       />
-      <GroupOrder data={0} />
+      {groupInfo && <GroupOrder data={groupInfo} />}
       <img src={StepImg} className="stepIcon" />
     </div>
   )
