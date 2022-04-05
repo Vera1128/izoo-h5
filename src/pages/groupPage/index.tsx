@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:54:26
- * @LastEditTime: 2022-04-05 16:31:15
+ * @LastEditTime: 2022-04-05 21:27:44
  */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -14,6 +14,8 @@ import StepImg from 'assets/images/step.png'
 import { ORDER_TYPE } from 'src/constants/index'
 
 import './index.scss'
+
+const shareConfig = require('src/config/share.json')
 
 const testData = {
   title: '测试title',
@@ -36,35 +38,40 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
   const {
     params: { id, groupId },
   } = match
-  console.log(groupId)
-  let groupInfo
+  let groupInfo = null
   useEffect(() => {
     getDetailInfo(id)
     getGroupData(groupId)
-    getSignature(window.location.href.split('#')[0]).then(() => {
-      wx.ready(() => {
-        // console.log('购买页wx config ready')
-        // const shareInfo = {
-        //   title: `${info.title}亲子行走语音导览`,
-        //   desc: info.desc || '',
-        //   link: window.location.href,
-        //   imgUrl: shareConfig.icon, // 分享图标
-        //   fail: (res) => {
-        //     console.log('设置失败信息', res)
-        //   },
-        //   success: (res) => {
-        //     console.log('设置成功信息', res)
-        //   },
-        // }
-        // wx.updateAppMessageShareData(shareInfo)
-        // wx.updateTimelineShareData(shareInfo)
-      })
-      wx.error((res: any) => {
-        console.log('拼单页 wx config error')
-        console.log(res)
-      })
-    })
   }, [])
+
+  useEffect(() => {
+    if (detailInfo && JSON.stringify(detailInfo) !== '{}') {
+      const { info } = detailInfo
+      getSignature(window.location.href.split('#')[0]).then(() => {
+        wx.ready(() => {
+          console.log('拼团页wx config ready', info)
+          const shareInfo = {
+            title: `【还差1人】￥${info.avgAmount}抢${info.title}亲子行走语音导览亲子行走语音导览`,
+            desc: info.desc || '',
+            link: window.location.href,
+            imgUrl: shareConfig.icon, // 分享图标
+            fail: (res) => {
+              console.log('设置失败信息', res)
+            },
+            success: (res) => {
+              console.log('设置成功信息', res)
+            },
+          }
+          wx.updateAppMessageShareData(shareInfo)
+          wx.updateTimelineShareData(shareInfo)
+        })
+        wx.error((res: any) => {
+          console.log('购买页wx config error')
+          console.log(res)
+        })
+      })
+    }
+  }, [detailInfo])
 
   if (groupData) {
     const { ownerAvatar, joinAvatar, type, endTime } = groupData

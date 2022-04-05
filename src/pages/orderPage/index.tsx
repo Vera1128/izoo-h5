@@ -12,6 +12,8 @@ import { ORDER_TYPE } from 'src/constants/index'
 
 import './index.scss'
 
+const shareConfig = require('src/config/share.json')
+
 const testData = {
   title: '测试title',
   tags: ['1636646219890'],
@@ -34,32 +36,38 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
     params: { type },
   } = match
   const [canSubmit, setCanSubmit] = useState(false)
+  const { info } = detailInfo
+
   useEffect(() => {
     getDetailInfo(id)
-    getSignature(window.location.href.split('#')[0]).then(() => {
-      wx.ready(() => {
-        // console.log('购买页wx config ready')
-        // const shareInfo = {
-        //   title: `${info.title}亲子行走语音导览`,
-        //   desc: info.desc || '',
-        //   link: window.location.href,
-        //   imgUrl: shareConfig.icon, // 分享图标
-        //   fail: (res) => {
-        //     console.log('设置失败信息', res)
-        //   },
-        //   success: (res) => {
-        //     console.log('设置成功信息', res)
-        //   },
-        // }
-        // wx.updateAppMessageShareData(shareInfo)
-        // wx.updateTimelineShareData(shareInfo)
-      })
-      wx.error((res: any) => {
-        console.log('下单页 wx config error')
-        console.log(res)
-      })
-    })
   }, [])
+  useEffect(() => {
+    if (detailInfo && JSON.stringify(detailInfo) !== '{}') {
+      getSignature(window.location.href.split('#')[0]).then(() => {
+        wx.ready(() => {
+          console.log('购买页wx config ready')
+          const shareInfo = {
+            title: `${info.title}亲子行走语音导览`,
+            desc: info.desc || '',
+            link: window.location.href,
+            imgUrl: shareConfig.icon, // 分享图标
+            fail: (res) => {
+              console.log('设置失败信息', res)
+            },
+            success: (res) => {
+              console.log('设置成功信息', res)
+            },
+          }
+          wx.updateAppMessageShareData(shareInfo)
+          wx.updateTimelineShareData(shareInfo)
+        })
+        wx.error((res: any) => {
+          console.log('购买页wx config error')
+          console.log(res)
+        })
+      })
+    }
+  }, [detailInfo])
   if (detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}') {
     // 添加type
     detailInfo.info.type = type
