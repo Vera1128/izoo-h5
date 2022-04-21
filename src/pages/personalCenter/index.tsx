@@ -13,6 +13,7 @@ import EmptyBottom from 'components/EmptyBottom'
 import { changeCollectStatus } from 'apis/detailPageInfo'
 
 import { getPxCurr } from 'utils/index'
+import { timeStampToDate } from 'utils/tools'
 import SwiperTestImg from 'assets/images/swiper-test.png'
 import heart from 'assets/images/heart.png'
 import earphone from 'assets/images/earphone-icon.png'
@@ -24,6 +25,12 @@ import './index.scss'
 import 'swiper/css'
 
 const shareConfig = require('src/config/share.json')
+
+const orderState = {
+  success: '已购买',
+  wait: '已购买',
+  fail: '订单关闭',
+}
 
 const distance = getPxCurr(196)
 let mySwiper = null
@@ -38,10 +45,12 @@ const Index = ({
   menuIndex,
   setMenuIndex,
   getSignature,
+  orderList,
 }) => {
   const [currIndex, setCurrIndex] = useState(0)
   const [showCouponPanel, setShowCouponPanel] = useState(false)
   const [showCouponDetail, setShowCouponDetail] = useState(false)
+  const [showSearchLoading, setShowSearchLoading] = useState([false, false, false])
 
   // @董帅
   const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
@@ -100,16 +109,22 @@ const Index = ({
     fetchData(index)
   }
 
-  function fetchData(index) {
+  async function fetchData(index) {
     switch (index) {
       case 0:
-        // getOrderList()
+        setShowSearchLoading([true, showSearchLoading[1], showSearchLoading[2]])
+        await getOrderList()
+        setShowSearchLoading([false, showSearchLoading[1], showSearchLoading[2]])
         break
       case 1:
-        getFavoritesList()
+        setShowSearchLoading([showSearchLoading[0], true, showSearchLoading[2]])
+        await getFavoritesList()
+        setShowSearchLoading([showSearchLoading[1], false, showSearchLoading[2]])
         break
       case 2:
-        getListenList()
+        setShowSearchLoading([showSearchLoading[0], showSearchLoading[1], true])
+        await getListenList()
+        setShowSearchLoading([showSearchLoading[0], showSearchLoading[1], false])
         break
       case 3:
         break
@@ -130,6 +145,11 @@ const Index = ({
   }
   const goToDetailInfoPage = (id) => {
     history.push(`/detailInfoPage/${id}`)
+  }
+
+  const orderClickHandle = (status, id) => () => {
+    if (status === 'fail') return
+    goToDetailInfoPage(id)
   }
 
   const collectDeleteHandle = (id) => async () => {
@@ -203,56 +223,57 @@ const Index = ({
         {/* 订单列表 */}
         <SwiperSlide>
           <div className="orderContainer">
-            <div className="order">
-              <div className="orderInfo">
-                <div className="imgContainer">
-                  <div className="btn">已购买</div>
-                  <img src={SwiperTestImg} alt="订单图片" />
-                </div>
-                <div className="desc">沪港银行历史展览馆丨认识货币与近代中国认识货币与近代中国</div>
-                <div className="priceContainer">
-                  <div className="pricePintuan">
-                    <div className="btnPintuanPersonalCenter">拼团价</div>
-                    <span>￥</span>35
+            {orderList.length > 0 ? (
+              <>
+                {orderList.map((order) => (
+                  <div
+                    className={`order ${order.state === 'fail' ? 'orderInactive' : ''}`}
+                    key={order.orderId}
+                    onClick={orderClickHandle(order.state, order.mainClassId)}
+                  >
+                    <div className="orderInfo">
+                      <div className="imgContainer">
+                        <div className="btn">{orderState[order.state]}</div>
+                        <img src={order.imageUrl} alt="订单图片" />
+                      </div>
+                      <div className="desc">{`${order.title}丨${order.desc}`}</div>
+                      <div className="priceContainer">
+                        {order.type === 'group' ? (
+                          <>
+                            <div className="pricePintuan">
+                              <div className="btnPintuanPersonalCenter">拼团价</div>
+                              <span>￥</span>
+                              {order.avgAmount}
+                            </div>
+                            <div className="priceOriginal">
+                              <span>￥</span>
+                              <span className="priceNum">{order.amount}</span>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="price">
+                            <span>￥</span>
+                            {order.amount}
+                          </div>
+                        )}
+                      </div>
+                    </div>
+                    <div className="orderDetail">
+                      <div className="orderDetailInfo">
+                        <p>订单编号：{order.orderId}</p>
+                        <p>创建时间：{timeStampToDate(order.createTime, 'YYYY-MM-DD hh:mm')}</p>
+                      </div>
+                      <div className="btn" onClick={clipboardHandle(order.orderId)}>
+                        一键复制
+                      </div>
+                    </div>
                   </div>
-                  <div className="priceOriginal">
-                    <span>￥</span>
-                    <span className="priceNum">120</span>
-                  </div>
-                </div>
-              </div>
-              <div className="orderDetail">
-                <div className="orderDetailInfo">
-                  <p>订单编号：D8888 8888 8888</p>
-                  <p>创建时间：2021-10-10 16:45</p>
-                </div>
-                <div className="btn" onClick={clipboardHandle('hahaha')}>
-                  一键复制
-                </div>
-              </div>
-            </div>
-            <div className="order orderInactive">
-              <div className="orderInfo">
-                <div className="imgContainer">
-                  <div className="btn">订单关闭</div>
-                  <img src={SwiperTestImg} alt="订单图片" />
-                </div>
-                <div className="desc">沪港银行历史展览馆丨认识货币与近代中国认识货币与近代中国</div>
-                <div className="priceContainer">
-                  <div className="price">
-                    <span>￥</span>120
-                  </div>
-                </div>
-              </div>
-              <div className="orderDetail">
-                <div className="orderDetailInfo">
-                  <p>订单编号：D8888 8888 8888</p>
-                  <p>创建时间：2021-10-10 16:45</p>
-                </div>
-                <div className="btn">一键复制</div>
-              </div>
-            </div>
-            <EmptyBottom />
+                ))}
+                <EmptyBottom />
+              </>
+            ) : (
+              <EmptyList>{showSearchLoading[0] ? '搜索订单中...' : '你暂时还没有订单记录哦~'}</EmptyList>
+            )}
           </div>
         </SwiperSlide>
 
@@ -301,7 +322,7 @@ const Index = ({
                 </div>
               </>
             ) : (
-              <EmptyList>你暂时还没有收藏哦~</EmptyList>
+              <EmptyList>{showSearchLoading[1] ? '搜索收藏记录中...' : '你暂时还没有收藏记录哦~'}</EmptyList>
             )}
           </div>
         </SwiperSlide>
@@ -309,39 +330,45 @@ const Index = ({
         {/* 收听列表 */}
         <SwiperSlide>
           <div className="historyContainer">
-            <div className="tips">根据收听时间&nbsp;从最近到最早</div>
-            <div className="historyList">
-              {listenList.map((item, index) => {
-                if (index % 2 === 1) return
-                return (
-                  <div className="historyListRow" key={item.mainClassId}>
-                    <div className="historyItem" onClick={() => goToDetailInfoPage(item.mainClassId)}>
-                      <img src={item.scrollImage} className="itemImg" />
-                      <div className="placeContainer">
-                        <img src={earphone} />
-                        {index === 0 ? item.title.substring(0, 5) : item.title}
-                        {index === 0 && <div className="recentListen">最近听过</div>}
-                      </div>
-                      <div className="desc">{item.desc}</div>
-                    </div>
-                    {listenList[index + 1] && (
-                      <div
-                        className="historyItem"
-                        onClick={() => goToDetailInfoPage(listenList[index + 1].mainClassId)}
-                      >
-                        <img src={listenList[index + 1].scrollImage} className="itemImg" />
-                        <div className="placeContainer">
-                          <img src={earphone} />
-                          {listenList[index + 1].title}
+            {listenList.length > 0 ? (
+              <>
+                <div className="tips">根据收听时间&nbsp;从最近到最早</div>
+                <div className="historyList">
+                  {listenList.map((item, index) => {
+                    if (index % 2 === 1) return
+                    return (
+                      <div className="historyListRow" key={item.mainClassId}>
+                        <div className="historyItem" onClick={() => goToDetailInfoPage(item.mainClassId)}>
+                          <img src={item.scrollImage} className="itemImg" />
+                          <div className="placeContainer">
+                            <img src={earphone} />
+                            {index === 0 ? item.title.substring(0, 5) : item.title}
+                            {index === 0 && <div className="recentListen">最近听过</div>}
+                          </div>
+                          <div className="desc">{item.desc}</div>
                         </div>
-                        <div className="desc">{listenList[index + 1].desc}</div>
+                        {listenList[index + 1] && (
+                          <div
+                            className="historyItem"
+                            onClick={() => goToDetailInfoPage(listenList[index + 1].mainClassId)}
+                          >
+                            <img src={listenList[index + 1].scrollImage} className="itemImg" />
+                            <div className="placeContainer">
+                              <img src={earphone} />
+                              {listenList[index + 1].title}
+                            </div>
+                            <div className="desc">{listenList[index + 1].desc}</div>
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
-                )
-              })}
-              <EmptyBottom />
-            </div>
+                    )
+                  })}
+                  <EmptyBottom />
+                </div>
+              </>
+            ) : (
+              <EmptyList>{showSearchLoading[2] ? '搜索收听记录中...' : '你暂时还没有收听记录哦~'}</EmptyList>
+            )}
           </div>
         </SwiperSlide>
 
@@ -377,10 +404,11 @@ const Index = ({
   )
 }
 
-const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex } }) => ({
+const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex, orderList } }) => ({
   favoritesList,
   listenList,
   menuIndex,
+  orderList,
 })
 
 const mapDispatch = ({
