@@ -89,7 +89,7 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
     }
     const paySuccessCB = (groupId) => {
       if (type === ORDER_TYPE.SINGLE) {
-        history.push({ pathname: `/routeListPage/${id}` })
+        history.replace({ pathname: `/routeListPage/${id}` })
       } else if (type === ORDER_TYPE.GROUP) {
         history.push({ pathname: `/group/${id}/${groupId}` })
       }
