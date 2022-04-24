@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:54:26
- * @LastEditTime: 2022-04-05 21:27:44
+ * @LastEditTime: 2022-04-23 17:57:26
  */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -10,8 +10,11 @@ import wx from 'weixin-js-sdk'
 import BackIcon from 'src/components/BackIcon'
 import OrderPageItem from 'components/OrderPageItem'
 import GroupOrder from 'components/GroupContainer'
+import Mask from 'components/Mask'
 import StepImg from 'assets/images/step.png'
 import { ORDER_TYPE } from 'src/constants/index'
+import GroupShareImg from 'assets/images/group-share.png'
+import { joinGroup } from 'apis/order'
 
 import './index.scss'
 
@@ -31,6 +34,7 @@ const testData = {
   totals: 10,
   type: 'group',
   desc: '1',
+  mainClassId: '',
 }
 
 const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailInfo, getSignature, getGroupData }) => {
@@ -39,6 +43,7 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
     params: { id, groupId },
   } = match
   let groupInfo = null
+  const [showShareMask, setShowShareMask] = useState(false)
   useEffect(() => {
     getDetailInfo(id)
     getGroupData(groupId)
@@ -74,12 +79,13 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
   }, [detailInfo])
 
   if (groupData) {
-    const { ownerAvatar, joinAvatar, type, endTime } = groupData
+    const { ownerAvatar, joinAvatar, type, endTime, mainClassId } = groupData
     groupInfo = {
       ownerAvatar,
       joinAvatar,
       type,
       endTime,
+      mainClassId,
     }
   }
 
@@ -94,15 +100,71 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
     history.go(-1)
   }
 
+  const countDownFinishCb = () => {
+    console.log('倒计时完成')
+    getGroupData(groupId)
+  }
+
+  const groupBtnClick = (type) => () => {
+    console.log(type)
+    switch (type) {
+      case 'wait': // 邀请朋友一起拼
+        setShowShareMask(true)
+        break
+      case 'join': // 加入该团
+        joinGroupHandle()
+        break
+      case 'failed': // 我要开团
+        creatGroup()
+        break
+      case 'success': // 立即收听
+        history.push(`/detailInfoPage/${groupData.mainClassId}`)
+        break
+      case 'create': // 我要开团
+        creatGroup()
+        break
+      default:
+        console.log(type)
+    }
+  }
+  // 加入该团
+  const joinGroupHandle = async () => {
+    await joinGroup(groupId)
+    getGroupData(groupId)
+  }
+
+  // 我要开团
+  const creatGroup = () => {
+    console.log(groupData.mainClassId)
+    history.push(`/order/group?routeId=${groupData.mainClassId}`)
+  }
+
+  // 点击拼团上的景点进入详情
+  const goToRouteDetail = () => {
+    history.push(`/detailInfoPage/${groupData.mainClassId}`)
+  }
+
   console.log('groupData', groupData)
   return (
     <div className="orderPageContainer">
       <BackIcon clickHandle={backClickHandle} />
       <OrderPageItem
         data={detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}' ? detailInfo.info : testData}
+        clickHandle={goToRouteDetail}
       />
-      {groupInfo && <GroupOrder data={groupInfo} />}
+      {groupInfo && (
+        <GroupOrder
+          data={groupInfo}
+          countDownFinishCb={countDownFinishCb}
+          btnClickHandle={groupBtnClick(groupInfo.type)}
+        />
+      )}
       <img src={StepImg} className="stepIcon" />
+      {showShareMask && (
+        <Mask onClickHandle={() => setShowShareMask(false)}>
+          <img src={GroupShareImg} className="shareImg" />
+        </Mask>
+      )}
     </div>
   )
 }

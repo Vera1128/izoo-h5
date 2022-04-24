@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-01 16:58:44
- * @LastEditTime: 2022-02-20 17:50:44
+ * @LastEditTime: 2022-04-23 17:38:51
  */
 import React from 'react'
 import PinTuanPrice from 'components/PinTuanPrice'
@@ -11,6 +11,8 @@ import './index.scss'
 
 interface Props {
   data: {
+    /** 内容唯一 id */
+    mainClassId: string
     title: string
     /** 标签 */
     tags: string[]
@@ -33,15 +35,21 @@ interface Props {
     /** 描述 */
     desc: string
   }
+  clickHandle?: () => void
 }
 
 function OrderPageItem(props: Props) {
   const {
     data: { title, tags, scrollImages, amount, avgAmount, duration, totals, type, desc },
+    clickHandle,
   } = props
+
+  const clickFn = () => {
+    if (clickHandle) clickHandle()
+  }
   return (
     <>
-      <div className="orderPageItem">
+      <div className="orderPageItem" onClick={clickFn}>
         <img src={scrollImages[0]} alt="" className="orderPageItemImg" />
         <div className="orderPageContent">
           <p className="desc">{`${title}|${desc}`}</p>
@@ -71,5 +79,7 @@ function OrderPageItem(props: Props) {
     </>
   )
 }
-
+OrderPageItem.defaultProps = {
+  clickHandle: () => {},
+} as Partial<Props>
 export default OrderPageItem

@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2022-02-09 18:55:08
+ * @LastEditTime: 2022-04-23 17:07:10
+ */
 import rpcClient from './apiClient'
 
 // 测试登录
@@ -42,7 +48,7 @@ export function ssoToFlow(sso: string) {
 
 // 重定向
 export function redirectLogin() {
-  const url = `https://oss.walkidz.com/h5/v1/index.html`
+  const url = window.location.href
   const jump = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf93b23e8acb83eff&redirect_uri=${encodeURIComponent(
     url,
   )}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redire`

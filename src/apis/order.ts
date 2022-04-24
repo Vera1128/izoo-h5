@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2022-02-20 18:14:28
+ * @LastEditTime: 2022-04-23 17:14:48
+ */
 import rpcClient from './apiClient'
 import * as scheme from '../schemes/index'
 
@@ -13,6 +19,12 @@ export async function getGroupData(groupId: string) {
   return res
 }
 
+// 加入团购
+export async function joinGroup(groupId: string) {
+  const res = await rpcClient.callApi('Order/JoinGroup', { groupId })
+  return res
+}
+
 // 刷新订单状态
 export async function refreshOrder(orderId: string) {
   const res = await rpcClient.callApi('Order/RefreshOrder', { orderId })
@@ -23,4 +35,5 @@ export default {
   createOrder,
   getGroupData,
   refreshOrder,
+  joinGroup,
 }

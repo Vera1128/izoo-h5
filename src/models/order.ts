@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2022-02-20 18:29:24
- * @LastEditTime: 2022-04-05 16:26:22
+ * @LastEditTime: 2022-04-23 17:52:47
  */
 import _ from 'lodash'
 import wx from 'weixin-js-sdk'
@@ -64,12 +64,19 @@ export default {
     async getGroupData(groupId) {
       const res = await getGroupData(groupId)
       if (res) {
-        const { ownerAvatar, joinAvatar, type, endTime } = res.res
+        const {
+          ownerAvatar,
+          joinAvatar,
+          type,
+          endTime,
+          mainClassInfo: { mainClassId },
+        } = res.res
         dispatch.order.setGroupData({
           ownerAvatar,
           joinAvatar,
           type,
           endTime,
+          mainClassId,
         })
       }
     },
