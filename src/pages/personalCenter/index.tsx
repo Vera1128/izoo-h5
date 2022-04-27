@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { connect } from 'react-redux'
 import * as clipboard from 'clipboard-polyfill/text'
-import wx from 'weixin-js-sdk'
 
 import SlideDelete from 'components/SlideDelete'
 import PersonalMenu from 'components/PersonalMenu'
@@ -14,7 +13,6 @@ import { changeCollectStatus } from 'apis/detailPageInfo'
 
 import { getPxCurr } from 'utils/index'
 import { timeStampToDate } from 'utils/tools'
-import SwiperTestImg from 'assets/images/swiper-test.png'
 import heart from 'assets/images/heart.png'
 import earphone from 'assets/images/earphone-icon.png'
 import contactQrcode from 'assets/images/contact-qrcode.png'
@@ -23,8 +21,6 @@ import planetIcon from 'assets/images/coupon-bg.png'
 
 import './index.scss'
 import 'swiper/css'
-
-const shareConfig = require('src/config/share.json')
 
 const orderState = {
   success: '已购买',
@@ -44,7 +40,6 @@ const Index = ({
   history,
   menuIndex,
   setMenuIndex,
-  getSignature,
   orderList,
 }) => {
   const [currIndex, setCurrIndex] = useState(0)
@@ -63,29 +58,6 @@ const Index = ({
     fetchData(menuIndex)
     // @董帅
     getCurrentUserInfo()
-    getSignature(window.location.href.split('#')[0]).then(() => {
-      wx.ready(() => {
-        console.log('wx config ready')
-        const shareInfo = {
-          title: shareConfig.title,
-          desc: shareConfig.subTitle,
-          link: shareConfig.link,
-          imgUrl: shareConfig.icon, // 分享图标
-          fail: (res) => {
-            console.log('设置失败信息', res)
-          },
-          success: (res) => {
-            console.log('设置成功信息', res)
-          },
-        }
-        wx.updateAppMessageShareData(shareInfo)
-        wx.updateTimelineShareData(shareInfo)
-      })
-      wx.error((res: any) => {
-        console.log('mainPage wx config error')
-        console.log(res)
-      })
-    })
   }, [])
 
   // @董帅
@@ -411,14 +383,10 @@ const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex, orde
   orderList,
 })
 
-const mapDispatch = ({
-  personalCenter: { getFavoritesList, getListenList, setMenuIndex, getOrderList },
-  base: { getSignature },
-}) => ({
+const mapDispatch = ({ personalCenter: { getFavoritesList, getListenList, setMenuIndex, getOrderList } }) => ({
   getFavoritesList,
   getListenList,
   setMenuIndex,
-  getSignature,
   getOrderList,
 })
 

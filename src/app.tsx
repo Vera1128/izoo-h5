@@ -55,9 +55,7 @@ const createBasicRoute = (route, index) => {
       key={index}
       path={path}
       component={(props) => {
-        props.history.listen(async (path: any) => {
-          console.log('路由监听', path)
-        })
+        console.log(props)
         return <Component {...props} />
       }}
     />

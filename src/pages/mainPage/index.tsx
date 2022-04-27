@@ -59,20 +59,6 @@ const Index = ({
             console.log(res)
           },
         })
-        const shareInfo = {
-          title: shareConfig.title,
-          desc: shareConfig.subTitle,
-          link: shareConfig.link,
-          imgUrl: shareConfig.icon, // 分享图标
-          fail: (res) => {
-            console.log('设置失败信息', res)
-          },
-          success: (res) => {
-            console.log('设置成功信息', res)
-          },
-        }
-        wx.updateAppMessageShareData(shareInfo)
-        wx.updateTimelineShareData(shareInfo)
       })
       wx.error((res: any) => {
         console.log('mainPage wx config error')

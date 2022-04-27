@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { notify } from '@tgu/toast'
 import { connect } from 'react-redux'
-import wx from 'weixin-js-sdk'
 import { getQueryParam } from 'utils/index'
 import BackIcon from 'components/BackIcon'
 import OrderPageItem from 'components/OrderPageItem'
@@ -11,8 +10,6 @@ import Order from 'components/OrderContainer'
 import { ORDER_TYPE } from 'src/constants/index'
 
 import './index.scss'
-
-const shareConfig = require('src/config/share.json')
 
 const testData = {
   title: '测试title',
@@ -30,7 +27,7 @@ const testData = {
   desc: '1',
 }
 
-const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, createOrder, getSignature }) => {
+const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, createOrder }) => {
   const id = getQueryParam('routeId', location.search.substring(1))
   const {
     params: { type },
@@ -41,33 +38,6 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
   useEffect(() => {
     getDetailInfo(id)
   }, [])
-  useEffect(() => {
-    if (detailInfo && JSON.stringify(detailInfo) !== '{}') {
-      getSignature(window.location.href.split('#')[0]).then(() => {
-        wx.ready(() => {
-          console.log('购买页wx config ready')
-          const shareInfo = {
-            title: `${info.title}亲子行走语音导览`,
-            desc: info.desc || '',
-            link: window.location.href,
-            imgUrl: shareConfig.icon, // 分享图标
-            fail: (res) => {
-              console.log('设置失败信息', res)
-            },
-            success: (res) => {
-              console.log('设置成功信息', res)
-            },
-          }
-          wx.updateAppMessageShareData(shareInfo)
-          wx.updateTimelineShareData(shareInfo)
-        })
-        wx.error((res: any) => {
-          console.log('购买页wx config error')
-          console.log(res)
-        })
-      })
-    }
-  }, [detailInfo])
   if (detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}') {
     // 添加type
     detailInfo.info.type = type
@@ -134,10 +104,9 @@ const mapState = ({ detailInfoPage: { detailInfo } }) => ({
   detailInfo,
 })
 
-const mapDispatch = ({ detailInfoPage: { getDetailInfo }, order: { createOrder }, base: { getSignature } }) => ({
+const mapDispatch = ({ detailInfoPage: { getDetailInfo }, order: { createOrder } }) => ({
   getDetailInfo,
   createOrder,
-  getSignature,
 })
 
 export default connect(mapState, mapDispatch)(OrderPage)

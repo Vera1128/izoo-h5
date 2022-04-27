@@ -1,3 +1,9 @@
+/*
+ * @Description:
+ * @Author: yangyang.xu
+ * @Date: 2021-10-26 15:41:51
+ * @LastEditTime: 2022-04-27 16:10:43
+ */
 import React, { FC, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
@@ -75,10 +81,9 @@ const mapState = ({ base: { selectedId, userInfo } }) => ({
   userInfo,
 })
 
-const mapDispatch = ({ base: { setSelectedId, getUserInfo, getSignature } }) => ({
+const mapDispatch = ({ base: { setSelectedId, getUserInfo } }) => ({
   setSelectedId,
   getUserInfo,
-  getSignature,
 })
 
 export default connect(mapState, mapDispatch)(Index)
