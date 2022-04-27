@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:54:26
- * @LastEditTime: 2022-04-23 17:57:26
+ * @LastEditTime: 2022-04-27 15:44:18
  */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -44,7 +44,11 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
   } = match
   let groupInfo = null
   const [showShareMask, setShowShareMask] = useState(false)
+  const [showBack, setShowBack] = useState(true)
   useEffect(() => {
+    if (history.length < 2) {
+      setShowBack(false)
+    }
     getDetailInfo(id)
     getGroupData(groupId)
   }, [])
@@ -147,7 +151,7 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
   console.log('groupData', groupData)
   return (
     <div className="orderPageContainer">
-      <BackIcon clickHandle={backClickHandle} />
+      {showBack && <BackIcon clickHandle={backClickHandle} />}
       <OrderPageItem
         data={detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}' ? detailInfo.info : testData}
         clickHandle={goToRouteDetail}

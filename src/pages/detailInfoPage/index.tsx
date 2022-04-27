@@ -13,7 +13,7 @@ import Tag from 'components/Tag'
 import BackIcon from 'components/BackIcon'
 import { changeCollectStatus, listenReport } from 'apis/detailPageInfo'
 import Button from 'components/Button'
-import { throttle, getPxCurr } from 'src/utils'
+import { throttle, getPxCurr, getQueryParam } from 'src/utils'
 
 import EventManager from 'src/modules/eventManager'
 import { EventType } from 'src/modules/EventType'
@@ -54,6 +54,7 @@ const Index = ({
   setBackFromRouteDetail,
   getSignature,
 }) => {
+  const [showBack, setShowBack] = useState(true)
   const [showShareMask, setShowShareMask] = useState(false)
   const [selectMenu, setSelectMenu] = useState(1)
   const [playProgress, setPlayProgress] = useState({})
@@ -66,6 +67,12 @@ const Index = ({
   const detailInfoContentRef = useRef(null)
   const detailInfoPageRef = useRef(null)
   useEffect(() => {
+    if (history.length < 2) {
+      setShowBack(false)
+    }
+    console.log('document.referrer', document.referrer)
+    console.log('from', getQueryParam('from'))
+    console.log(history.length)
     // 收听内容信息上报
     listenReport(id, '', 0)
     getDetailInfo(id)
@@ -139,10 +146,13 @@ const Index = ({
   }
 
   const backToMainPage = () => {
+    history.go(-1)
+  }
+  const goToMainPage = () => {
     console.log(history)
     console.log(history.length)
     audioStop()
-    history.go(-1)
+    history.replace('/index/mainPage')
     setDetailInfo({})
   }
   const changeCollectStatusHandle = async () => {
@@ -210,7 +220,7 @@ const Index = ({
   return (
     <>
       <div className="detailInfoPage" ref={detailInfoPageRef}>
-        <BackIcon clickHandle={backToMainPage} />
+        {showBack && <BackIcon clickHandle={backToMainPage} />}
         <Swiper
           slidesPerView="auto"
           className="mySwiper"
@@ -324,7 +334,7 @@ const Index = ({
       </div>
       <div className="detailPageMenuBottom">
         <div className="detailPageMenu">
-          <div className="menuContainer1" onClick={backToMainPage}>
+          <div className="menuContainer1" onClick={goToMainPage}>
             <img src={HomeImg} className="homeIcon" />
             <p className="menuText">首页</p>
           </div>
