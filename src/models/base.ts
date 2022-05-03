@@ -53,8 +53,6 @@ export default {
     // 获取wxconfig
     async getSignature(url) {
       const res = await getSignature(url)
-      console.log('wxconfig')
-      console.log(res)
       if (res) {
         const {
           res: { appId, timestamp, nonceStr, signature, jsApiList },

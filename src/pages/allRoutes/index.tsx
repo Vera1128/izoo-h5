@@ -29,7 +29,9 @@ const Index = ({
   showEmptyListImg,
 }) => {
   useEffect(() => {
-    getTypeList(theme)
+    if (theme) {
+      getTypeList(theme)
+    }
     setShowRightButton(true)
   }, [])
   useEffect(() => {

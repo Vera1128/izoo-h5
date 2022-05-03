@@ -29,10 +29,18 @@ export async function changeCollectStatus(id: string) {
   const res = await rpcClient.callApi('Detail/CollectEvent', { mainClassId: id })
   return res
 }
+/**
+ * 获取优惠券列表
+ */
+export async function getCouponList() {
+  const res = await rpcClient.callApi('Center/GetCoupon', {})
+  return res
+}
 
 export default {
   getFavoritesList,
   getListenList,
   changeCollectStatus,
   getOrderList,
+  getCouponList,
 }

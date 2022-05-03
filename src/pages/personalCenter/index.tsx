@@ -18,13 +18,14 @@ import earphone from 'assets/images/earphone-icon.png'
 import contactQrcode from 'assets/images/contact-qrcode.png'
 import contactWechat from 'assets/images/contact-wechat.png'
 import planetIcon from 'assets/images/coupon-bg.png'
+import { getCouponList } from '../../apis/personalCenter'
 
 import './index.scss'
 import 'swiper/css'
 
 const orderState = {
   success: '已购买',
-  wait: '已购买',
+  wait: '拼团中',
   fail: '订单关闭',
 }
 
@@ -46,7 +47,7 @@ const Index = ({
   const [showCouponPanel, setShowCouponPanel] = useState(false)
   const [showCouponDetail, setShowCouponDetail] = useState(false)
   const [showSearchLoading, setShowSearchLoading] = useState([false, false, false])
-
+  const [couponData, setCouponData] = useState([])
   // @董帅
   const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
     avatar: '',
@@ -56,9 +57,17 @@ const Index = ({
 
   useEffect(() => {
     fetchData(menuIndex)
+    couponList()
     // @董帅
     getCurrentUserInfo()
   }, [])
+
+  const couponList = async () => {
+    const res = await getCouponList()
+    if (res.isSucc) {
+      setCouponData(res.res.list)
+    }
+  }
 
   // @董帅
   const getCurrentUserInfo = async () => {
@@ -162,14 +171,18 @@ const Index = ({
         {showCouponPanel && (
           <div className="couponPanel">
             <div className="couponContent">
-              <div className="coupon" onClick={handleCouponClick(0)}>
+              {couponData.length > 0
+                ? couponData.map((item, index) => (
+                    <div key={index} className="coupon" onClick={handleCouponClick(0)}>
+                      <p className="title">{item.name}</p>
+                      <p className="time">有效期至 {item.eTime}</p>
+                    </div>
+                  ))
+                : ''}
+              {/* <div className="coupon" onClick={handleCouponClick(1)}>
                 <p className="title">星际通行券</p>
                 <p className="time">有效期至 2022.3.20</p>
-              </div>
-              <div className="coupon" onClick={handleCouponClick(1)}>
-                <p className="title">星际通行券</p>
-                <p className="time">有效期至 2022.3.20</p>
-              </div>
+              </div> */}
             </div>
             <div className="couponMask" onClick={closeCouponClick} />
           </div>

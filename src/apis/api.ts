@@ -9,7 +9,7 @@ import rpcClient from './apiClient'
 // 测试登录
 export async function testLogin() {
   const res = await rpcClient.callApi('Login/TestLogin', {
-    userId: 'oDfcY69wA2QERN9mBhuMOvCFsPxQ',
+    userId: 171910,
   })
   return res
 }
@@ -48,6 +48,7 @@ export function ssoToFlow(sso: string) {
 
 // 重定向
 export function redirectLogin() {
+  localStorage.clear()
   const url = window.location.href
   const jump = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf93b23e8acb83eff&redirect_uri=${encodeURIComponent(
     url,
