@@ -167,8 +167,8 @@ const Index = ({
     setBackFromRouteDetail(false)
     history.push({ pathname: `/routeListPage/${id}` })
   }
-  const couponEvent = async (couponId: string, mainClassId: string) => {
-    const res = await couponAction({ couponId, mainClassId })
+  const couponEvent = async (mainClassId: string) => {
+    const res = await couponAction({ mainClassId })
     if (res.isSucc) {
       notify('兑换成功', 1000)
     } else {
@@ -207,7 +207,7 @@ const Index = ({
           className="buyItem"
           onClick={async () => {
             // @杨杨, 使用[个人中心]跳转过来携带的couponId
-            await couponEvent('622467a6b2852addb75005d7', id)
+            await couponEvent(id)
           }}
         >
           <p>使用优惠券</p>

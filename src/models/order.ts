@@ -19,7 +19,11 @@ export default {
   effects: (dispatch) => ({
     async createOrder(propsReq: scheme.createOrderProps) {
       console.log('订单是否是团购', propsReq.orderType === ORDER_TYPE.GROUP)
-      const res = await createOrder(propsReq.reqOrder)
+      const res = await createOrder({
+        mainClassId: propsReq.reqOrder.mainClassId,
+        phone: 1234567890, // TODO @杨杨
+        type: propsReq.orderType as any,
+      })
       if (res) {
         const { timestamp, signType, nonceStr, prepay_id, paySign, orderId } = res.res
         wx.chooseWXPay({

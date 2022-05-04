@@ -5,12 +5,12 @@
  * @LastEditTime: 2022-04-23 17:14:48
  */
 import { ReqUseCoupon } from 'src/walkidz-shared/shared/protocols/Order/PtlUseCoupon'
+import { ReqCreateOrder } from 'src/walkidz-shared/shared/protocols/Order/PtlCreateOrder'
 import rpcClient from './apiClient'
-import * as scheme from '../schemes/index'
 
 // 提交订单
-export async function createOrder(createOrder: scheme.ReqCreateOrder) {
-  const res = await rpcClient.callApi('Order/CreateOrder', createOrder)
+export async function createOrder(req: ReqCreateOrder) {
+  const res = await rpcClient.callApi('Order/CreateOrder', req)
   return res
 }
 
