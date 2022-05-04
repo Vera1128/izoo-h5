@@ -9,23 +9,22 @@ import config from '../../scripts/config'
 // 创建全局唯一的 apiClient，需要时从该文件引入
 const apiClient = new HttpClient(serviceProto, {
   server: 'https://api.walkidz.com/release/',
-  // server: 'http://172.19.82.226:9000',
+  // server: 'http://127.0.0.1:9000',
   json: true,
   logger: console,
 })
 
 apiClient.flows.preApiReturnFlow.push((v) => {
-  const { isSucc, err } = v.return
+  const { err } = v.return
   if (err && err.code === 'NEED_LOGIN') {
     // 如果没有登录,检测当前设备环境,浏览器走 testLogin, 手机设备需要重定向到登录
     const device = currentBrowser()
-    // if (device === 'browser') {
-    // testLogin()
-    // }
-    // if (device === 'app') {
-    redirectLogin()
-    return v
-    // }
+    if (device === 'browser') {
+      testLogin()
+    } else if (device === 'app') {
+      redirectLogin()
+      return v
+    }
   }
   // if (!isSucc && err?.message) {
   //   notify(err?.message, 2000)

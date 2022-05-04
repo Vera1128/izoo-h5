@@ -31,6 +31,7 @@ import TimeIcon from 'assets/images/time-icon.png'
 import TagIcon from 'assets/images/tag-icon.png'
 import playIcon from 'assets/images/play-icon-bold.png'
 import pauseIcon from 'assets/images/pause-icon.png'
+import { couponAction } from '../../apis/order'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -166,6 +167,14 @@ const Index = ({
     setBackFromRouteDetail(false)
     history.push({ pathname: `/routeListPage/${id}` })
   }
+  const couponEvent = async (couponId: string, mainClassId: string) => {
+    const res = await couponAction({ couponId, mainClassId })
+    if (res.isSucc) {
+      notify('兑换成功', 1000)
+    } else {
+      notify(res.err.message, 1000)
+    }
+  }
   const showBottomBtn = () => {
     // 是否已经支付
     if (isPayment)
@@ -194,6 +203,15 @@ const Index = ({
     // 拼团+单独购买
     return (
       <div className="buyContainer">
+        {/* <div
+          className="buyItem"
+          onClick={async () => {
+            // @杨杨, 使用[个人中心]跳转过来携带的couponId
+            await couponEvent('622467a6b2852addb75005d7', id)
+          }}
+        >
+          <p>使用优惠券</p>
+        </div> */}
         <div className="buyItem" onClick={() => history.push(`/order/single?routeId=${id}`)}>
           <p>直接购买</p>
           <p>￥ {info?.amount}</p>

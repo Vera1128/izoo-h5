@@ -111,16 +111,16 @@ const Index = ({
           }}
         >
           {typesArr.map(
-            (city) =>
+            (city, index) =>
               city && (
-                <SwiperSlide key={city.id}>
+                <SwiperSlide key={index}>
                   <div className="allRoutesList">
                     {listArr[city]?.length > 0 ? (
                       <>
-                        {listArr[city].map((item) => (
+                        {listArr[city].map((item, index) => (
                           <AllRouteItem
                             data={item}
-                            key={item.mainClassId}
+                            key={index}
                             onClick={() => {
                               history.push(`/detailInfoPage/${item.mainClassId}`)
                             }}
