@@ -427,6 +427,15 @@
       color: white;
       font-weight: bold;
       margin-left: 32px;
+      .uid {
+        height: 20px;
+        font-size: 20px;
+        font-weight: 500;
+        color: #ffffff;
+        line-height: 20px;
+        margin-top: 8px;
+        display: block;
+      }
     }
     .couponContainer {
       min-width: 184px;

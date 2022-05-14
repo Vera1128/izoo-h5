@@ -55,10 +55,11 @@ const Index = ({
   })
   const [showSearchLoading, setShowSearchLoading] = useState([false, false, false])
   // @董帅
-  const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
+  const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number; userId: number }>({
     avatar: '',
     nickName: '',
     gender: 0,
+    userId: 0,
   })
 
   useEffect(() => {
@@ -159,7 +160,11 @@ const Index = ({
       <div className="userInfoContainer">
         <div className="userInfo">
           <img src={userInfo.avatar} alt="头像" className="avater" />
-          <span className="name">{userInfo.nickName}</span>
+          <div className="name">
+            {userInfo.nickName}
+            <br />
+            <span className="uid">UID:{userInfo.userId || '重新登录后获取'}</span>
+          </div>
           {couponList.length > 0 && (
             <div
               className={`couponContainer ${showCouponPanel ? 'couponContainerActive' : ''}`}

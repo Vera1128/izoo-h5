@@ -73,7 +73,7 @@ module.exports = {
     camelcase: 'off',
 
     // sonarjs
-    'sonarjs/cognitive-complexity': 'error',
+    'sonarjs/cognitive-complexity': 'off',
     'sonarjs/no-identical-expressions': 'error',
     'sonarjs/no-identical-functions': 'off',
     'sonarjs/no-duplicate-string': 'off',
