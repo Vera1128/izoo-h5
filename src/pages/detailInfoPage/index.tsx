@@ -232,11 +232,11 @@ const Index = ({
           <p>使用优惠券</p>
         </div> */}
         <div className="buyItem" onClick={buySingleClickHandle}>
-          <p>直接购买</p>
+          <p className="topText">直接购买</p>
           <p>￥ {info?.amount}</p>
         </div>
         <div className="buyItem" onClick={() => history.push(`/order/group?routeId=${id}`)}>
-          <p>{info?.nums}人拼团</p>
+          <p className="topText">{info?.nums}人拼团</p>
           <p>￥ {info?.avgAmount}</p>
         </div>
       </div>

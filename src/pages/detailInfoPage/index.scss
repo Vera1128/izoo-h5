@@ -288,12 +288,20 @@
       background: white;
       border-radius: 120px 0 0 120px;
       border: 1px solid #00cab1;
-      padding-left: 42px;
+      padding-left: 50px;
       p {
+        // width: 100%;
+        // text-align: center;
         font-size: 32px;
         line-height: 46px;
         height: 46px;
         color: #00cab1;
+      }
+      .topText {
+        height: 40px;
+        font-size: 28px;
+        line-height: 32px;
+        margin-top: 6px;
       }
     }
     .buyItem:nth-of-type(2) {
@@ -319,10 +327,10 @@
     justify-content: center;
     .largeText {
       width: 100%;
-      font-size: 36px;
+      font-size: 32px;
       text-align: center;
       color: white;
-      line-height: 42px;
+      line-height: 38px;
     }
     .smallText {
       width: 100%;
