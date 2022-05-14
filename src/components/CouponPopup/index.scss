@@ -1,0 +1,59 @@
+.couponPopupContainer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  .coupon {
+    width: 522px;
+    height: 418px;
+    border-radius: 40px;
+    background: #fff9f3;
+    padding: 52px 28px 0;
+    .couponTitle {
+      width: 100%;
+      font-size: 36px;
+      font-family: Noto Sans SC-Medium, Noto Sans SC;
+      font-weight: 500;
+      color: #666699;
+      line-height: 52px;
+      text-align: center;
+    }
+    .couponImg {
+      display: block;
+      width: 190px;
+      height: 120px;
+      margin: 16px auto 0;
+    }
+    .couponBtnContainer {
+      width: 100%;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      .couponBtn {
+        width: 218px;
+        height: 84px;
+        text-align: center;
+        line-height: 84px;
+        background: #66cccc;
+        border-radius: 20px 20px 20px 20px;
+        font-size: 36px;
+        font-family: Noto Sans SC-Medium, Noto Sans SC;
+        font-weight: 500;
+        color: #ffffff;
+      }
+      .couponBtnRight {
+        background: #9c88c8;
+      }
+    }
+  }
+}

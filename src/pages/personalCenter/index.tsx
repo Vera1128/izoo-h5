@@ -18,7 +18,6 @@ import earphone from 'assets/images/earphone-icon.png'
 import contactQrcode from 'assets/images/contact-qrcode.png'
 import contactWechat from 'assets/images/contact-wechat.png'
 import planetIcon from 'assets/images/coupon-bg.png'
-import { getCouponList } from '../../apis/personalCenter'
 
 import './index.scss'
 import 'swiper/css'
@@ -36,18 +35,25 @@ const Index = ({
   getOrderList,
   getFavoritesList,
   getListenList,
+  getCouponList,
   favoritesList,
   listenList,
   history,
   menuIndex,
   setMenuIndex,
   orderList,
+  couponList,
 }) => {
   const [currIndex, setCurrIndex] = useState(0)
   const [showCouponPanel, setShowCouponPanel] = useState(false)
   const [showCouponDetail, setShowCouponDetail] = useState(false)
+  const [couponDetail, setCouponDetail] = useState({
+    couponId: '',
+    eTime: '',
+    name: '',
+    sTime: '',
+  })
   const [showSearchLoading, setShowSearchLoading] = useState([false, false, false])
-  const [couponData, setCouponData] = useState([])
   // @董帅
   const [userInfo, setUserInfo] = useState<{ avatar: string; nickName: string; gender: number }>({
     avatar: '',
@@ -57,17 +63,10 @@ const Index = ({
 
   useEffect(() => {
     fetchData(menuIndex)
-    couponList()
+    getCouponList()
     // @董帅
     getCurrentUserInfo()
   }, [])
-
-  const couponList = async () => {
-    const res = await getCouponList()
-    if (res.isSucc) {
-      setCouponData(res.res.list)
-    }
-  }
 
   // @董帅
   const getCurrentUserInfo = async () => {
@@ -150,8 +149,8 @@ const Index = ({
     else setShowCouponPanel(false)
   }
 
-  const handleCouponClick = (couponId) => () => {
-    console.log(couponId)
+  const handleCouponClick = (couponInfo) => () => {
+    setCouponDetail(couponInfo)
     setShowCouponDetail(true)
   }
 
@@ -161,28 +160,26 @@ const Index = ({
         <div className="userInfo">
           <img src={userInfo.avatar} alt="头像" className="avater" />
           <span className="name">{userInfo.nickName}</span>
-          <div
-            className={`couponContainer ${showCouponPanel ? 'couponContainerActive' : ''}`}
-            onClick={clickCouponHandle}
-          >
-            {showCouponPanel ? '收起' : '查看兑换券'}
-          </div>
+          {couponList.length > 0 && (
+            <div
+              className={`couponContainer ${showCouponPanel ? 'couponContainerActive' : ''}`}
+              onClick={clickCouponHandle}
+            >
+              {showCouponPanel ? '收起' : '查看兑换券'}
+            </div>
+          )}
         </div>
         {showCouponPanel && (
           <div className="couponPanel">
             <div className="couponContent">
-              {couponData.length > 0
-                ? couponData.map((item, index) => (
-                    <div key={index} className="coupon" onClick={handleCouponClick(0)}>
+              {couponList.length > 0
+                ? couponList.map((item, index) => (
+                    <div key={index} className="coupon" onClick={handleCouponClick(item)}>
                       <p className="title">{item.name}</p>
                       <p className="time">有效期至 {item.eTime}</p>
                     </div>
                   ))
                 : ''}
-              {/* <div className="coupon" onClick={handleCouponClick(1)}>
-                <p className="title">星际通行券</p>
-                <p className="time">有效期至 2022.3.20</p>
-              </div> */}
             </div>
             <div className="couponMask" onClick={closeCouponClick} />
           </div>
@@ -190,10 +187,10 @@ const Index = ({
       </div>
       {showCouponDetail && (
         <div className="couponDescContainer">
-          <p className="title">免费获得任意路线一条</p>
+          <p className="title">{couponDetail.name}</p>
           <img src={planetIcon} className="couponIcon" />
           <p className="mainTitle">星际通行券</p>
-          <p className="subTitle">有效期至 2022.3.20 24:00</p>
+          <p className="subTitle">有效期至 {couponDetail.eTime}</p>
         </div>
       )}
       <PersonalMenu menuIndex={menuIndex} clickMenuHandle={clickMenuHandle} />
@@ -389,18 +386,22 @@ const Index = ({
   )
 }
 
-const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex, orderList } }) => ({
+const mapState = ({ personalCenter: { favoritesList, listenList, menuIndex, orderList, couponList } }) => ({
   favoritesList,
   listenList,
   menuIndex,
   orderList,
+  couponList,
 })
 
-const mapDispatch = ({ personalCenter: { getFavoritesList, getListenList, setMenuIndex, getOrderList } }) => ({
+const mapDispatch = ({
+  personalCenter: { getFavoritesList, getListenList, setMenuIndex, getOrderList, getCouponList },
+}) => ({
   getFavoritesList,
   getListenList,
   setMenuIndex,
   getOrderList,
+  getCouponList,
 })
 
 export default connect(mapState, mapDispatch)(Index)

@@ -2,10 +2,10 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-20 10:24:44
- * @LastEditTime: 2022-03-21 15:58:06
+ * @LastEditTime: 2022-05-14 21:26:13
  */
 import _ from 'lodash'
-import { getFavoritesList, getListenList, getOrderList } from 'apis/personalCenter'
+import { getFavoritesList, getListenList, getOrderList, getCouponList } from 'apis/personalCenter'
 
 export default {
   name: 'personalCenter',
@@ -14,6 +14,7 @@ export default {
     favoritesList: [],
     listenList: [],
     menuIndex: 0,
+    couponList: [],
   },
 
   effects: (dispatch) => ({
@@ -47,6 +48,16 @@ export default {
         dispatch.personalCenter.setOrderList(list)
       }
     },
+    async getCouponList() {
+      const res = await getCouponList()
+      if (res) {
+        const {
+          res: { list },
+        } = res
+        dispatch.personalCenter.setCouponList(list.filter((coupon) => coupon.state !== 'used'))
+        return list
+      }
+    },
   }),
 
   reducers: {
@@ -66,6 +77,12 @@ export default {
       return {
         ...state,
         orderList: payload,
+      }
+    },
+    setCouponList(state, payload) {
+      return {
+        ...state,
+        couponList: payload,
       }
     },
     setMenuIndex(state, payload) {

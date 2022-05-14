@@ -11,8 +11,9 @@ import EmptyBottom from 'components/EmptyBottom'
 import Mask from 'components/Mask'
 import Tag from 'components/Tag'
 import BackIcon from 'components/BackIcon'
-import { changeCollectStatus, listenReport } from 'apis/detailPageInfo'
 import Button from 'components/Button'
+import CouponPopup from 'components/CouponPopup'
+import { changeCollectStatus, listenReport } from 'apis/detailPageInfo'
 import { throttle, getPxCurr, getQueryParam } from 'src/utils'
 
 import EventManager from 'src/modules/eventManager'
@@ -31,7 +32,8 @@ import TimeIcon from 'assets/images/time-icon.png'
 import TagIcon from 'assets/images/tag-icon.png'
 import playIcon from 'assets/images/play-icon-bold.png'
 import pauseIcon from 'assets/images/pause-icon.png'
-import { couponAction } from '../../apis/order'
+import { couponAction } from 'apis/order'
+import { getCouponList } from 'apis/personalCenter'
 
 import 'swiper/css'
 import 'swiper/css/pagination'
@@ -60,6 +62,7 @@ const Index = ({
   const [selectMenu, setSelectMenu] = useState(1)
   const [playProgress, setPlayProgress] = useState({})
   const [isFocusOnClosed, setIsFocusOnClosed] = useState(false)
+  const [showCouponUse, setShowCouponUse] = useState(false)
   const {
     params: { id },
   } = match
@@ -167,13 +170,29 @@ const Index = ({
     setBackFromRouteDetail(false)
     history.push({ pathname: `/routeListPage/${id}` })
   }
-  const couponEvent = async (mainClassId: string) => {
-    const res = await couponAction({ mainClassId })
-    if (res.isSucc) {
-      notify('兑换成功', 1000)
-    } else {
-      notify(res.err.message, 1000)
+
+  const buySingleClickHandle = async () => {
+    // 如果有可使用的优惠券 就弹出优惠券使用弹框
+    const res = await getCouponList()
+    if (res) {
+      const {
+        res: { list },
+      } = res
+      if (
+        list.filter(
+          (coupon: any) =>
+            coupon.state !== 'used' && new Date(coupon.eTime.replaceAll('-', '/')).getTime() > new Date().getTime(),
+        ).length > 0
+      ) {
+        setShowCouponUse(true)
+        return
+      }
     }
+    // 没有的话 就直接跳到购买页面
+    goToSingleBuy()
+  }
+  const goToSingleBuy = () => {
+    history.push(`/order/single?routeId=${id}`)
   }
   const showBottomBtn = () => {
     // 是否已经支付
@@ -195,7 +214,7 @@ const Index = ({
     // 是否只单独购买
     if (!info?.avgAmount)
       return (
-        <Button className="freeBtn">
+        <Button className="freeBtn" onClick={buySingleClickHandle}>
           <p className="largeText">立即购买</p>
           <p className="smallText">￥ {info?.amount}</p>
         </Button>
@@ -212,7 +231,7 @@ const Index = ({
         >
           <p>使用优惠券</p>
         </div> */}
-        <div className="buyItem" onClick={() => history.push(`/order/single?routeId=${id}`)}>
+        <div className="buyItem" onClick={buySingleClickHandle}>
           <p>直接购买</p>
           <p>￥ {info?.amount}</p>
         </div>
@@ -233,6 +252,27 @@ const Index = ({
         clearInterval(timer)
       }
     }, 1)
+  }
+
+  // 任性付费买
+  const couponRightClickHandle = () => {
+    goToSingleBuy()
+  }
+
+  // 使用兑换券
+  const couponLeftClickHandle = () => {
+    couponEvent(id)
+  }
+  // 使用兑换券
+  const couponEvent = async (mainClassId: string) => {
+    const res = await couponAction({ mainClassId })
+    if (res.isSucc) {
+      notify('兑换成功', 1000)
+      getDetailInfo(id)
+    } else {
+      notify(res.err.message, 1000)
+    }
+    setShowCouponUse(false)
   }
 
   return (
@@ -373,6 +413,15 @@ const Index = ({
         <Mask onClickHandle={() => setShowShareMask(false)}>
           <img src={DetailPageShareImg} className="shareImg" />
         </Mask>
+      )}
+      {showCouponUse && (
+        <CouponPopup
+          onLeftClickHandle={couponLeftClickHandle}
+          onRightClickHandle={couponRightClickHandle}
+          onClose={() => {
+            setShowCouponUse(false)
+          }}
+        />
       )}
     </>
   )
