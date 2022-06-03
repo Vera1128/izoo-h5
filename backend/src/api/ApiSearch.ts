@@ -5,6 +5,10 @@ import { ReqSearch, ResSearch } from "../shared/protocols/PtlSearch";
 
 export async function ApiSearch(call: ApiCall<ReqSearch, ResSearch>) {
 
+    if(!call.req.content) {
+        return call.error('搜索内容不能为空!')
+    }
+    
     // 记录每一条搜索的内容数据
     await SearchUtil.setSearchContent({ userId: call.currentUser.userId!, searchContent: call.req.content })
 
