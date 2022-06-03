@@ -9,6 +9,7 @@ import EarphoneIcon from 'assets/images/earphone-icon.png'
 import EmptyList from '../EmptyList'
 import ListHeader from '../ListHeader'
 import './index.less'
+import statUtil from 'src/utils/statUtil'
 
 interface Props {
   className?: string
@@ -25,7 +26,10 @@ function NearbyList(props: Props) {
       <div className="nearbyList">
         {list.length > 0 ? (
           list.slice(0, 4).map(({ mainClassId, title, distance, scrollImage, desc }) => (
-            <div className="nearbyItem" key={mainClassId} onClick={itemClick(mainClassId)}>
+            <div className="nearbyItem" key={mainClassId} onClick={() => {
+              itemClick(mainClassId)
+              statUtil.report('首页-附近-点击', { mainClassId })
+            }}>
               <img src={scrollImage} className="scrollImage" />
               <div className="placeInfo">
                 <div className="place">

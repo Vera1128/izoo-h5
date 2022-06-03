@@ -17,6 +17,7 @@ import EmptyBottom from 'components/EmptyBottom'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import './index.less'
+import statUtil from 'src/utils/statUtil'
 
 const shareConfig = require('src/config/share.json')
 
@@ -113,7 +114,7 @@ const Index = ({
         pagination={{
           clickable: false,
         }}
-        onSwiper={() => {}}
+        onSwiper={() => { }}
         initialSlide={0}
         autoplay={{
           delay: 2500,
@@ -126,7 +127,10 @@ const Index = ({
               src={item.scrollImg}
               className="swiperContent"
               alt="轮播图"
-              onClick={goToDetailInfoPage(item.mainClassId)}
+              onClick={() => {
+                goToDetailInfoPage(item.mainClassId)
+                statUtil.report('首页-轮播图-点击', { mainClassId: item.mainClassId })
+              }}
             />
           </SwiperSlide>
         ))}

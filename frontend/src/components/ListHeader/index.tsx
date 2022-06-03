@@ -1,4 +1,5 @@
 import React from 'react'
+import statUtil from 'src/utils/statUtil'
 import './index.less'
 
 interface Props {
@@ -15,7 +16,9 @@ function listHeader(props: Props) {
     <div className={`listHeader ${className}`}>
       <div className="left-title">{title}</div>
       {hasBtn && (
-        <div className="right-btn" onClick={clickHandle}>
+        <div className="right-btn" onClick={() => {
+          clickHandle()
+        }}>
           {btnText}
         </div>
       )}
