@@ -4,6 +4,7 @@
  * @Date: 2022-02-09 18:55:08
  * @LastEditTime: 2022-04-23 17:07:10
  */
+import statUtil from 'src/utils/statUtil'
 import rpcClient from './apiClient'
 
 // 测试登录
@@ -20,6 +21,7 @@ export async function prodLogin(code) {
   const res = await rpcClient.callApi('Login/Login', {
     code,
   })
+  await statUtil.report('登录成功', res.res.info)
   return res
 }
 
