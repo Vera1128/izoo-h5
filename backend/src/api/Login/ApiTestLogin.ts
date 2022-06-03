@@ -35,7 +35,8 @@ export async function ApiTestLogin(call: ApiCall<ReqTestLogin, ResTestLogin>) {
             gender: userInfo.info.gender,
             province: userInfo.info.province,
             city: userInfo.info.city,
-            country: userInfo.info.country
+            country: userInfo.info.country,
+            userId: userInfo.info.userId
         }
     })
 

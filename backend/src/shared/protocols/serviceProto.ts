@@ -164,7 +164,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 79,
+    "version": 80,
     "services": [
         {
             "id": 16,
@@ -1699,8 +1699,31 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "id": 0,
                     "name": "info",
                     "type": {
-                        "type": "Reference",
-                        "target": "models/CurrentUser/CurrentUser"
+                        "type": "Intersection",
+                        "members": [
+                            {
+                                "id": 0,
+                                "type": {
+                                    "type": "Reference",
+                                    "target": "models/CurrentUser/CurrentUser"
+                                }
+                            },
+                            {
+                                "id": 1,
+                                "type": {
+                                    "type": "Interface",
+                                    "properties": [
+                                        {
+                                            "id": 0,
+                                            "name": "userId",
+                                            "type": {
+                                                "type": "Number"
+                                            }
+                                        }
+                                    ]
+                                }
+                            }
+                        ]
                     }
                 }
             ]

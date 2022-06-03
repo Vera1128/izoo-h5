@@ -12,7 +12,7 @@ export interface ReqTestLogin extends BaseRequest {
  * Login 返回-[测试登录]
  */
 export interface ResTestLogin extends BaseResponse {
-  info: CurrentUser
+  info: (CurrentUser & { userId: number })
 }
 
 export const conf: BaseConf = {
