@@ -4,8 +4,8 @@
  * @Date: 2022-02-20 18:14:28
  * @LastEditTime: 2022-04-23 17:14:48
  */
-import { ReqUseCoupon } from 'src/walkidz-shared/shared/protocols/Order/PtlUseCoupon'
-import { ReqCreateOrder } from 'src/walkidz-shared/shared/protocols/Order/PtlCreateOrder'
+import { ReqUseCoupon } from 'src/shared/protocols/Order/PtlUseCoupon'
+import { ReqCreateOrder } from 'src/shared/protocols/Order/PtlCreateOrder'
 import rpcClient from './apiClient'
 
 // 提交订单

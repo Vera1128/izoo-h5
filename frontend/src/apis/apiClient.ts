@@ -2,7 +2,7 @@ import { HttpClient, TsrpcError } from 'tsrpc-browser'
 import { notify } from '@tgu/toast'
 import { redirectLogin, testLogin } from 'apis/api'
 import { currentBrowser } from 'src/utils'
-import { serviceProto } from '../walkidz-shared/shared/protocols/serviceProto'
+import { serviceProto } from '../shared/protocols/serviceProto'
 
 import config from '../../scripts/config'
 

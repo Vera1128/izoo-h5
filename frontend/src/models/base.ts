@@ -2,7 +2,7 @@ import _ from 'lodash'
 import wx from 'weixin-js-sdk'
 import { testLogin, getSignature, prodLogin, ssoToFlow, redirectLogin } from 'apis/api'
 import { currentBrowser } from 'src/utils'
-import { ResTestLogin } from 'src/walkidz-shared/shared/protocols/Login/PtlTestLogin'
+import { ResTestLogin } from 'src/shared/protocols/Login/PtlTestLogin'
 import { ApiReturn } from 'tsrpc-proto'
 
 export default {
