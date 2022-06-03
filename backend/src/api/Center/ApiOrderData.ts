@@ -35,6 +35,7 @@ export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
                 amount: contentRes.amount,
                 avgAmount: contentRes.avgAmount,
                 orderId: item.transRecordId,
+                groupId: '',
                 createTime: item.createTime,
                 state: item.state === true ? 'success' : 'fail',
                 type: 'single'
@@ -67,6 +68,7 @@ export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
                     amount: contentRes.amount,
                     avgAmount: contentRes.avgAmount,
                     orderId: item.ownerOrderId,
+                    groupId: item._id.toHexString(),
                     createTime: item.createTime,
                     state:  state,
                     type: orderRes.type

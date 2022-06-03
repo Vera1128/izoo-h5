@@ -28,8 +28,10 @@ export interface orderDataItem {
   amount: number,
   /** 团购价格 */
   avgAmount: number,
-  /** 订单唯一id */
+  /** 当前用户的支付订单orderId */
   orderId: string,
+  /** 团购唯一订单id */
+  groupId: string,
   /** 订单创建时间 */
   createTime: number,
   /** 
