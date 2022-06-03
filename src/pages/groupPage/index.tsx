@@ -14,9 +14,9 @@ import Mask from 'components/Mask'
 import StepImg from 'assets/images/step.png'
 import { ORDER_TYPE } from 'src/constants/index'
 import GroupShareImg from 'assets/images/group-share.png'
-import { joinGroup } from 'apis/order'
 
 import './index.scss'
+import { wxPaymentUtil } from 'src/utils/wxPaymentUtil'
 
 const shareConfig = require('src/config/share.json')
 
@@ -45,6 +45,7 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
   let groupInfo = null
   const [showShareMask, setShowShareMask] = useState(false)
   const [showBack, setShowBack] = useState(true)
+
   useEffect(() => {
     if (history.length < 2) {
       setShowBack(false)
@@ -133,8 +134,11 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
   }
   // 加入该团
   const joinGroupHandle = async () => {
-    await joinGroup(groupId)
-    getGroupData(groupId)
+    await wxPaymentUtil.payment({
+      mainClassId: groupData.mainClassId,
+      type: 'join',
+      groupOrderId: match.params.groupId,
+    })
   }
 
   // 我要开团
@@ -178,13 +182,8 @@ const mapState = ({ detailInfoPage: { detailInfo }, order: { groupData } }) => (
   groupData,
 })
 
-const mapDispatch = ({
-  detailInfoPage: { getDetailInfo },
-  order: { createOrder, getGroupData },
-  base: { getSignature },
-}) => ({
+const mapDispatch = ({ detailInfoPage: { getDetailInfo }, order: { getGroupData }, base: { getSignature } }) => ({
   getDetailInfo,
-  createOrder,
   getSignature,
   getGroupData,
 })

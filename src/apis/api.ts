@@ -9,7 +9,8 @@ import rpcClient from './apiClient'
 // 测试登录
 export async function testLogin() {
   const res = await rpcClient.callApi('Login/TestLogin', {
-    userId: 171910,
+    // userId: 171910,  // 小董
+    userId: 280757, // 杨杨
   })
   return res
 }
