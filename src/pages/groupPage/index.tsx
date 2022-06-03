@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:54:26
- * @LastEditTime: 2022-04-27 15:44:18
+ * @LastEditTime: 2022-06-03 17:46:08
  */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -138,6 +138,10 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
       mainClassId: groupData.mainClassId,
       type: 'join',
       groupOrderId: match.params.groupId,
+      paySuccessCB: (groupId) => {
+        console.log(groupId)
+        history.replace({ pathname: `/group/${id}/${groupId}` })
+      },
     })
   }
 

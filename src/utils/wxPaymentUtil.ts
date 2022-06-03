@@ -13,6 +13,7 @@ export class wxPaymentUtil {
     phone?: number
     /** 加入团购时携带, type === join 时携带 */
     groupOrderId?: string
+    paySuccessCB: (groupId: string) => void
   }) {
     const res = await createOrder({
       mainClassId: params.mainClassId,
@@ -42,13 +43,14 @@ export class wxPaymentUtil {
             const orderInfo = await refreshOrder(orderId)
             console.log('刷新支付订单数据', orderInfo)
             if (orderInfo.isSucc) {
+              params.paySuccessCB(orderInfo.res.groupId)
               /**
                * 刷新订单成功,
                * 如果订单无异常,调用GroupData,获取团购订单数据信息.
                * 刷新界面
                */
-              const groupData = await apiClient.callApi('Order/GroupData', { groupId: orderInfo.res.groupId })
-              console.log('团购订单返回', groupData)
+              // const groupData = await apiClient.callApi('Order/GroupData', { groupId: orderInfo.res.groupId })
+              // console.log('团购订单返回', groupData)
             }
           }
         },
