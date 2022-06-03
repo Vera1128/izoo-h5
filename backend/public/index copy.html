@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tsrpc</title>
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Lato:wght@700&display=swap" rel="stylesheet"> -->
+    <style>
+        body {
+            background: #182028;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 9vmin;
+            color: #8bf;
+            text-align: left;
+            font-family: Lato, sans-serif;
+            font-weight: 700;
+            margin: 1rem 0 1rem 2rem;
+        }
+
+        /* Typewriter effect 1 */
+        @keyframes typing {
+
+            0.0000%,
+            27.3488% {
+                content: "";
+            }
+
+            1.1395%,
+            26.2093% {
+                content: "t";
+            }
+
+            2.2791%,
+            25.0698% {
+                content: "ts";
+            }
+
+            3.4186%,
+            23.9302% {
+                content: "tsr";
+            }
+
+            4.5581%,
+            22.7907% {
+                content: "tsrp";
+            }
+
+            5.6977%,
+            21.6512% {
+                content: "tsrpc";
+            }
+
+
+            30.7674%,
+            51.2791% {
+                content: "";
+            }
+
+            31.9070%,
+            50.1395% {
+                content: "t";
+            }
+
+            33.0465%,
+            49.0000% {
+                content: "ts";
+            }
+
+            34.1860%,
+            47.8605% {
+                content: "tsr";
+            }
+
+            35.3256%,
+            46.7209% {
+                content: "tsrp";
+            }
+
+            36.4651%,
+            45.5814% {
+                content: "tsrpc";
+            }
+
+            54.6977%,
+            75.2093% {
+                content: "";
+            }
+
+            55.8372%,
+            74.0698% {
+                content: "t";
+            }
+
+            56.9767%,
+            72.9302% {
+                content: "ts";
+            }
+
+            58.1163%,
+            71.7907% {
+                content: "tsr";
+            }
+
+            59.2558%,
+            70.6512% {
+                content: "tsrp";
+            }
+
+            60.3953%,
+            69.5116% {
+                content: "tsrpc";
+            }
+
+            78.6279%,
+            96.8605% {
+                content: "";
+            }
+
+            79.7674%,
+            95.7209% {
+                content: "t";
+            }
+
+            80.9070%,
+            94.5814% {
+                content: "ts";
+            }
+
+            82.0465%,
+            93.4419% {
+                content: "tsr";
+            }
+
+            83.1860%,
+            92.3023% {
+                content: "tsrp";
+            }
+
+            84.3256%,
+            91.1628% {
+                content: "tsrpc";
+            }
+        }
+
+        @keyframes blink {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .typewriter {
+            --caret: currentcolor;
+        }
+
+        .typewriter::before {
+            content: "";
+            animation: typing 13.5s infinite;
+        }
+
+        .typewriter::after {
+            content: "";
+            border-right: 1px solid var(--caret);
+            animation: blink 0.5s linear infinite;
+        }
+
+        .typewriter.thick::after {
+            border-right: 1ch solid var(--caret);
+        }
+
+        .typewriter.nocaret::after {
+            border-right: 0;
+        }
+
+
+        @media (prefers-reduced-motion) {
+            .typewriter::after {
+                animation: none;
+            }
+
+            @keyframes sequencePopup {
+
+                0%,
+                100% {
+                    content: "tsrpc";
+                }
+
+                25% {
+                    content: "tsrpc";
+                }
+
+                50% {
+                    content: "tsrpc";
+                }
+
+                75% {
+                    content: "tsrpc";
+                }
+            }
+
+            .typewriter::before {
+                content: "tsrpc";
+                animation: sequencePopup 12s linear infinite;
+            }
+        }
+
+        /**/
+    </style>
+</head>
+
+<body>
+    <h1 aria-label="Welcome to tsrpc">
+        Welcome to <span class="typewriter"></span>
+    </h1>
+
+    <h1 aria-label="Welcome to tsrpc">
+        Welcome to <span class="typewriter thick"></span>
+    </h1>
+
+    <h1 aria-label="Welcome to tsrpc">
+        Welcome to <span class="typewriter nocaret"></span>
+    </h1>
+</body>
+
+</html>
+<script>
+
+    let url = 'https://oss.walkidz.com/h5/v2/index.html'
+
+    // 不弹窗
+    // let jump = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf93b23e8acb83eff&redirect_uri=${encodeURIComponent(url)}&response_type=code&scope=snsapi_base&state=STATE#wechat_redire`
+    // 弹窗
+    let jump = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf93b23e8acb83eff&redirect_uri=${encodeURIComponent(url)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redire`
+
+    console.log('跳转地址:', jump)
+
+</script>

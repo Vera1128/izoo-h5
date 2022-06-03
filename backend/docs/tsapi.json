@@ -1,0 +1,293 @@
+{
+  "version": "1.0.0",
+  "servers": [
+    "http://localhost:3000"
+  ],
+  "apis": [
+    {
+      "path": "/Center/FavoritesData",
+      "title": "FavoritesList 请求-[获取用户收藏list]",
+      "req": {
+        "ts": "interface ReqFavoritesData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResFavoritesData {\r\n    list: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 详情 */\r\n        desc: string,\r\n        /** 图片 */\r\n        scrollImage: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 城市 */\r\n        city: string\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Center/ListenData",
+      "title": "ListenData 请求-[获取个人中心收听记录]",
+      "req": {
+        "ts": "interface ReqListenData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResListenData {\r\n    list: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 简介 */\r\n        desc: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 音频总时长 (单位 秒 -> 使用需转分钟) */\r\n        duration: number,\r\n        /** 内容条数 */\r\n        totals: number,\r\n        /** 内容图片 */\r\n        scrollImage: string,\r\n        /** 距离 */\r\n        distance?: number\r\n    }[]\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Center/OrderData",
+      "title": "TODO\nOrderData 请求-[用户支付订单数据]",
+      "req": {
+        "ts": "interface ReqOrderData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResOrderData {\r\n    list: {\r\n        /** 景点名称 */\r\n        title: string,\r\n        /** 景点icon */\r\n        imageUrl: string,\r\n        /** 单买价格 */\r\n        amount: number,\r\n        /** 团购价格 */\r\n        avgAmount: number,\r\n        /** 订单唯一id */\r\n        orderId: string,\r\n        /** 订单创建时间 */\r\n        createTime: number,\r\n        /**\r\n        * 购买状态\r\n        * success: 成功\r\n        * fail: 失败\r\n        * wait: 等待中\r\n        */\r\n        state: \"success\" | \"fail\" | \"wait\"\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Config/GetSignature",
+      "title": "GetSignature 请求-[获取 wx.config 的加密签名]",
+      "req": {
+        "ts": "interface ReqGetSignature {\r\n    /** 当前页面的地址， 不可保留#以后的数据 */\r\n    url: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResGetSignature {\r\n    /** appId */\r\n    appId: string,\r\n    /** 时间戳 */\r\n    timestamp: string,\r\n    /** 随机数 */\r\n    nonceStr: string,\r\n    /** 加密签名 */\r\n    signature: string,\r\n    /** JS接口列表 */\r\n    jsApiList: string[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Detail/CollectEvent",
+      "title": "CollectEvent 请求-[收藏改内容]",
+      "req": {
+        "ts": "interface ReqCollectEvent {\r\n    /** 景点内容唯一 id */\r\n    mainClassId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResCollectEvent {\r\n    /** 收藏状态: true: 已收藏 false: 未收藏 */\r\n    state: boolean,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Detail/MainDetail",
+      "title": "MainDetail 请求-[XXX]",
+      "req": {
+        "ts": "interface ReqMainDetail {\r\n    /** 内容唯一 id */\r\n    mainClassId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResMainDetail {\r\n    /** 景点详情 */\r\n    info: {\r\n        /** 名称 */\r\n        title: string,\r\n        /** 具体位置 */\r\n        address: string,\r\n        /** 运营时间 */\r\n        time: string,\r\n        /** 门票信息 */\r\n        tickets: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 是否收费 */\r\n        isCharge: boolean,\r\n        /** 金额 */\r\n        amount?: number,\r\n        /** 拼团金额 */\r\n        avgAmount?: number,\r\n        /** 轮播图片 */\r\n        scrollImages: string[],\r\n        /** 内容简介 */\r\n        content: string,\r\n        /** 城市 */\r\n        city: string\r\n    },\r\n    /** 目录 list */\r\n    catalogList: {\r\n        /** 目录唯一 id */\r\n        subId: string,\r\n        /** 目录名称 */\r\n        title: string,\r\n        /** 是否开启试听 true: 开启, false: 关闭 */\r\n        isAudition?: boolean,\r\n        /** 音频地址 */\r\n        audioUri?: string,\r\n        /** 时长 */\r\n        duration?: number\r\n    }[],\r\n    /** 是否收藏 true: 已收藏 false: 未收藏 */\r\n    isCollect: boolean,\r\n    /** 是否购买 true: 已支付 false: 未支付 */\r\n    isPayment: boolean,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Detail/SubDetail",
+      "title": "SubDetail 请求-[进入景点收听页]",
+      "req": {
+        "ts": "interface ReqSubDetail {\r\n    /** 景点内容唯一 id */\r\n    mainClassId: string,\r\n    /** 子目录内容唯一 id */\r\n    subId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResSubDetail {\r\n    /** 景点标题 */\r\n    title: string,\r\n    /** 景点位置 */\r\n    address: string,\r\n    /** 目录名称 */\r\n    subTitle: string,\r\n    /** 轮播图 */\r\n    imagesList: string[],\r\n    /** 音频文件 */\r\n    videosList: string[],\r\n    /** 额外图片 TODO */\r\n    extraImagesList: string[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/List/TypeData",
+      "req": {
+        "ts": "type ReqTypeData = {\r\n    /** 切换主题 */\r\n    type: \"city\" | \"tag\",\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n} & {/** type list value */\r\n    value: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResTypeData {\r\n    list: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 详情 */\r\n        desc: string,\r\n        /** 图片 */\r\n        scrollImage: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 城市 */\r\n        city: string\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/List/TypeList",
+      "title": "TypeList 请求-[切换主题]",
+      "req": {
+        "ts": "interface ReqTypeList {\r\n    /** 切换主题 */\r\n    type: \"city\" | \"tag\",\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResTypeList {\r\n    list: string[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Login/Login",
+      "title": "Login 请求-[正式服登录]",
+      "req": {
+        "ts": "interface ReqLogin {\r\n    /** 客户端重定向code */\r\n    code: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResLogin {\r\n    info: {\r\n        /** 昵称 */\r\n        nickName: string,\r\n        /** 头像 */\r\n        avatar: string,\r\n        /** 性别 */\r\n        gender: number,\r\n        /** 电话 */\r\n        phone?: number\r\n    },\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": false
+      }
+    },
+    {
+      "path": "/Login/TestLogin",
+      "title": "Login 请求-[测试登录]",
+      "req": {
+        "ts": "interface ReqTestLogin {\r\n    userId: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResTestLogin {\r\n    info: {\r\n        /** 昵称 */\r\n        nickName: string,\r\n        /** 头像 */\r\n        avatar: string,\r\n        /** 性别 */\r\n        gender: number,\r\n        /** 电话 */\r\n        phone?: number\r\n    },\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": false
+      }
+    },
+    {
+      "path": "/Main/GetCityData",
+      "title": "GetCityData 请求-[获取城市路线数据]",
+      "req": {
+        "ts": "interface ReqGetCityData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResGetCityData {\r\n    list: {\r\n        /** 城市 */\r\n        city: string,\r\n        /** 海报图 */\r\n        poster: string\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Main/GetPopulerData",
+      "title": "GetPopulerData 请求-[获取热门数据]",
+      "req": {
+        "ts": "interface ReqGetPopulerData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResGetPopulerData {\r\n    list: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 简介 */\r\n        desc: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 音频总时长 (单位 秒 -> 使用需转分钟) */\r\n        duration: number,\r\n        /** 内容条数 */\r\n        totals: number,\r\n        /** 内容图片 */\r\n        scrollImage: string,\r\n        /** 距离 */\r\n        distance?: number\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Main/GetScrollData",
+      "title": "GetScrollData 请求-[获取首页轮播图信息]",
+      "req": {
+        "ts": "interface ReqGetScrollData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResGetScrollData {\r\n    list: {\r\n        mainClassId: string,\r\n        scrollImg: string\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Main/GetTagsData",
+      "title": "GetTagsData 请求-[获取主题配置]",
+      "req": {
+        "ts": "interface ReqGetTagsData {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResGetTagsData {\r\n    list: {\r\n        /** 主题唯一 id */\r\n        _id: string,\r\n        /** 主题名称 */\r\n        tag: string,\r\n        /** 主图图片 */\r\n        icon: string\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Main/NearbyData",
+      "title": "GetScrollData 请求-[获取附近的内容数据]",
+      "req": {
+        "ts": "interface ReqNearbyData {\r\n    /** 经度 */\r\n    longitude: string,\r\n    /** 纬度 */\r\n    latitude: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResNearbyData {\r\n    list: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 简介 */\r\n        desc: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 音频总时长 (单位 秒 -> 使用需转分钟) */\r\n        duration: number,\r\n        /** 内容条数 */\r\n        totals: number,\r\n        /** 内容图片 */\r\n        scrollImage: string,\r\n        /** 距离 */\r\n        distance?: number\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Order/CreateOrder",
+      "title": "CreateOrder 请求-[提交支付订单]",
+      "req": {
+        "ts": "interface ReqCreateOrder {\r\n    /**\r\n    * type: 订单类型\r\n    * group: 团购\r\n    * single: 单买\r\n    */\r\n    type: \"group\" | \"single\",\r\n    /** 景点唯一 id */\r\n    mainClassId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResCreateOrder {\r\n    /** 支付签名时间戳，注意微信jssdk中的所有使用timestamp字段均为小写。但最新版的支付后台生成签名使用的timeStamp字段名需大写其中的S字符 */\r\n    timestamp: number,\r\n    /** 微信支付V3的传入RSA,微信支付V2的传入格式与V2统一下单的签名格式保持一致 */\r\n    signType: string,\r\n    /** 公众号ID，由商户传入 */\r\n    appId: string,\r\n    /** 随机串 */\r\n    nonceStr: string,\r\n    /** JSAPI下单接口返回的prepay_id参数值 */\r\n    prepay_id: string,\r\n    /** 签名 */\r\n    paySign: string,\r\n    /** 唯一订单 id */\r\n    orderId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Order/GroupData",
+      "title": "GroupData 请求-[个人中心-获取团购订单数据]",
+      "req": {
+        "ts": "interface ReqGroupData {\r\n    /** 团购唯一 id */\r\n    groupId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResGroupData {\r\n    mainClassInfo: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 简介 */\r\n        desc: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 音频总时长 (单位 秒 -> 使用需转分钟) */\r\n        duration: number,\r\n        /** 内容条数 */\r\n        totals: number,\r\n        /** 内容图片 */\r\n        scrollImage: string,\r\n        /** 距离 */\r\n        distance?: number\r\n    } & {\r\n        /** 金额 */\r\n        amount: number,\r\n        /** 拼团金额 */\r\n        avgAmount: number\r\n    },\r\n    /** 团长头像 */\r\n    ownerAvatar: string,\r\n    /** 参与者头像 */\r\n    joinAvatar?: string,\r\n    /**\r\n    * 团购订单状态\r\n    * wait: 等待中,待参与团购\r\n    * failed: 团购订单失败,到期并无人参与\r\n    * overload: 满额,团购成功后,第三人进入则会返回\r\n    * succes: 团购成功\r\n    */\r\n    type: \"wait\" | \"failed\" | \"success\" | \"overload\",\r\n    /** 团购订单结束时间 */\r\n    endTime: number,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Order/JoinGroup",
+      "title": "JoinGroup 请求-[加入团购]",
+      "req": {
+        "ts": "interface ReqJoinGroup {\r\n    groupId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResJoinGroup {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Order/UpdateOrder",
+      "title": "UpdateOrder 请求-[更新微信支付订单状态, 是否支付]",
+      "req": {
+        "ts": "interface ReqUpdateOrder {\r\n    /** 订单id */\r\n    orderId: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResUpdateOrder {\r\n    /**\r\n    * 团购 id\r\n    * 仅团购订单存在.\r\n    */\r\n    groupId?: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/ListenReport",
+      "title": "ListenReport 请求-[收听内容信息上报]",
+      "req": {
+        "ts": "interface ReqListenReport {\r\n    /** 内容唯一主 id */\r\n    mainClassId: string,\r\n    /** 目录唯一 id */\r\n    subId: string,\r\n    /** 收听时长 秒单位 */\r\n    duration: number,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResListenReport {\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    },
+    {
+      "path": "/Search",
+      "title": "Search 请求-[搜索接口] TODO",
+      "req": {
+        "ts": "interface ReqSearch {\r\n    /** 搜索内容 */\r\n    content: string,\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "res": {
+        "ts": "interface ResSearch {\r\n    list: {\r\n        /** 内容唯一 id */\r\n        mainClassId: string,\r\n        /** 标题 */\r\n        title: string,\r\n        /** 详情 */\r\n        desc: string,\r\n        /** 图片 */\r\n        scrollImage: string,\r\n        /** 标签 */\r\n        tags: string[],\r\n        /** 城市 */\r\n        city: string\r\n    }[],\r\n    /** 用户唯一 id */\r\n    userId?: string\r\n}"
+      },
+      "conf": {
+        "needLogin": true
+      }
+    }
+  ]
+}

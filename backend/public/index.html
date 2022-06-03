@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>微信JS-SDK Demo</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+  <link rel="stylesheet" href="https://www.weixinsxy.com/jssdk/css/style.css">
+</head>
+
+<body ontouchstart="">
+  <div class="wxapi_container">
+    <div class="wxapi_index_container">
+      <ul class="label_box lbox_close wxapi_index_list">
+        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">手动支付</a></li>
+      </ul>
+    </div>
+    <div class="lbox_close wxapi_form">
+
+      <h3 id="menu-pay">手动支付</h3>
+      <span class="desc">发起一个微信支付请求</span>
+      <button class="btn btn_primary" id="chooseWXPay" onclick="debugPay();">手动支付</button>
+    </div>
+  </div>
+  <div class="wxapi_container">
+    <div class="wxapi_index_container">
+      <ul class="label_box lbox_close wxapi_index_list">
+        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">微信支付接口</a></li>
+      </ul>
+    </div>
+    <div class="lbox_close wxapi_form">
+
+      <h3 id="menu-pay">微信支付接口</h3>
+      <span class="desc">发起一个微信支付请求</span>
+      <button class="btn btn_primary" id="chooseWXPay" onclick="chooseWXPay();">创建拼团</button>
+    </div>
+  </div>
+  <div class="wxapi_container">
+    <div class="wxapi_index_container">
+      <ul class="label_box lbox_close wxapi_index_list">
+        <li class="label_item wxapi_index_item"><a class="label_inner" href="#menu-pay">加入组团</a></li>
+      </ul>
+    </div>
+    <div class="lbox_close wxapi_form">
+
+      <h3 id="menu-pay">加入团购</h3>
+      <button class="btn btn_primary" id="chooseWXPay" onclick="join();">加入</button>
+    </div>
+  </div>
+</body>
+<script src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script src="https://www.weixinsxy.com/jssdk/js/zepto.min.js"></script>
+<script src="https://www.weixinsxy.com/jssdk/js/demo.js"> </script>
+<script>
+
+  let params = Object.fromEntries(new URLSearchParams(window.location.search));
+
+  // 弹窗
+  var apiUri = 'https://api.walkidz.com/release'
+  let jump = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxf93b23e8acb83eff&redirect_uri=${encodeURIComponent(apiUri)}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redire`
+  console.log('跳转地址:',jump)
+  var userId = 'oDfcY69wA2QERN9mBhuMOvCFsPxQ'
+  var mainClassId = '618a9c920109e1ce065e5896'
+  var sso = ''
+
+  // 正式登录
+  post(apiUri + '/Login/Login',{ code: params.code },(data) => {
+
+    if (data.isSucc) {
+      sso = data.res.sso
+      userId = data.res.info.userId
+      var obj = {
+        url: window.location.href.split("#")[0],
+        userId: userId,
+        sso: sso
+      }
+
+      var groupId = '';
+
+      post(apiUri + '/Config/GetSignature',obj,(data) => {
+        wx.config({
+          debug: true,
+          appId: data.res.appId,
+          timestamp: data.res.timestamp,
+          nonceStr: data.res.nonceStr,
+          signature: data.res.signature,
+          jsApiList: data.res.jsApiList
+        });
+      })
+    }
+
+  })
+
+
+  // 测试登录
+  // post(apiUri + '/Login/TestLogin',{ userId: userId },(data) => {
+  //   console.log('/Login/TestLogin: data',data)
+  //   if (data.isSucc) {
+  //     sso = data.res.sso
+  //     var obj = {
+  //       url: window.location.href.split("#")[0],
+  //       userId: userId,
+  //       sso: sso
+  //     }
+
+  //     var groupId = '';
+
+  //     post(apiUri + '/Config/GetSignature',obj,(data) => {
+  //       // console.log('data', data.res)
+  //       wx.config({
+  //         debug: true,
+  //         appId: data.res.appId,
+  //         timestamp: data.res.timestamp,
+  //         nonceStr: data.res.nonceStr,
+  //         signature: data.res.signature,
+  //         jsApiList: data.res.jsApiList
+  //       });
+  //     })
+  //   }
+  // })
+
+  function post(url,obj,callback) {
+    var httpRequest = new XMLHttpRequest();//第一步：创建需要的对象
+    httpRequest.open('POST',url,true); //第二步：打开连接
+    httpRequest.setRequestHeader("Content-type","application/json");//设置请求头 注：post方式必须设置请求头（在建立连接后设置请求头）
+    httpRequest.send(JSON.stringify(obj));
+    /**
+    * 获取数据后的处理程序
+    */
+    httpRequest.onreadystatechange = function () {//请求后的回调接口，可将请求成功后要执行的程序写在其中
+      if (httpRequest.readyState == 4 && httpRequest.status == 200) {//验证请求是否发送成功
+        var json = JSON.parse(httpRequest.responseText);//获取到服务端返回的数据
+        // console.log(json);
+        callback(json)
+        // if (json.isSucc) {
+        //   return json.res
+        // }
+      }
+    };
+  }
+
+  function debugPay() {
+    post(apiUri + '/DebugPay',{ sso: sso },(data) => {
+      wx.chooseWXPay({
+        timestamp: data.res.timestamp,
+        nonceStr: data.res.nonceStr,
+        package: data.res.prepay_id,
+        signType: data.res.signType,
+        paySign: data.res.paySign,
+        success: function (res) {
+          alert('支付成功' + JSON.stringify(res))
+          update(data.res.orderId)
+        },
+        faild: function (err) {
+          alert('支付失败' + JSON.stringify(res))
+        }
+      })
+    })
+  }
+
+  /*
+   * 注意：
+   * 1. 所有的JS接口只能在公众号绑定的域名下调用，公众号开发者需要先登录微信公众平台进入“公众号设置”的“功能设置”里填写“JS接口安全域名”。
+   * 2. 如果发现在 Android 不能分享自定义内容，请到官网下载最新的包覆盖安装，Android 自定义分享接口需升级至 6.0.2.58 版本及以上。
+   * 3. 常见问题及完整 JS-SDK 文档地址：http://mp.weixin.qq.com/wiki/7/aaa137b55fb2e0456bf8dd9148dd613f.html
+   *
+   * 开发中遇到问题详见文档“附录5-常见错误及解决办法”解决，如仍未能解决可通过以下渠道反馈：
+   * 邮箱地址：weixin-open@qq.com
+   * 邮件主题：【微信JS-SDK反馈】具体问题
+   * 邮件内容说明：用简明的语言描述问题所在，并交代清楚遇到该问题的场景，可附上截屏图片，微信团队会尽快处理你的反馈。
+   */
+  function chooseWXPay() {
+    var obj = {
+      "userId": userId,
+      "type": "group",
+      "mainClassId": mainClassId,
+      sso: sso,
+    }
+    post(apiUri + '/Order/CreateOrder',obj,(data) => {
+      wx.chooseWXPay({
+        timestamp: data.res.timestamp,
+        nonceStr: data.res.nonceStr,
+        package: data.res.prepay_id,
+        signType: data.res.signType,
+        paySign: data.res.paySign,
+        success: function (res) {
+          alert('支付' + JSON.stringify(res))
+          update(data.res.orderId)
+        }
+      })
+    })
+  }
+
+  function update(orderId) {
+    var obj = {
+      "userId": userId,
+      "orderId": orderId,
+      sso: sso,
+    }
+    post(apiUri + '/Order/UpdateOrder',obj,(data) => {
+      if (data.isSucc) {
+        if (data.res.groupId) {
+          groupId = data.res.groupId
+        }
+      }
+    })
+  }
+
+  function join() {
+    var obj = {
+      "userId": userId,
+      "groupId": groupId,
+      sso: sso,
+    }
+    post(apiUri + '/Order/JoinGroup',obj,(data) => {
+      // alert(JSON.stringify(data.res))
+    })
+  }
+
+</script>
+
+
+</html>
