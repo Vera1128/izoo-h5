@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import apiClient from "src/apis/apiClient"
 
 /**
@@ -130,13 +131,16 @@ export default class statUtil {
    *  浏览器信息
    */
   private static getBrowserInfo() {
+    // eslint-disable-next-line no-underscore-dangle
     const _this = this
     this.matchInfoMap(_this)
 
     const u = this.VariableLibrary.navigator.userAgent || {}
     const { mimeTypes } = this.VariableLibrary.navigator
 
-    const _mime = function (option, value) {
+    // eslint-disable-next-line no-underscore-dangle
+    const _mime = function (option: string, value: string) {
+      // eslint-disable-next-line no-restricted-syntax
       for (const key in mimeTypes) {
         if (mimeTypes[key][option] === value) {
           return true
@@ -148,8 +152,10 @@ export default class statUtil {
     const match = this.getMatchMap(u)
 
     let is360 = false
+    // eslint-disable-next-line no-underscore-dangle
     if (this._window.chrome) {
       const chrome_version = u.replace(/^.*Chrome\/([\d]+).*$/, '$1')
+      // eslint-disable-next-line no-underscore-dangle
       if (chrome_version > 36 && this._window.showModalDialog) {
         is360 = true
       } else if (chrome_version > 45) {
@@ -403,6 +409,7 @@ export default class statUtil {
 
     const u = this.VariableLibrary.navigator.userAgent || {}
     const match = this.getMatchMap(u)
+    // eslint-disable-next-line guard-for-in
     for (const s in this.VariableLibrary.infoMap) {
       for (let i = 0;i < this.VariableLibrary.infoMap[s].length;i++) {
         const value = this.VariableLibrary.infoMap[s][i]
