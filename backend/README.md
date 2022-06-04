@@ -1,6 +1,5 @@
 # TSRPC Server
 
-## Run
 ### Local Dev Server
 ```
 npm run dev
