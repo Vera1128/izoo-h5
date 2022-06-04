@@ -66,7 +66,7 @@ const Index = ({
   const {
     params: { id },
   } = match
-  const { info, isCollect, isPayment, duration, totals } = detailInfo
+  const { info, isCollect, isPayment, duration, totals, groupId } = detailInfo
   const detailInfoContainerRef = useRef(null)
   const detailInfoContentRef = useRef(null)
   const detailInfoPageRef = useRef(null)
@@ -195,8 +195,24 @@ const Index = ({
     history.push(`/order/single?routeId=${id}`)
   }
   const showBottomBtn = () => {
+    console.log('isPayment', isPayment)
+    // 是否是拼团中
+    if (isPayment === 'wait') {
+      return (
+        <div className="buyContainer">
+          <div className="buyItem" onClick={buySingleClickHandle}>
+            <p className="topText">直接购买</p>
+            <p>￥ {info?.amount}</p>
+          </div>
+          <div className="buyItem" onClick={() => history.push(`/group/${id}/${groupId}`)}>
+            <p className="topText">拼团中</p>
+            <p>￥ {info?.avgAmount}</p>
+          </div>
+        </div>
+      )
+    }
     // 是否已经支付
-    if (isPayment)
+    if (isPayment === 'true')
       return (
         <Button className="freeBtn" onClick={goToRouteListHandle}>
           <p className="largeText">进入收听</p>
