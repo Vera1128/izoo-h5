@@ -18,6 +18,15 @@ interface toPaysItem {
   realIp: string,
   phone?: number
 }
+interface toRefundItem {
+  /** 团购订单的orderId */
+  groupOrderId?: string,
+  userId: number,
+  mainClassId: string,
+  price: number,
+  realIp: string,
+  phone?: number
+}
 export default class Cash {
 
   /**
@@ -34,6 +43,7 @@ export default class Cash {
       realIp: params.realIp,
       price: params.price,
       partnerTradeNo: partnerTradeNo,
+      type: 'pay'
     }, logger)
     // 记录流水
     let record: DbCashTransaction = {
@@ -83,5 +93,39 @@ export default class Cash {
 
 
   }
+
+  /**
+   * 未成功的团购定点,关闭订单,返还金额
+   */
+  static async toRefund(params: toRefundItem, logger?: Logger) {
+    // 订单号 确保同一秒内统一 uid 订单不重复
+    let partnerTradeNo = `${params.userId}${moment().valueOf()}`
+
+    let WXPayRes = await WXTransfer({
+      userId: params.userId,
+      realIp: params.realIp,
+      price: params.price,
+      partnerTradeNo: partnerTradeNo,
+      type: 'refund'
+    }, logger)
+    // 记录流水
+    let record: DbCashTransaction = {
+      _id: new ObjectId(),
+      type: 'refund',
+      groupOrderId: params.groupOrderId,
+      userId: params.userId,
+      mainClassId: params.mainClassId,
+      transRecordId: partnerTradeNo,
+      state: false,
+      meta: WXPayRes,
+      price: Number(params.price),
+      phone: params.phone,
+      createTime: moment().valueOf(),
+      updateTime: moment().valueOf(),
+    }
+
+
+  }
+
 
 }

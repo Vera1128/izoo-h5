@@ -42,7 +42,7 @@ export interface orderDataItem {
    */
   state: 'success' | 'fail' | 'wait',
   /** 订单类型 */
-  type: 'group' | 'single' | 'join'
+  type: 'group' | 'single' | 'join' | 'refund'
 }
 
 export const conf: BaseConf = {

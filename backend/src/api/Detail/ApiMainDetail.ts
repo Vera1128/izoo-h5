@@ -8,6 +8,8 @@ export async function ApiMainDetail(call: ApiCall<ReqMainDetail, ResMainDetail>)
 
     let isPay: ResMainDetail['isPayment'] = 'false'
 
+    let groupId: ResMainDetail['groupId'] = undefined
+
     let mainRes = await Global.collection('ContentMainClass').findOne({
         _id: ObjectId.createFromHexString(call.req.mainClassId),
         isDel: false,
@@ -30,15 +32,17 @@ export async function ApiMainDetail(call: ApiCall<ReqMainDetail, ResMainDetail>)
     })
     if (opCash) {
         if (opCash.type === 'group') {
-            await Global.collection('GroupRecords').find({
+            await Global.collection('GroupRecords').findOne({
                 mainClassId: call.req.mainClassId,
                 createUserId: call.currentUser.userId,
-                state: 'success'
-            }).hasNext().then(res => {
+            }).then(res => {
                 if (res) {
-                    isPay = 'true'
-                } else {
-                    isPay = 'wait'
+                    if (res.state === 'success') {
+                        isPay = 'true'
+                    } else if (res.state === 'wait') {
+                        isPay = res.state
+                        groupId = res._id.toString()
+                    }
                 }
             })
         } else if (opCash.type === 'join') {
@@ -95,7 +99,8 @@ export async function ApiMainDetail(call: ApiCall<ReqMainDetail, ResMainDetail>)
         isCollect: userRes ? userRes.state : false,
         isPayment: isPay,
         duration: durationArr.length > 0 ? durationArr[0].sum : 0,
-        totals: totals
+        totals: totals,
+        groupId
     })
 
 }

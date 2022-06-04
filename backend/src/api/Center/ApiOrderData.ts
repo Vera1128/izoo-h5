@@ -2,6 +2,7 @@ import moment from "moment";
 import { ObjectId } from "mongodb";
 import { ApiCall } from "tsrpc";
 import { Global } from "../../models/Global";
+import Cash from "../../models/Payment/Cash";
 import { orderDataItem, ReqOrderData, ResOrderData } from "../../shared/protocols/Center/PtlOrderData";
 
 export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
@@ -55,7 +56,7 @@ export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
         })
 
         const orderRes = await Global.collection('CashTransaction').findOne({
-            transRecordId: item.ownerOrderId    
+            transRecordId: item.ownerOrderId
         })
         if (orderRes) {
             if (contentRes) {
@@ -70,9 +71,24 @@ export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
                     orderId: item.ownerOrderId,
                     groupId: item._id.toHexString(),
                     createTime: item.createTime,
-                    state:  state,
+                    state: state,
                     type: orderRes.type
                 }
+
+                if (state === 'fail') {
+                    try {
+                        await Cash.toRefund({
+                            groupOrderId: item._id.toHexString(),
+                            userId: call.currentUser.userId,
+                            mainClassId: contentRes._id.toString(),
+                            price: 1,
+                            realIp: Global.realIp,
+                        })
+                    } catch (error) {
+                        console.error('退款异常', error)
+                    }
+                }
+
                 list.push(obj)
             }
         }

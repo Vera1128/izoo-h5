@@ -164,7 +164,7 @@ export interface ServiceType {
 }
 
 export const serviceProto: ServiceProto<ServiceType> = {
-    "version": 82,
+    "version": 84,
     "services": [
         {
             "id": 16,
@@ -913,6 +913,13 @@ export const serviceProto: ServiceProto<ServiceType> = {
                                     "type": "Literal",
                                     "literal": "join"
                                 }
+                            },
+                            {
+                                "id": 3,
+                                "type": {
+                                    "type": "Literal",
+                                    "literal": "refund"
+                                }
                             }
                         ]
                     }
@@ -1221,6 +1228,14 @@ export const serviceProto: ServiceProto<ServiceType> = {
                     "type": {
                         "type": "Number"
                     }
+                },
+                {
+                    "id": 6,
+                    "name": "groupId",
+                    "type": {
+                        "type": "String"
+                    },
+                    "optional": true
                 }
             ]
         },

@@ -28,6 +28,8 @@ export interface ResMainDetail extends BaseResponse {
   duration: number
   /** 内容条数 */
   totals: number
+  /** 团购订单唯一ID isPayment = wait 的时候携带 */
+  groupId?: string
 }
 
 

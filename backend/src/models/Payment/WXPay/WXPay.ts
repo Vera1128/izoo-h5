@@ -3,6 +3,7 @@ import { BackConfig } from '../../../configs/BackConfig';
 import md5 from 'md5';
 import { HttpReqUtil } from '../../HttpReqUtil';
 import { Logger } from 'tsrpc';
+import path from 'path';
 
 export interface WXTransfersRes {
     orderId?: string;
@@ -16,13 +17,9 @@ export interface WXTransfersRes {
     prepay_id?: string;
     trade_type?: string;
     err_code_des?: string;
-
-    // transRecordId?: string;
-    // payment_time?: string;
-    // partner_trade_no?: string;
-    // err_code_des?: string;
 }
 
+/** 发起支付 */
 export interface transfersItem {
     appid: string,
     mch_id: string,
@@ -36,6 +33,18 @@ export interface transfersItem {
     nonce_str?: string
     sign?: string
 }
+
+/**
+ * 退款
+ */
+export interface refundsItem extends transfersItem {
+    out_refund_no: string,
+    refund_id: string,
+    refund_fee: number,
+    total_fee: number,
+    cash_fee: number,
+}
+
 
 export default class WXPay {
     private options: any;
@@ -119,6 +128,36 @@ export default class WXPay {
 
     }
 
+    /**
+     * 退款 
+     */
 
+    async refund(opts: refundsItem, logger?: Logger) {
+        opts.nonce_str = opts.nonce_str || WXPay.generateNonceString()
+        opts.sign = opts.sign || this.sign(opts);
+        const uri = 'https://api.mch.weixin.qq.com/secapi/pay/refund'
 
+        try {
+            let result = await HttpReqUtil.post(uri, {
+                CURLOPT_SSLCERTTYPE: 'PEM',
+                CURLOPT_SSLCERT: path.resolve(__dirname, '../../../configs/cert/apiclient_cert.pem'),
+                CURLOPT_SSLKEYTYPE: 'PEM',
+                CURLOPT_SSLKEY: path.resolve(__dirname, '../../../configs/cert/apiclient_key.pem'),
+            }, WXPay.buildXML(opts), false, logger)
+            console.log('result', result)
+
+            let retData: WXTransfersRes = {} as any
+
+            for (let key of Object.keys(result)) {
+                let tmpK: any = key;
+                let k: keyof WXTransfersRes = tmpK
+                retData[k] = result[key][0];
+            }
+            console.log('retData', retData)
+            return retData
+        } catch (error) {
+            throw new Error('Cash logic Error' + error)
+
+        }
+    }
 }
