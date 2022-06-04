@@ -128,9 +128,17 @@ const Index = ({
     history.push(`/detailInfoPage/${id}`)
   }
 
-  const orderClickHandle = (status, id) => () => {
+  const orderClickHandle = (status, id, groupId) => () => {
     if (status === 'fail') return
+    if (status === 'wait') {
+      goToGroupPage(id, groupId)
+      return
+    }
     goToDetailInfoPage(id)
+  }
+
+  const goToGroupPage = (id, groupId) => {
+    history.push(`/group/${id}/${groupId}`)
   }
 
   const collectDeleteHandle = (id) => async () => {
@@ -216,7 +224,7 @@ const Index = ({
                   <div
                     className={`order ${order.state === 'fail' ? 'orderInactive' : ''}`}
                     key={order.orderId}
-                    onClick={orderClickHandle(order.state, order.mainClassId)}
+                    onClick={orderClickHandle(order.state, order.mainClassId, order.groupId)}
                   >
                     <div className="orderInfo">
                       <div className="imgContainer">
