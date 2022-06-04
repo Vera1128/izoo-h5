@@ -6,10 +6,10 @@
  */
 import React from 'react'
 import EarphoneIcon from 'assets/images/earphone-icon.png'
+import statUtil from 'src/utils/statUtil'
 import EmptyList from '../EmptyList'
 import ListHeader from '../ListHeader'
 import './index.less'
-import statUtil from 'src/utils/statUtil'
 
 interface Props {
   className?: string

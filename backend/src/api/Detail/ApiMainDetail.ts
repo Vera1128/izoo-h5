@@ -6,7 +6,7 @@ import { ReqMainDetail, ResMainDetail } from "../../shared/protocols/Detail/PtlM
 
 export async function ApiMainDetail(call: ApiCall<ReqMainDetail, ResMainDetail>) {
 
-    let isPay: boolean = false
+    let isPay: ResMainDetail['isPayment'] = 'false'
 
     let mainRes = await Global.collection('ContentMainClass').findOne({
         _id: ObjectId.createFromHexString(call.req.mainClassId),
@@ -28,20 +28,32 @@ export async function ApiMainDetail(call: ApiCall<ReqMainDetail, ResMainDetail>)
         mainClassId: call.req.mainClassId,
         state: true
     })
-    if (opCash && opCash.type === 'group') {
-        isPay = await Global.collection('GroupRecords').find({
-            mainClassId: call.req.mainClassId,
-            createUserId: call.currentUser.userId,
-            state: 'success'
-        }).hasNext()
-    } else if (opCash && opCash.type === 'join') {
-        isPay = await Global.collection('GroupRecords').find({
-            mainClassId: call.req.mainClassId,
-            joinUserId: call.currentUser.userId,
-            state: 'success'
-        }).hasNext()
-    } else if (opCash && opCash.type === 'single') {
-        isPay = true
+    if (opCash) {
+        if (opCash.type === 'group') {
+            await Global.collection('GroupRecords').find({
+                mainClassId: call.req.mainClassId,
+                createUserId: call.currentUser.userId,
+                state: 'success'
+            }).hasNext().then(res => {
+                if (res) {
+                    isPay = 'true'
+                } else {
+                    isPay = 'wait'
+                }
+            })
+        } else if (opCash.type === 'join') {
+            await Global.collection('GroupRecords').find({
+                mainClassId: call.req.mainClassId,
+                joinUserId: call.currentUser.userId,
+                state: 'success'
+            }).hasNext().then(res => {
+                if (res) {
+                    isPay = 'true'
+                }
+            })
+        } else if (opCash.type === 'single') {
+            isPay = 'true'
+        }
     }
 
     // 检测是否已经被优惠券使用
@@ -52,7 +64,7 @@ export async function ApiMainDetail(call: ApiCall<ReqMainDetail, ResMainDetail>)
     })
 
     if (isCoupon) {
-        isPay = true
+        isPay = 'true'
     }
 
     let subRes = await Global.collection('ContentSubClass').findOne({

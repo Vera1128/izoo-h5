@@ -17,8 +17,13 @@ export interface ResMainDetail extends BaseResponse {
   info: mainDetailItem
   /** 是否收藏 true: 已收藏 false: 未收藏 */
   isCollect: boolean
-  /** 是否购买 true: 已支付 false: 未支付 */
-  isPayment: boolean
+  /** 是否购买 
+   * 够买状态:
+   * true: 已购买
+   * false: 未购买
+   * wait: 待拼团中
+  */
+  isPayment: 'true' | 'false' | 'wait'
   /** 音频总时长 (单位 秒 -> 使用需转分钟) */
   duration: number
   /** 内容条数 */

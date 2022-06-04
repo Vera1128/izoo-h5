@@ -5,8 +5,8 @@ import { serviceProto } from '../shared/protocols/serviceProto'
 
 // 创建全局唯一的 apiClient，需要时从该文件引入
 const apiClient = new HttpClient(serviceProto, {
-  // server: 'https://api.walkidz.com/release/',
-  server: 'http://127.0.0.1:9000',
+  server: 'https://api.walkidz.com/release/',
+  // server: 'http://127.0.0.1:9000',
   json: true,
   logger: console,
 })
