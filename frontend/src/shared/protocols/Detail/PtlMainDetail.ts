@@ -17,8 +17,8 @@ export interface ResMainDetail extends BaseResponse {
   info: mainDetailItem
   /** 是否收藏 true: 已收藏 false: 未收藏 */
   isCollect: boolean
-  /** 是否购买 
-   * 够买状态:
+  /** 
+   * 购买状态:
    * true: 已购买
    * false: 未购买
    * wait: 待拼团中
