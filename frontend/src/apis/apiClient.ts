@@ -1,15 +1,12 @@
-import { HttpClient, TsrpcError } from 'tsrpc-browser'
-import { notify } from '@tgu/toast'
+import { HttpClient } from 'tsrpc-browser'
 import { redirectLogin, testLogin } from 'apis/api'
 import { currentBrowser } from 'src/utils'
 import { serviceProto } from '../shared/protocols/serviceProto'
 
-import config from '../../scripts/config'
-
 // 创建全局唯一的 apiClient，需要时从该文件引入
 const apiClient = new HttpClient(serviceProto, {
-  server: 'https://api.walkidz.com/release/',
-  // server: 'http://127.0.0.1:9000',
+  // server: 'https://api.walkidz.com/release/',
+  server: 'http://127.0.0.1:9000',
   json: true,
   logger: console,
 })
@@ -26,9 +23,7 @@ apiClient.flows.preApiReturnFlow.push((v) => {
       return v
     }
   }
-  // if (!isSucc && err?.message) {
-  //   notify(err?.message, 2000)
-  // }
+
   return v
 })
 
