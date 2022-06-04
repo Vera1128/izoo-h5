@@ -4,6 +4,7 @@ import md5 from 'md5';
 import { HttpReqUtil } from '../../HttpReqUtil';
 import { Logger } from 'tsrpc';
 import path from 'path';
+import { readFileSync } from 'fs';
 
 export interface WXTransfersRes {
     orderId?: string;
@@ -37,12 +38,16 @@ export interface transfersItem {
 /**
  * 退款
  */
-export interface refundsItem extends transfersItem {
+export interface refundsItem {
+    appid: string,
+    mch_id: string,
     out_refund_no: string,
-    refund_id: string,
-    refund_fee: number,
+    // notify_url: string,
     total_fee: number,
-    cash_fee: number,
+    nonce_str?: string
+    sign?: string,
+    out_trade_no: string
+    refund_fee: number,
 }
 
 
@@ -136,15 +141,12 @@ export default class WXPay {
         opts.nonce_str = opts.nonce_str || WXPay.generateNonceString()
         opts.sign = opts.sign || this.sign(opts);
         const uri = 'https://api.mch.weixin.qq.com/secapi/pay/refund'
-
         try {
-            let result = await HttpReqUtil.post(uri, {
-                CURLOPT_SSLCERTTYPE: 'PEM',
-                CURLOPT_SSLCERT: path.resolve(__dirname, '../../../configs/cert/apiclient_cert.pem'),
-                CURLOPT_SSLKEYTYPE: 'PEM',
-                CURLOPT_SSLKEY: path.resolve(__dirname, '../../../configs/cert/apiclient_key.pem'),
-            }, WXPay.buildXML(opts), false, logger)
-            console.log('result', result)
+            let result = await HttpReqUtil.post(uri, {}, WXPay.buildXML(opts), false, logger, {
+                rejectUnauthorized: false,
+                pfx: readFileSync(path.resolve(__dirname, './apiclient_cert.p12')),
+                passphrase: opts.mch_id
+            })
 
             let retData: WXTransfersRes = {} as any
 

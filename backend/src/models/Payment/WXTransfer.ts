@@ -10,6 +10,7 @@ export default async function WXTransfer(opt: {
     price: number;
     partnerTradeNo: string;
     type: 'pay' | 'refund';
+    out_trade_no?: string
 }, logger?: Logger): Promise<WXTransfersRes> {
 
     let user = await Global.collection('User').findOne({
@@ -36,17 +37,11 @@ export default async function WXTransfer(opt: {
         return await WXPay.instance.refund({
             appid: BackConfig.WXPAY.appid,
             mch_id: BackConfig.WXPAY.mch_id,
-            body: BackConfig.WXPAY.body,
-            out_trade_no: opt.partnerTradeNo || ('2022' + (+new Date() + '') + Math.random().toString().substr(2, 11)),
+            out_trade_no: opt.out_trade_no!,
             out_refund_no: opt.partnerTradeNo || ('2022' + (+new Date() + '') + Math.random().toString().substr(2, 11)),
             total_fee: Number(opt.price * 100),
-            spbill_create_ip: opt.realIp,
-            notify_url: BackConfig.WXPAY.notify_url,
-            trade_type: BackConfig.WXPAY.trade_type,
-            openid: user.auth.openid,
-            refund_id: opt.partnerTradeNo,
+            // notify_url: BackConfig.WXPAY.notify_url,
             refund_fee: Number(opt.price * 100),
-            cash_fee: Number(opt.price * 100)
         }, logger)
     }
 

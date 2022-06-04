@@ -21,6 +21,7 @@ interface toPaysItem {
 interface toRefundItem {
   /** 团购订单的orderId */
   groupOrderId?: string,
+  out_trade_no: string,
   userId: number,
   mainClassId: string,
   price: number,
@@ -43,7 +44,7 @@ export default class Cash {
       realIp: params.realIp,
       price: params.price,
       partnerTradeNo: partnerTradeNo,
-      type: 'pay'
+      type: 'pay',
     }, logger)
     // 记录流水
     let record: DbCashTransaction = {
@@ -106,7 +107,8 @@ export default class Cash {
       realIp: params.realIp,
       price: params.price,
       partnerTradeNo: partnerTradeNo,
-      type: 'refund'
+      type: 'refund',
+      out_trade_no: params.out_trade_no
     }, logger)
     // 记录流水
     let record: DbCashTransaction = {
@@ -116,7 +118,7 @@ export default class Cash {
       userId: params.userId,
       mainClassId: params.mainClassId,
       transRecordId: partnerTradeNo,
-      state: false,
+      state: true,
       meta: WXPayRes,
       price: Number(params.price),
       phone: params.phone,
@@ -124,6 +126,15 @@ export default class Cash {
       updateTime: moment().valueOf(),
     }
 
+    /**
+     * 将支付流水记录下来
+     * 并且重试 3 次
+     */
+    MongoUtil.retry(3, async () => {
+
+      await Global.collection('CashTransaction').insertOne(record)
+
+    });
 
   }
 

@@ -10,7 +10,7 @@
     "doc": "tsrpc doc --config tsrpc.config.ts",
     "dev": "tsrpc dev --config tsrpc.config.ts",
     "test": "mocha test/**/*.test.ts",
-    "build": "tsrpc build --config tsrpc.config.ts && cp -r public dist/ && cp -r pm2.config.js scf_bootstrap dist/ "
+    "build": "tsrpc build --config tsrpc.config.ts && cp -r public dist/ && cp -r pm2.config.js scf_bootstrap dist/ && cp -r  ./src/models/Payment/WXPay/apiclient_cert.p12 dist/models/Payment/WXPay/ "
   },
   "devDependencies": {
     "@types/crypto-js": "^4.1.1",

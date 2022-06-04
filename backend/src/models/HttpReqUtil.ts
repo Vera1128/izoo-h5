@@ -33,13 +33,16 @@ export class HttpReqUtil {
    * @param logger 
    * @returns 
    */
-  static post<T = any>(uri: string, qs: object, body: any, json?: boolean, logger?: Logger): Promise<T> {
+  static post<T = any>(uri: string, qs: object, body: any, json?: boolean, logger?: Logger, other?: object): Promise<T> {
+    console.log('other', other)
+    console.log('body', body)
     return this.request({
       method: 'POST',
       uri: uri,
       qs: qs,
       body: body,
-      json: json
+      json: json,
+      ...other
     }, logger)
   }
 

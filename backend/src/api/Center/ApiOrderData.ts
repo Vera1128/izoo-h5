@@ -1,11 +1,29 @@
 import moment from "moment";
 import { ObjectId } from "mongodb";
+import { customAlphabet } from "nanoid";
 import { ApiCall } from "tsrpc";
 import { Global } from "../../models/Global";
 import Cash from "../../models/Payment/Cash";
 import { orderDataItem, ReqOrderData, ResOrderData } from "../../shared/protocols/Center/PtlOrderData";
 
 export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
+
+    Global.collection('GroupRecords').find({ type: 'wait' }).toArray().then(res => {
+        for (let i = 0;i < res.length;i++) {
+            const item = res[i];
+            if (item.endTime < moment().valueOf()) {
+                Global.collection('GroupRecords').updateOne({
+                    _id: item._id
+                }, {
+                    $set: {
+                        state: 'fail'
+                    }
+                })
+
+            }
+
+        }
+    })
 
     let list: orderDataItem[] = []
 
@@ -60,7 +78,7 @@ export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
         })
         if (orderRes) {
             if (contentRes) {
-                let state = moment(item.createTime).add(1, 'days').valueOf() > moment().valueOf() ? item.state : 'fail'
+                let state = item.endTime > moment().valueOf() ? item.state : 'fail'
                 const obj: orderDataItem = {
                     title: contentRes.title,
                     desc: contentRes.desc,
@@ -74,16 +92,25 @@ export async function ApiOrderData(call: ApiCall<ReqOrderData, ResOrderData>) {
                     state: state,
                     type: orderRes.type
                 }
-
                 if (state === 'fail') {
                     try {
-                        await Cash.toRefund({
+                        // 判断是否已经退款
+                        const cashRes = await Global.collection('CashTransaction').findOne({
                             groupOrderId: item._id.toHexString(),
-                            userId: call.currentUser.userId,
-                            mainClassId: contentRes._id.toString(),
-                            price: 1,
-                            realIp: Global.realIp,
+                            type: 'refund',
+                            state: true
                         })
+                        if (!cashRes) {
+                            await Cash.toRefund({
+                                groupOrderId: item._id.toHexString(),
+                                userId: call.currentUser.userId,
+                                mainClassId: contentRes._id.toString(),
+                                price: orderRes.price,
+                                realIp: Global.realIp,
+                                out_trade_no: orderRes.transRecordId
+                            })
+                        }
+
                     } catch (error) {
                         console.error('退款异常', error)
                     }
