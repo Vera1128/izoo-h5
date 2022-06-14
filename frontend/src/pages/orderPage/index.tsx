@@ -7,7 +7,9 @@ import OrderPageItem from 'components/OrderPageItem'
 import Menu from 'components/MenuOrder'
 import Button from 'components/Button'
 import Order from 'components/OrderContainer'
+import EmptyBottom from 'src/components/EmptyBottom'
 import { ORDER_TYPE } from 'src/constants/index'
+import StepImg from 'assets/images/step.png'
 
 import './index.scss'
 
@@ -87,6 +89,17 @@ const OrderPage = ({ history, location, match, detailInfo, getDetailInfo, create
         data={detailInfo?.info && JSON.stringify(detailInfo?.info) !== '{}' ? detailInfo.info : testData}
         validate={phoneNumValidate}
       />
+      {type === ORDER_TYPE.GROUP && <img src={StepImg} className="stepIcon" />}
+      <div className="groupRules">
+        <p className="ruleTitle">购买需知</p>
+        <ul>
+          <li>关于成团：拼团时间为24小时，24小时内未凑够2人成团，已支付的费用将自动按原路退回。</li>
+          <li>关于退费：本产品为虚拟内容服务，一经购买成功无法退款，敬请谅解。</li>
+          <li>关于有效期：本产品购买成功后可以不限次数长期使用。</li>
+          <li>关于解释权：爱走星球对本产品拥有最终法律解释。</li>
+        </ul>
+      </div>
+      <EmptyBottom color="#eee" />
       <Menu className="orderMenu">
         <div className="priceContainer">
           支付 <span className="smallIcon">￥</span>

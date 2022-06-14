@@ -2,6 +2,32 @@
   width: 100vw;
   height: 100vh;
   background: #eeeeee;
+  overflow: auto;
+
+  .stepIcon {
+    display: block;
+    margin: -30px auto 0;
+    width: 97%;
+  }
+
+  .groupRules {
+    width: 578px;
+    color: #999999;
+    margin: -10px auto 0;
+    .ruleTitle {
+      font-size: 24px;
+      margin-bottom: 30px;
+    }
+    ul {
+      // list-style: none;
+      margin: 10px;
+      padding-left: 30px;
+      li {
+        font-size: 20px;
+        line-height: 38px;
+      }
+    }
+  }
 
   .orderMenu {
     .priceContainer {
