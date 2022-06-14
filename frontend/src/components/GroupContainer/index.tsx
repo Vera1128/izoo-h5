@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:57:10
- * @LastEditTime: 2022-04-23 16:52:09
+ * @LastEditTime: 2022-06-14 23:37:15
  */
 import React, { useState } from 'react'
 import Button from '../Button'
@@ -26,7 +26,7 @@ const typeConfig = {
   },
   // 团购失败
   failed: {
-    title: '团购订单失败 到期并无人参与',
+    title: '可惜未能成团 直接购买也不错',
     tips: '已结束',
     buttonText: '我要开团',
   },

@@ -151,6 +151,7 @@ const Index = ({
   const clickCouponHandle = () => {
     console.log(showCouponPanel)
     setShowCouponPanel(!showCouponPanel)
+    setShowCouponDetail(false)
   }
 
   const closeCouponClick = () => {
