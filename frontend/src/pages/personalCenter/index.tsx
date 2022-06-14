@@ -200,9 +200,9 @@ const Index = ({
       </div>
       {showCouponDetail && (
         <div className="couponDescContainer">
-          <p className="title">{couponDetail.name}</p>
+          <p className="title">免费获得任意路线一条</p>
           <img src={planetIcon} className="couponIcon" />
-          <p className="mainTitle">星际通行券</p>
+          <p className="mainTitle">{couponDetail.name}</p>
           <p className="subTitle">有效期至 {couponDetail.eTime}</p>
         </div>
       )}
