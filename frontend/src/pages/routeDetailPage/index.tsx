@@ -14,6 +14,7 @@ import playIcon from 'assets/images/play-icon-bold.png'
 import pauseIcon from 'assets/images/pause-icon.png'
 import './index.scss'
 import EmptyBottom from 'src/components/EmptyBottom'
+import statUtil from 'src/utils/statUtil'
 
 const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList, setBackFromRouteDetail }) => {
   const [targetImg, setTargetImg] = useState('')
@@ -73,48 +74,6 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
           evt.preventDefault()
         },
       })
-
-      // const mc = new Hammer.Manager(largeImgDom)
-      // const Pinch = new Hammer.Pinch()
-      // const Pan = new Hammer.Pan()
-      // const Tap = new Hammer.Tap()
-      // mc.add(Pinch)
-      // mc.add(Pan)
-      // mc.add(Tap)
-      // mc.on('pinch', (e) => {
-      //   const { scale } = e
-      //   // if (scale < 1) return
-      //   largeImgDom.style.scale = scale
-      // })
-      // let x = 0
-      // let y = 0
-      // mc.on('panmove', (e) => {
-      //   const { deltaX, deltaY } = e
-      //   const targetStyle = largeImgDom.style
-      //   targetStyle.webkitTransform =
-      //     targetStyle.MsTransform =
-      //     targetStyle.msTransform =
-      //     targetStyle.MozTransform =
-      //     targetStyle.OTransform =
-      //     targetStyle.transform =
-      //       `translate3d(${deltaX + x}px, ${deltaY + y}px, 0)`
-      // })
-      // mc.on('panend', (e) => {
-      //   const { deltaX, deltaY } = e
-      //   x = deltaX + x
-      //   y = deltaY + y
-      // })
-      // mc.on('tap', () => {
-      //   largeImgDom.style.scale = 1
-      //   const targetStyle = largeImgDom.style
-      //   targetStyle.webkitTransform =
-      //     targetStyle.MsTransform =
-      //     targetStyle.msTransform =
-      //     targetStyle.MozTransform =
-      //     targetStyle.OTransform =
-      //     targetStyle.transform =
-      //       `translate3d(0, 0, 0)`
-      // })
     }
   }, [showPreviewImg])
 
@@ -166,7 +125,10 @@ const RouteDetailPage = ({ history, match, subDetail, getSubDetail, catalogList,
             <img
               src={playProgress[subId]?.isPlay ? pauseIcon : playIcon}
               className="playIcon"
-              onClick={() => clickPlayAudio(subId)}
+              onClick={() => {
+                clickPlayAudio(subId)
+                statUtil.report('路线详情页-播放音频-点击', { mainClassId, subId })
+              }}
             />
           </div>
           <div className="audioProgress">

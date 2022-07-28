@@ -5,6 +5,7 @@ import SwiperCore, { Pagination, Autoplay } from 'swiper'
 import { notify } from '@tgu/toast'
 import sf from 'seconds-formater'
 import wx from 'weixin-js-sdk'
+import statUtil from 'src/utils/statUtil'
 
 import FocusOnCom from 'components/FocusOn'
 import EmptyBottom from 'components/EmptyBottom'
@@ -412,7 +413,13 @@ const Index = ({
             <img src={HomeImg} className="homeIcon" />
             <p className="menuText">首页</p>
           </div>
-          <div className="menuContainer1 menuContainerMargin" onClick={() => setShowShareMask(true)}>
+          <div
+            className="menuContainer1 menuContainerMargin"
+            onClick={() => {
+              setShowShareMask(true)
+              statUtil.report('路线详情-分享-点击', { mainClassId: id })
+            }}
+          >
             <img src={ShareImg} className="shareIcon" />
             <p className="menuText">分享</p>
           </div>

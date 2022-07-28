@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { connect } from 'react-redux'
 import { Swiper, SwiperSlide } from 'swiper/react'
+import statUtil from 'src/utils/statUtil'
 
 import AllRouteItem from 'components/AllRouteItem'
 import TopSearch from 'components/Search'
@@ -49,6 +50,7 @@ const Index = ({
         value: id,
       })
     }
+    statUtil.report(`全部路线-${id}`)
   }
 
   const switchThemeClickHandle = () => {
@@ -56,6 +58,7 @@ const Index = ({
     setTheme(themeNew)
     setCitySelectedId(0)
     getTypeList(themeNew)
+    statUtil.report(`全部路线-${themeNew === 'city' ? '查看主题' : '查看城市'}-点击`)
   }
 
   const swiperChange = (index) => {
@@ -122,6 +125,9 @@ const Index = ({
                             data={item}
                             key={index}
                             onClick={() => {
+                              statUtil.report('全部路线-路线点击', {
+                                mainClassId: item.mainClassId,
+                              })
                               history.push(`/detailInfoPage/${item.mainClassId}`)
                             }}
                           />

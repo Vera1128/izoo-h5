@@ -10,6 +10,7 @@ import Tag from 'components/Tag'
 import EmptyList from 'components/EmptyList'
 import EmptyBottom from 'components/EmptyBottom'
 import { changeCollectStatus } from 'apis/detailPageInfo'
+import statUtil from 'src/utils/statUtil'
 
 import { getPxCurr } from 'utils/index'
 import { timeStampToDate } from 'utils/tools'
@@ -27,6 +28,8 @@ const orderState = {
   wait: '拼团中',
   fail: '订单关闭',
 }
+
+const menuList = ['全部订单', '我的收藏', '收听历史', '联系我们']
 
 const distance = getPxCurr(196)
 let mySwiper = null
@@ -88,6 +91,7 @@ const Index = ({
     setMenuIndex(index)
     mySwiper.slideTo(index)
     fetchData(index)
+    statUtil.report(`个人中心-${menuList[index]}`)
   }
 
   async function fetchData(index) {

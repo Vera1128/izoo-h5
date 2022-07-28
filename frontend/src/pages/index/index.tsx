@@ -2,11 +2,12 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-10-26 15:41:51
- * @LastEditTime: 2022-04-27 16:10:43
+ * @LastEditTime: 2022-07-28 15:34:13
  */
 import React, { FC, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { connect } from 'react-redux'
+import statUtil from 'src/utils/statUtil'
 
 import MenuBar from 'src/components/Menu'
 
@@ -54,6 +55,7 @@ const Index: FC<any> = ({ location, children, selectedId, setSelectedId }) => {
   const menuSwitchHandle = (menuItem) => () => {
     document.title = menuItem.pageTitle
     setSelectedId(menuItem.id)
+    statUtil.report(`tabbar-${menuItem.title}`)
   }
   return (
     <div className="wrap">

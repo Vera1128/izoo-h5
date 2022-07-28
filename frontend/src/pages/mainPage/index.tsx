@@ -19,8 +19,6 @@ import 'swiper/css/pagination'
 import './index.less'
 import statUtil from 'src/utils/statUtil'
 
-const shareConfig = require('src/config/share.json')
-
 SwiperCore.use([Pagination, Autoplay])
 
 const Index = ({
@@ -97,6 +95,7 @@ const Index = ({
     history.replace('/index/allRoutes')
     setTheme('tag')
     setCurrentThemeName(theme)
+    statUtil.report('文化行走-行走主题-点击', { tag: theme })
   }
   const cityClickHandle = (theme) => () => {
     setSelectedId('allRoutes')
@@ -114,7 +113,7 @@ const Index = ({
         pagination={{
           clickable: false,
         }}
-        onSwiper={() => { }}
+        onSwiper={() => {}}
         initialSlide={0}
         autoplay={{
           delay: 2500,
@@ -129,17 +128,30 @@ const Index = ({
               alt="轮播图"
               onClick={() => {
                 goToDetailInfoPage(item.mainClassId)
-                statUtil.report('首页-轮播图-点击', { mainClassId: item.mainClassId })
+                statUtil.report('文化行走-轮播-点击', { mainClassId: item.mainClassId })
               }}
             />
           </SwiperSlide>
         ))}
       </Swiper>
       <FocusOnCom />
-      <NearbyList list={nearbyList} itemClick={goToDetailInfoPage} clickMoreHandle={clickMoreHandle} />
+      <NearbyList
+        list={nearbyList}
+        itemClick={(mainClassId) => () => {
+          statUtil.report('文化行走-离你不远-点击', { mainClassId: mainClassId })
+          goToDetailInfoPage(mainClassId)
+        }}
+        clickMoreHandle={clickMoreHandle}
+      />
       <ThemeList list={themeList} itemClick={themeClickHandle} />
       {/* <CityList list={cityList} itemClick={cityClickHandle} clickMoreHandle={clickCityMoreHandle} /> */}
-      <RecommendList list={populerList} itemClick={goToDetailInfoPage} />
+      <RecommendList
+        list={populerList}
+        itemClick={(mainClassId) => () => {
+          statUtil.report('文化行走-热门推荐-点击', { mainClassId: mainClassId })
+          goToDetailInfoPage(mainClassId)
+        }}
+      />
       <EmptyBottom color="#666699" />
     </div>
   )
