@@ -2,7 +2,7 @@
  * @Description:
  * @Author: yangyang.xu
  * @Date: 2021-12-22 22:54:26
- * @LastEditTime: 2022-06-03 17:46:08
+ * @LastEditTime: 2022-07-28 14:09:14
  */
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
@@ -13,10 +13,11 @@ import GroupOrder from 'components/GroupContainer'
 import Mask from 'components/Mask'
 import StepImg from 'assets/images/step.png'
 import { ORDER_TYPE } from 'src/constants/index'
+import { wxPaymentUtil } from 'src/utils/wxPaymentUtil'
+import GroupRules from 'src/components/GroupRules'
 import GroupShareImg from 'assets/images/group-share.png'
 
 import './index.scss'
-import { wxPaymentUtil } from 'src/utils/wxPaymentUtil'
 
 const shareConfig = require('src/config/share.json')
 
@@ -172,6 +173,7 @@ const GroupPage = ({ history, location, match, detailInfo, groupData, getDetailI
         />
       )}
       <img src={StepImg} className="stepIcon" />
+      <GroupRules />
       {showShareMask && (
         <Mask onClickHandle={() => setShowShareMask(false)}>
           <img src={GroupShareImg} className="shareImg" />
